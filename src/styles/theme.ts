@@ -2,32 +2,33 @@ import { DefaultTheme } from 'styled-components';
 
 export const theme: DefaultTheme = {
   colors: {
-    primary: '#5C7AFF',
-    primaryLight: '#879FFF',
-    primaryDark: '#4B62CC',
+    primary: '#448181', // 피그마 디자인의 주요 색상
+    primaryLight: '#5AA3A3',
+    primaryDark: '#336060',
     secondary: '#4FBCA3',
     secondaryLight: '#7EDBC8',
     secondaryDark: '#3D967F',
     background: '#FFFFFF',
-    backgroundGray: '#F8F9FA',
-    text: '#333333',
-    textSecondary: '#717171',
-    textLight: '#9E9E9E',
-    border: '#E0E0E0',
-    borderDark: '#CCCCCC',
-    error: '#FF5252',
+    backgroundGray: '#F4F4F5', // 피그마 디자인의 배경색
+    text: '#171719', // 피그마 디자인의 텍스트 색상
+    textSecondary: 'rgba(46, 47, 51, 0.88)', // 피그마 디자인의 보조 텍스트 색상
+    textLight: 'rgba(55, 56, 60, 0.61)', // 피그마 디자인의 연한 텍스트 색상
+    textLighter: 'rgba(55, 56, 60, 0.28)', // 피그마 디자인의 더 연한 텍스트 색상
+    border: 'rgba(112, 115, 124, 0.16)', // 피그마 디자인의 테두리 색상
+    borderDark: 'rgba(112, 115, 124, 0.22)', // 피그마 디자인의 진한 테두리 색상
+    error: '#ff5252',
     success: '#4CAF50',
     warning: '#FFC107',
     info: '#2196F3',
   },
   fontSizes: {
-    xs: '0.75rem',
-    sm: '0.875rem',
-    md: '1rem',
-    lg: '1.125rem',
-    xl: '1.25rem',
-    xxl: '1.5rem',
-    xxxl: '2rem',
+    xs: '0.75rem', // 12px
+    sm: '0.875rem', // 14px
+    md: '1rem', // 16px
+    lg: '1.125rem', // 18px
+    xl: '1.25rem', // 20px
+    xxl: '1.5rem', // 24px
+    xxxl: '2.5rem', // 40px - 피그마 디자인의 큰 헤딩 크기
   },
   fontWeights: {
     light: 300,
@@ -37,28 +38,28 @@ export const theme: DefaultTheme = {
     bold: 700,
   },
   spacing: {
-    xs: '0.25rem',
-    sm: '0.5rem',
-    md: '1rem',
-    lg: '1.5rem',
-    xl: '2rem',
-    xxl: '3rem',
+    xs: '0.25rem', // 4px
+    sm: '0.5rem', // 8px
+    md: '1rem', // 16px
+    lg: '1.5rem', // 24px
+    xl: '2rem', // 32px
+    xxl: '3rem', // 48px
   },
   borderRadius: {
-    small: '4px',
-    medium: '8px',
-    large: '12px',
+    small: '8px', // 피그마 디자인의 작은 둥근 모서리
+    medium: '12px', // 피그마 디자인의 중간 둥근 모서리
+    large: '16px', // 피그마 디자인의 큰 둥근 모서리
     round: '50%',
   },
   breakpoints: {
-    mobile: '576px',
+    mobile: '480px',
     tablet: '768px',
     desktop: '1024px',
-    largeDesktop: '1200px',
+    largeDesktop: '1440px', // 피그마 디자인의 최대 너비
   },
   shadows: {
-    small: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    medium: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    small: '0 1px 2px rgba(0, 0, 0, 0.03)', // 피그마 디자인의 작은 그림자
+    medium: '0 4px 6px rgba(0, 0, 0, 0.1)', // 피그마 디자인의 중간 그림자
     large: '0 8px 16px rgba(0, 0, 0, 0.1)',
   },
   transitions: {
@@ -83,6 +84,7 @@ declare module 'styled-components' {
       text: string;
       textSecondary: string;
       textLight: string;
+      textLighter: string;
       border: string;
       borderDark: string;
       error: string;

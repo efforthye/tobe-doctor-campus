@@ -5,9 +5,6 @@ import styled from 'styled-components';
 import { login, resetAuthError } from '../store/slices/authSlice';
 import { RootState } from '../store';
 import Layout from '../components/layout/Layout';
-import Input from '../components/common/Input';
-import Button from '../components/common/Button';
-import Card from '../components/common/Card';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 
 interface LoginFormValues {
@@ -91,215 +88,338 @@ const Login: React.FC = () => {
 
   return (
     <Layout>
-      <LoginContainer>
-        <LoginCard variant="elevated">
-          <LoginHeader>
-            <h1>로그인</h1>
-            <p>투비닥터 캠퍼스에 오신 것을 환영합니다!</p>
-          </LoginHeader>
-
+      <MainContainer>
+        <Title>로그인</Title>
+        
+        <FormContainer>
           {error && <ErrorMessage>{error}</ErrorMessage>}
-
-          <LoginForm onSubmit={handleSubmit}>
-            <Input
-              label="이메일"
-              type="email"
-              name="email"
-              placeholder="이메일을 입력하세요"
-              value={formValues.email}
-              onChange={handleChange}
-              error={formErrors.email}
-              fullWidth
-              variant="outlined"
-            />
-
-            <Input
-              label="비밀번호"
-              type="password"
-              name="password"
-              placeholder="비밀번호를 입력하세요"
-              value={formValues.password}
-              onChange={handleChange}
-              error={formErrors.password}
-              fullWidth
-              variant="outlined"
-            />
-
-            <RememberMeRow>
-              <RememberMeLabel>
-                <RememberMeCheckbox
+          
+          <form onSubmit={handleSubmit}>
+            {/* 이메일 입력 */}
+            <FormGroup>
+              <FormLabel>이메일</FormLabel>
+              <InputContainer className={formErrors.email ? 'error' : ''}>
+                <Input
+                  type="email"
+                  name="email"
+                  placeholder="이메일을 입력해주세요."
+                  value={formValues.email}
+                  onChange={handleChange}
+                />
+              </InputContainer>
+              {formErrors.email && <InputHelp error>{formErrors.email}</InputHelp>}
+            </FormGroup>
+            
+            {/* 비밀번호 입력 */}
+            <FormGroup>
+              <FormLabel>비밀번호</FormLabel>
+              <InputContainer className={formErrors.password ? 'error' : ''}>
+                <Input
+                  type="password"
+                  name="password"
+                  placeholder="비밀번호를 입력해주세요."
+                  value={formValues.password}
+                  onChange={handleChange}
+                />
+              </InputContainer>
+              {formErrors.password && <InputHelp error>{formErrors.password}</InputHelp>}
+            </FormGroup>
+            
+            {/* 로그인 상태 유지 및 비밀번호 찾기 */}
+            <OptionsRow>
+              <RememberMeWrapper>
+                <CheckboxInput
                   type="checkbox"
+                  id="remember-me"
                   checked={rememberMe}
                   onChange={handleRememberMeChange}
                 />
-                <span>로그인 상태 유지</span>
-              </RememberMeLabel>
+                <CheckboxLabel htmlFor="remember-me">로그인 상태 유지</CheckboxLabel>
+              </RememberMeWrapper>
+              
               <ForgotPasswordLink to="/forgot-password">
                 비밀번호를 잊으셨나요?
               </ForgotPasswordLink>
-            </RememberMeRow>
-
-            <LoginButton type="submit" fullWidth isLoading={loading}>
-              로그인
-            </LoginButton>
-
-            <SignUpPrompt>
-              계정이 없으신가요?{' '}
-              <SignUpLink to="/signup">회원가입</SignUpLink>
-            </SignUpPrompt>
-          </LoginForm>
-
-          <Divider>또는</Divider>
-
-          <SocialLoginButtons>
-            <SocialButton type="button" variant="outline" fullWidth>
+            </OptionsRow>
+            
+            {/* 로그인 버튼 */}
+            <ButtonWrapper>
+              <ActionButton 
+                type="submit" 
+                disabled={loading}
+              >
+                {loading ? '처리 중...' : '로그인'}
+              </ActionButton>
+            </ButtonWrapper>
+            
+            <SignupPrompt>
+              아직 계정이 없으신가요? <SignupLink to="/signup">회원가입</SignupLink>
+            </SignupPrompt>
+          </form>
+          
+          <DividerWrapper>
+            <Divider>또는</Divider>
+          </DividerWrapper>
+          
+          {/* 소셜 로그인 */}
+          <SocialButtonsWrapper>
+            <SocialButton type="button">
+              <SocialIcon>G</SocialIcon>
               Google로 계속하기
             </SocialButton>
-            <SocialButton type="button" variant="outline" fullWidth>
+            <SocialButton type="button">
+              <SocialIcon>f</SocialIcon>
               Facebook으로 계속하기
             </SocialButton>
-          </SocialLoginButtons>
-        </LoginCard>
-      </LoginContainer>
+          </SocialButtonsWrapper>
+        </FormContainer>
+      </MainContainer>
     </Layout>
   );
 };
 
-const LoginContainer = styled.div`
+// 스타일 컴포넌트
+const MainContainer = styled.main`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  min-height: calc(100vh - 200px);
-  padding: ${({ theme }) => theme.spacing.md};
-`;
-
-const LoginCard = styled(Card)`
-  width: 100%;
-  max-width: 480px;
-  padding: ${({ theme }) => theme.spacing.xl};
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 128px 20px 160px;
+  
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    padding: 100px 16px 120px;
+  }
   
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    padding: ${({ theme }) => theme.spacing.lg};
+    padding: 80px 16px 100px;
   }
 `;
 
-const LoginHeader = styled.div`
+const Title = styled.h1`
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1.3em;
+  margin-bottom: 64px;
   text-align: center;
-  margin-bottom: ${({ theme }) => theme.spacing.lg};
   
-  h1 {
-    font-size: ${({ theme }) => theme.fontSizes.xxl};
-    font-weight: ${({ theme }) => theme.fontWeights.bold};
-    margin-bottom: ${({ theme }) => theme.spacing.xs};
-    color: ${({ theme }) => theme.colors.text};
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    font-size: 36px;
+    margin-bottom: 40px;
   }
   
-  p {
-    color: ${({ theme }) => theme.colors.textSecondary};
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: 32px;
+    margin-bottom: 32px;
   }
+`;
+
+const FormContainer = styled.div`
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 `;
 
 const ErrorMessage = styled.div`
   background-color: rgba(255, 82, 82, 0.1);
-  color: ${({ theme }) => theme.colors.error};
-  padding: ${({ theme }) => theme.spacing.sm};
-  border-radius: ${({ theme }) => theme.borderRadius.small};
-  margin-bottom: ${({ theme }) => theme.spacing.md};
-  font-size: ${({ theme }) => theme.fontSizes.sm};
+  color: #ff5252;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  font-size: 14px;
 `;
 
-const LoginForm = styled.form`
+const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
-  margin-bottom: ${({ theme }) => theme.spacing.lg};
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 20px;
 `;
 
-const RememberMeRow = styled.div`
+const FormLabel = styled.label`
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.429em;
+  text-align: left;
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  border: 1px solid rgba(112, 115, 124, 0.16);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.03);
+  
+  &.error {
+    border-color: #ff5252;
+  }
+`;
+
+const Input = styled.input`
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  line-height: 1.5em;
+  color: rgba(46, 47, 51, 0.88);
+  
+  &::placeholder {
+    color: rgba(55, 56, 60, 0.28);
+  }
+`;
+
+const InputHelp = styled.p<{ error?: boolean }>`
+  font-size: 12px;
+  line-height: 1.334em;
+  color: ${props => props.error ? '#ff5252' : 'rgba(55, 56, 60, 0.61)'};
+  margin-top: 4px;
+`;
+
+const OptionsRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: ${({ theme }) => theme.spacing.sm};
+  margin-bottom: 24px;
+  
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
 `;
 
-const RememberMeLabel = styled.label`
+const RememberMeWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  color: ${({ theme }) => theme.colors.textSecondary};
+  gap: 8px;
+`;
+
+const CheckboxInput = styled.input`
   cursor: pointer;
 `;
 
-const RememberMeCheckbox = styled.input`
+const CheckboxLabel = styled.label`
+  font-size: 14px;
+  color: rgba(55, 56, 60, 0.61);
   cursor: pointer;
 `;
 
 const ForgotPasswordLink = styled(Link)`
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  color: ${({ theme }) => theme.colors.primary};
+  font-size: 14px;
+  color: #448181;
   text-decoration: none;
   
   &:hover {
     text-decoration: underline;
   }
+  
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    align-self: flex-start;
+  }
 `;
 
-const LoginButton = styled(Button)`
-  margin-top: ${({ theme }) => theme.spacing.sm};
+const ButtonWrapper = styled.div`
+  margin-bottom: 16px;
+  width: 100%;
 `;
 
-const SignUpPrompt = styled.div`
+const ActionButton = styled.button`
+  height: 52px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: #448181;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 16px 28px;
+  transition: background-color 0.2s;
+  
+  &:disabled {
+    background-color: #F4F4F5;
+    color: rgba(55, 56, 60, 0.28);
+    cursor: not-allowed;
+  }
+`;
+
+const SignupPrompt = styled.div`
   text-align: center;
-  margin-top: ${({ theme }) => theme.spacing.md};
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 14px;
+  color: rgba(55, 56, 60, 0.61);
 `;
 
-const SignUpLink = styled(Link)`
-  color: ${({ theme }) => theme.colors.primary};
+const SignupLink = styled(Link)`
+  color: #448181;
   text-decoration: none;
-  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  font-weight: 600;
   
   &:hover {
     text-decoration: underline;
   }
+`;
+
+const DividerWrapper = styled.div`
+  margin: 24px 0;
 `;
 
 const Divider = styled.div`
   display: flex;
   align-items: center;
   text-align: center;
-  color: ${({ theme }) => theme.colors.textLight};
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  margin: ${({ theme }) => theme.spacing.lg} 0;
+  color: rgba(55, 56, 60, 0.28);
+  font-size: 14px;
   
   &::before,
   &::after {
     content: '';
     flex: 1;
-    border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+    border-bottom: 1px solid rgba(112, 115, 124, 0.22);
   }
   
   &::before {
-    margin-right: ${({ theme }) => theme.spacing.sm};
+    margin-right: 16px;
   }
   
   &::after {
-    margin-left: ${({ theme }) => theme.spacing.sm};
+    margin-left: 16px;
   }
 `;
 
-const SocialLoginButtons = styled.div`
+const SocialButtonsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
+  gap: 12px;
 `;
 
-const SocialButton = styled(Button)`
+const SocialButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  padding: 12px;
+  background-color: transparent;
+  border: 1px solid rgba(112, 115, 124, 0.16);
+  border-radius: 12px;
+  font-size: 16px;
+  color: rgba(46, 47, 51, 0.88);
+  cursor: pointer;
+  transition: all 0.2s;
+  
+  &:hover {
+    background-color: rgba(112, 115, 124, 0.05);
+  }
+`;
+
+const SocialIcon = styled.span`
+  margin-right: 8px;
+  font-weight: bold;
 `;
 
 export default Login;
