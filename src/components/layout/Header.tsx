@@ -2,11 +2,12 @@ import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated } = useSelector((state: any) => state.auth);
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -33,29 +34,11 @@ const Header: React.FC = () => {
         </LeftSection>
 
         <RightSection>
-          {isAuthenticated ? (
-            // 로그인 상태일 때
-            <>
-              <IconButton aria-label="알림">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M15.8332 6.66671C15.8332 5.34059 15.3063 4.07224 14.3686 3.13455C13.4309 2.19686 12.1626 1.67004 10.8332 1.67004C9.50366 1.67004 8.23531 2.19686 7.29762 3.13455C6.35993 4.07224 5.83311 5.34059 5.83311 6.66671C5.83311 12.5 3.33311 14.1667 3.33311 14.1667H18.3331C18.3331 14.1667 15.8332 12.5 15.8332 6.66671Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M11.6665 17.5C11.4778 17.8536 11.1938 18.1471 10.8456 18.3445C10.4973 18.5419 10.1007 18.6354 9.69978 18.6135C9.2989 18.5915 8.91648 18.4551 8.59412 18.2216C8.27175 17.9881 8.02385 17.6674 7.87646 17.3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </IconButton>
-              <IconButton aria-label="프로필" onClick={() => navigate('/profile')}>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M16.6667 17.5V15.8333C16.6667 14.9493 16.3155 14.1014 15.6904 13.4763C15.0653 12.8512 14.2174 12.5 13.3334 12.5H6.66675C5.78269 12.5 4.93484 12.8512 4.30971 13.4763C3.68458 14.1014 3.33341 14.9493 3.33341 15.8333V17.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M10.0001 9.16667C11.8411 9.16667 13.3334 7.67428 13.3334 5.83333C13.3334 3.99238 11.8411 2.5 10.0001 2.5C8.15913 2.5 6.66675 3.99238 6.66675 5.83333C6.66675 7.67428 8.15913 9.16667 10.0001 9.16667Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </IconButton>
-            </>
-          ) : (
-            // 비로그인 상태일 때
-            <>
-              <LoginButton onClick={() => navigate('/login')}>로그인</LoginButton>
-              <SignupButton onClick={() => navigate('/signup')}>회원가입</SignupButton>
-            </>
-          )}
+          {/* 항상 비로그인 상태로 표시 (테스트용) */}
+          <>
+            <LoginButton onClick={() => navigate('/login')}>로그인</LoginButton>
+            <SignupButton onClick={() => navigate('/signup')}>회원가입</SignupButton>
+          </>
         </RightSection>
       </HeaderContent>
     </HeaderContainer>
