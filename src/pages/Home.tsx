@@ -26,43 +26,43 @@ const Home: React.FC = () => {
             <SectionArrow>→</SectionArrow>
           </SectionHeader>
           
-          <CardList>
-            <Card>
+          <CardContainer>
+            <ExploreCard>
               <CardThumbnail />
               <CardContent>
                 <CardTitle>제목</CardTitle>
                 <CardDescription>설명</CardDescription>
               </CardContent>
-            </Card>
-            <Card>
+            </ExploreCard>
+            <ExploreCard>
               <CardThumbnail />
               <CardContent>
                 <CardTitle>제목</CardTitle>
                 <CardDescription>설명</CardDescription>
               </CardContent>
-            </Card>
-            <Card>
+            </ExploreCard>
+            <ExploreCard>
               <CardThumbnail />
               <CardContent>
                 <CardTitle>제목</CardTitle>
                 <CardDescription>설명</CardDescription>
               </CardContent>
-            </Card>
-            <Card>
+            </ExploreCard>
+            <ExploreCard>
               <CardThumbnail />
               <CardContent>
                 <CardTitle>제목</CardTitle>
                 <CardDescription>설명</CardDescription>
               </CardContent>
-            </Card>
-            <Card>
+            </ExploreCard>
+            <ExploreCard>
               <CardThumbnail />
               <CardContent>
                 <CardTitle>제목</CardTitle>
                 <CardDescription>설명</CardDescription>
               </CardContent>
-            </Card>
-          </CardList>
+            </ExploreCard>
+          </CardContainer>
         </Section>
 
         {/* 강의 섹션 */}
@@ -101,36 +101,36 @@ const Home: React.FC = () => {
             <SectionArrow>→</SectionArrow>
           </SectionHeader>
           
-          <CardList>
-            <Card>
+          <CardContainer className="connect">
+            <ConnectCard>
               <CardThumbnail />
               <CardContent>
                 <CardTitle>제목</CardTitle>
                 <CardDescription>설명</CardDescription>
               </CardContent>
-            </Card>
-            <Card>
+            </ConnectCard>
+            <ConnectCard>
               <CardThumbnail />
               <CardContent>
                 <CardTitle>제목</CardTitle>
                 <CardDescription>설명</CardDescription>
               </CardContent>
-            </Card>
-            <Card>
+            </ConnectCard>
+            <ConnectCard>
               <CardThumbnail />
               <CardContent>
                 <CardTitle>제목</CardTitle>
                 <CardDescription>설명</CardDescription>
               </CardContent>
-            </Card>
-            <Card>
+            </ConnectCard>
+            <ConnectCard>
               <CardThumbnail />
               <CardContent>
                 <CardTitle>제목</CardTitle>
                 <CardDescription>설명</CardDescription>
               </CardContent>
-            </Card>
-          </CardList>
+            </ConnectCard>
+          </CardContainer>
         </Section>
       </Container>
     </Layout>
@@ -227,9 +227,10 @@ const SectionArrow = styled.button`
   justify-content: center;
 `;
 
-const CardList = styled.div`
+const CardContainer = styled.div`
   display: flex;
   gap: 20px;
+  width: 100%;
   overflow-x: auto;
   padding-bottom: 8px;
   
@@ -239,18 +240,53 @@ const CardList = styled.div`
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera */
   }
+  
+  &.connect {
+    /* 연결 섹션은 4개의 카드 */
+  }
 `;
 
-const Card = styled.div`
-  flex: 0 0 auto;
-  width: 190px; /* 144px에서 190px로 증가 */
+const baseCardStyles = `
   border-radius: 8px;
   overflow: hidden;
   background-color: #F5F5F5;
 `;
 
+// EXPLORE THE CAMPUS 카드 스타일 (5개의 카드)
+const ExploreCard = styled.div`
+  ${baseCardStyles}
+  flex: 1;
+  min-width: calc((100% - 80px) / 5); /* 5개 카드, 4개의 간격(20px * 4) */
+  max-width: calc((100% - 80px) / 5);
+  
+  @media (max-width: 1024px) {
+    min-width: calc((100% - 60px) / 3);
+  }
+  
+  @media (max-width: 768px) {
+    min-width: calc((100% - 20px) / 2);
+  }
+`;
+
+// CONNECT TO THE WORLD 카드 스타일 (4개의 카드)
+const ConnectCard = styled.div`
+  ${baseCardStyles}
+  flex: 1;
+  min-width: calc((100% - 60px) / 4); /* 4개 카드, 3개의 간격(20px * 3) */
+  max-width: calc((100% - 60px) / 4);
+  
+  @media (max-width: 1024px) {
+    min-width: calc((100% - 40px) / 3);
+  }
+  
+  @media (max-width: 768px) {
+    min-width: calc((100% - 20px) / 2);
+  }
+`;
+
 const CardThumbnail = styled.div`
-  height: 190px; /* 144px에서 190px로 증가 */
+  width: 100%;
+  padding-top: 100%; /* 1:1 비율 유지 (정사각형) */
   background-color: #DDD;
 `;
 
