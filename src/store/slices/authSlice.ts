@@ -20,7 +20,7 @@ export interface AuthState {
 const initialState: AuthState = {
   isAuthenticated: false,
   user: null,
-  token: localStorage.getItem('token'),
+  token: null, // 항상 비로그인 상태로 시작
   loading: false,
   error: null,
 };
