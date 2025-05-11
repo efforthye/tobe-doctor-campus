@@ -1,31 +1,32 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-import { theme } from './styles/theme';
 import GlobalStyle from './styles/GlobalStyle';
+import theme from './styles/theme';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
+import NotFound from './pages/NotFound';
+import './styles/fonts.css';
 
-// 페이지 컴포넌트 임포트
-import HomePage from './pages/Home';
-import LoginPage from './pages/Login';
-import SignupPage from './pages/Signup';
-import DashboardPage from './pages/Dashboard';
-import ProfilePage from './pages/Profile';
-import NotFoundPage from './pages/NotFound';
-
-const App: React.FC = () => {
+function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
     </ThemeProvider>
   );
-};
+}
 
 export default App;

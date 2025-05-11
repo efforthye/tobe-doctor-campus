@@ -66,7 +66,7 @@ const HeaderContent = styled.div`
   align-items: center;
   max-width: 1600px;
   margin: 0 auto;
-  padding: 24px 20px;
+  padding: 0 20px;
   height: 80px;
   box-sizing: border-box;
 `;

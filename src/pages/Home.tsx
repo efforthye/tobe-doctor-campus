@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Layout from '../components/layout/Layout';
 
 const Home: React.FC = () => {
-
   return (
     <Layout>
       <Container>
