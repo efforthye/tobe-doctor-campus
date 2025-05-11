@@ -255,38 +255,35 @@ const baseCardStyles = `
 // EXPLORE THE CAMPUS 카드 스타일 (5개의 카드)
 const ExploreCard = styled.div`
   ${baseCardStyles}
-  flex: 1;
-  min-width: calc((100% - 80px) / 5); /* 5개 카드, 4개의 간격(20px * 4) */
-  max-width: calc((100% - 80px) / 5);
+  flex: 0 0 auto;
+  width: calc((100% - 80px) / 5); /* 5개 카드, 4개의 간격(20px * 4) */
   
   @media (max-width: 1024px) {
-    min-width: calc((100% - 60px) / 3);
+    width: calc((100% - 40px) / 3);
   }
   
   @media (max-width: 768px) {
-    min-width: calc((100% - 20px) / 2);
+    width: calc((100% - 20px) / 2);
   }
 `;
 
 // CONNECT TO THE WORLD 카드 스타일 (4개의 카드)
 const ConnectCard = styled.div`
   ${baseCardStyles}
-  flex: 1;
-  min-width: calc((100% - 60px) / 4); /* 4개 카드, 3개의 간격(20px * 3) */
-  max-width: calc((100% - 60px) / 4);
+  flex: 0 0 auto;
+  width: calc((100% - 60px) / 4); /* 4개 카드, 3개의 간격(20px * 3) */
   
   @media (max-width: 1024px) {
-    min-width: calc((100% - 40px) / 3);
+    width: calc((100% - 40px) / 3);
   }
   
   @media (max-width: 768px) {
-    min-width: calc((100% - 20px) / 2);
+    width: calc((100% - 20px) / 2);
   }
 `;
 
 const CardThumbnail = styled.div`
-  width: 100%;
-  padding-top: 100%; /* 1:1 비율 유지 (정사각형) */
+  height: 190px;
   background-color: #DDD;
 `;
 
