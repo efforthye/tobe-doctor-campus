@@ -1,8 +1,30 @@
 // mockApi.ts - API 호출을 모의합니다
 import axios from 'axios';
 
+// 사용자 데이터 인터페이스
+interface User {
+  id: string;
+  email: string;
+  password: string;
+  name: string;
+  role: string;
+  createdAt: string;
+}
+
+// 로그인 응답 인터페이스
+export interface LoginResponse {
+  token: string;
+  user: Omit<User, 'password'>;
+}
+
+// 회원가입 응답 인터페이스
+export interface RegisterResponse {
+  message: string;
+  user: Omit<User, 'password'>;
+}
+
 // 사용자 데이터
-const users = [
+const users: User[] = [
   {
     id: '1',
     email: 'test@example.com',
@@ -14,7 +36,7 @@ const users = [
 ];
 
 // Mock API 함수 구현
-export const mockLogin = async (email: string, password: string) => {
+export const mockLogin = async (email: string, password: string): Promise<LoginResponse> => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       const user = users.find((u) => u.email === email && u.password === password);
@@ -32,7 +54,7 @@ export const mockLogin = async (email: string, password: string) => {
   });
 };
 
-export const mockRegister = async (email: string, password: string, name: string) => {
+export const mockRegister = async (email: string, password: string, name: string): Promise<RegisterResponse> => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (users.some((u) => u.email === email)) {
@@ -40,7 +62,7 @@ export const mockRegister = async (email: string, password: string, name: string
         return;
       }
       
-      const newUser = {
+      const newUser: User = {
         id: String(users.length + 1),
         email,
         password,
@@ -61,7 +83,7 @@ export const mockRegister = async (email: string, password: string, name: string
   });
 };
 
-export const mockFetchProfile = async (token: string) => {
+export const mockFetchProfile = async (token: string): Promise<Omit<User, 'password'>> => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (token === 'mock-jwt-token') {
