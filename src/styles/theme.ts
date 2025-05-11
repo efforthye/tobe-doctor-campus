@@ -1,6 +1,10 @@
 import { DefaultTheme } from 'styled-components';
 
 export const theme: DefaultTheme = {
+  fonts: {
+    body: "'Pretendard JP', sans-serif",
+    heading: "'Pretendard JP', sans-serif",
+  },
   colors: {
     primary: '#448181', // 피그마 디자인의 주요 색상
     primaryLight: '#5AA3A3',
@@ -72,6 +76,10 @@ export const theme: DefaultTheme = {
 // 타입스크립트를 위한 테마 타입 확장
 declare module 'styled-components' {
   export interface DefaultTheme {
+    fonts: {
+      body: string;
+      heading: string;
+    };
     colors: {
       primary: string;
       primaryLight: string;
