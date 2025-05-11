@@ -73,7 +73,15 @@ const FooterContainer = styled.footer`
 const FooterContent = styled.div`
   max-width: 1600px;
   margin: 0 auto;
-  padding: 40px 20px 24px;
+  padding: 40px 80px 24px;
+  
+  @media (max-width: 1024px) {
+    padding: 40px 40px 24px;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 40px 20px 24px;
+  }
 `;
 
 const MainSection = styled.div`
@@ -81,7 +89,6 @@ const MainSection = styled.div`
   flex-direction: column;
   gap: 28px;
   margin-bottom: 32px;
-  height: 215px;
   
   @media (min-width: 768px) {
     flex-direction: row;
@@ -107,6 +114,7 @@ const CompanyInfo = styled.div`
   font-size: 12px;
   color: #777;
   line-height: 1.6;
+  max-width: 760px;
   
   p {
     margin: 0 0 10px 0;

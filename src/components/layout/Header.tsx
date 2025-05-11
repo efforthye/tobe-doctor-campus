@@ -66,15 +66,27 @@ const HeaderContent = styled.div`
   align-items: center;
   max-width: 1600px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 80px;
   height: 80px;
   box-sizing: border-box;
+  
+  @media (max-width: 1024px) {
+    padding: 0 40px;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 0 20px;
+  }
 `;
 
 const LeftSection = styled.div`
   display: flex;
   align-items: center;
   gap: 84px;
+  
+  @media (max-width: 768px) {
+    gap: 32px;
+  }
 `;
 
 const Logo = styled.div`

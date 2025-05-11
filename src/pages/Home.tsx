@@ -8,11 +8,11 @@ const Home: React.FC = () => {
       <Container>
         {/* 메인 배너 */}
         <BannerSection>
-          <BannerImage src="/images/banner-placeholder.jpg" alt="투비더더 캠퍼스" />
+          <BannerImage src="/images/banner-placeholder.jpg" alt="투비닥터 캠퍼스" />
           <BannerGradient />
           <BannerContent>
-            <BannerSubtitle>김쌤 하이닥 학습 라이브러리</BannerSubtitle>
-            <BannerTitle>투비더더 캠퍼스</BannerTitle>
+            <BannerSubtitle>젊은 의사의 학습 러닝메이트</BannerSubtitle>
+            <BannerTitle>투비닥터 캠퍼스</BannerTitle>
           </BannerContent>
         </BannerSection>
 
@@ -142,8 +142,16 @@ const Container = styled.div`
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 36px 20px 160px;
+  padding: 36px 80px 160px;
   box-sizing: border-box;
+  
+  @media (max-width: 1024px) {
+    padding: 36px 40px 120px;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 36px 20px 80px;
+  }
 `;
 
 const BannerSection = styled.section`
