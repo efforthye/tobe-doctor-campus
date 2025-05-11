@@ -36,6 +36,12 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-width: 320px;
+}
+
+html {
+  overflow-x: hidden;
 }
 
 ol, ul {

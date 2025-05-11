@@ -40,6 +40,10 @@ const NotFoundContainer = styled.div`
   justify-content: center;
   gap: ${({ theme }) => theme.spacing.xxl};
   min-height: calc(100vh - 200px);
+  padding: 0 20px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  width: 100%;
   
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     flex-direction: column-reverse;

@@ -34,17 +34,24 @@ const LayoutContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  min-width: 320px;
+  overflow-x: hidden;
 `;
 
 const Main = styled.main`
   flex: 1;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: ${({ theme }) => theme.spacing.xl};
+  box-sizing: border-box;
   
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     padding: ${({ theme }) => theme.spacing.md};
+  }
+  
+  @media (max-width: 1600px) {
+    max-width: 100%;
   }
 `;
 

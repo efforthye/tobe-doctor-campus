@@ -254,7 +254,9 @@ const Home: React.FC = () => {
 // 스타일 컴포넌트
 const Container = styled.div`
   max-width: 100%;
-  margin-top: 80px; // 헤더 높이만큼 여백
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 `;
 
 const HeroSection = styled.section`
@@ -264,6 +266,7 @@ const HeroSection = styled.section`
   padding: 80px 20px;
   align-items: center;
   gap: 60px;
+  box-sizing: border-box;
   
   @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
     padding: 60px 20px;
@@ -274,6 +277,10 @@ const HeroSection = styled.section`
     flex-direction: column;
     padding: 40px 20px;
     text-align: center;
+  }
+  
+  @media (max-width: 1600px) {
+    max-width: 100%;
   }
 `;
 

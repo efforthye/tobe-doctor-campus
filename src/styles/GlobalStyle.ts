@@ -15,6 +15,12 @@ const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
     background-color: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
+    overflow-x: hidden;
+    min-width: 320px;
+  }
+  
+  html {
+    overflow-x: hidden;
   }
 
   a {

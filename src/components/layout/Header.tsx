@@ -144,10 +144,11 @@ const HeaderContainer = styled.header`
   border-bottom: 1px solid rgba(112, 115, 124, 0.16);
   background-color: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(64px);
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   z-index: 1000;
+  min-width: 320px; /* 최소 너비 설정 */
 `;
 
 const HeaderContent = styled.div`
@@ -157,9 +158,14 @@ const HeaderContent = styled.div`
   width: 100%;
   max-width: 1440px;
   padding: 24px 20px;
+  box-sizing: border-box;
   
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     padding: 16px;
+  }
+  
+  @media (max-width: 1600px) {
+    max-width: 100%;
   }
 `;
 
