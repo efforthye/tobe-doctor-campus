@@ -16,7 +16,7 @@
 - Node.js (v14 이상)
 - npm 또는 yarn
 
-### 설치
+### 설치 및 실행
 
 1. 저장소 클론:
 ```bash
@@ -31,14 +31,24 @@ npm install
 yarn install
 ```
 
-3. 개발 서버 시작:
+3. macOS에서 HOST 환경 변수 문제가 있을 경우:
+```bash
+# macOS의 HOST 환경 변수 초기화
+unset HOST
+# 또는 다음 명령으로 시작
+HOST=localhost npm start
+# 또는
+HOST=localhost yarn start
+```
+
+4. 개발 서버 시작:
 ```bash
 npm start
 # 또는
 yarn start
 ```
 
-4. 브라우저에서 `http://localhost:3000` 열기
+5. 브라우저에서 `http://localhost:3000` 열기
 
 ## 🏗️ 프로젝트 구조
 
@@ -85,6 +95,30 @@ src/
 - `refactor:` - 리팩토링
 - `test:` - 테스트 추가 또는 수정
 - `chore:` - 기타 변경 사항
+
+## 🔧 문제 해결
+
+### macOS에서 HOST 환경 변수 문제
+
+macOS에서 `arm64-apple-darwin20.0.0`와 같은 HOST 환경 변수로 인한 문제가 발생할 수 있습니다. 이를 해결하기 위한 방법:
+
+1. 현재 HOST 환경 변수 확인:
+```bash
+echo $HOST
+```
+
+2. HOST 변수 제거 또는 변경:
+```bash
+# HOST 변수 제거
+unset HOST
+# 또는 localhost로 설정
+export HOST=localhost
+```
+
+3. 또는 .env.local 파일에 설정 추가:
+```
+HOST=localhost
+```
 
 ## 📝 라이센스
 
