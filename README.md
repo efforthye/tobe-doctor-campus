@@ -31,24 +31,30 @@ npm install
 yarn install
 ```
 
-3. macOS에서 HOST 환경 변수 문제가 있을 경우:
+3. 애플리케이션 실행 (간편 방법):
 ```bash
-# macOS의 HOST 환경 변수 초기화
-unset HOST
-# 또는 다음 명령으로 시작
-HOST=localhost npm start
-# 또는
-HOST=localhost yarn start
+# 스크립트에 실행 권한 추가
+chmod +x start-app.sh
+
+# 앱 실행
+./start-app.sh
 ```
 
-4. 개발 서버 시작:
+4. 또는 macOS에서 직접 실행:
 ```bash
-npm start
-# 또는
+# macOS 전용 스크립트
+yarn start-mac
+
+# 또는 직접 환경 변수 설정
+unset HOST && HOST=localhost yarn start
+```
+
+5. 일반 시작:
+```bash
 yarn start
 ```
 
-5. 브라우저에서 `http://localhost:3000` 열기
+6. 브라우저에서 `http://localhost:3000` 열기
 
 ## 🏗️ 프로젝트 구조
 
@@ -100,24 +106,32 @@ src/
 
 ### macOS에서 HOST 환경 변수 문제
 
-macOS에서 `arm64-apple-darwin20.0.0`와 같은 HOST 환경 변수로 인한 문제가 발생할 수 있습니다. 이를 해결하기 위한 방법:
+macOS에서 `arm64-apple-darwin20.0.0`와 같은 HOST 환경 변수로 인한 문제가 발생할 수 있습니다. 이를 해결하기 위한 여러 방법이 있습니다:
 
-1. 현재 HOST 환경 변수 확인:
+1. 제공된 스크립트 사용:
 ```bash
-echo $HOST
+./start-app.sh
 ```
 
-2. HOST 변수 제거 또는 변경:
+2. macOS 전용 npm 스크립트 사용:
+```bash
+yarn start-mac
+```
+
+3. 또는 HOST 변수 제거 및 설정:
 ```bash
 # HOST 변수 제거
 unset HOST
-# 또는 localhost로 설정
-export HOST=localhost
+
+# 실행 시 직접 설정
+HOST=localhost yarn start
 ```
 
-3. 또는 .env.local 파일에 설정 추가:
+4. .env.local 파일에 설정 추가:
 ```
 HOST=localhost
+PORT=3000
+BROWSER=none
 ```
 
 ## 📝 라이센스
