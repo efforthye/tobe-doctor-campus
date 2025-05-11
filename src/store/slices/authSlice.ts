@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { mockLogin, mockRegister, mockFetchProfile } from '../../services/mockApi';
 
 // 타입 정의
 export interface AuthState {
@@ -30,13 +30,13 @@ export const login = createAsyncThunk(
   'auth/login',
   async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
     try {
-      // 실제 구현시에는 실제 API 엔드포인트로 변경
-      const response = await axios.post('/api/auth/login', { email, password });
+      // Mock API 사용
+      const response = await mockLogin(email, password);
       // 토큰을 로컬 스토리지에 저장
-      localStorage.setItem('token', response.data.token);
-      return response.data;
+      localStorage.setItem('token', response.token);
+      return response;
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.message || '로그인에 실패했습니다');
     }
   }
 );
@@ -48,11 +48,11 @@ export const register = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      // 실제 구현시에는 실제 API 엔드포인트로 변경
-      const response = await axios.post('/api/auth/register', { email, password, name });
-      return response.data;
+      // Mock API 사용
+      const response = await mockRegister(email, password, name);
+      return response;
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.message || '회원가입에 실패했습니다');
     }
   }
 );
@@ -67,15 +67,11 @@ export const fetchUserProfile = createAsyncThunk(
   async (_, { rejectWithValue, getState }: any) => {
     try {
       const { token } = getState().auth;
-      // 실제 구현시에는 실제 API 엔드포인트로 변경
-      const response = await axios.get('/api/auth/profile', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return response.data;
+      // Mock API 사용
+      const response = await mockFetchProfile(token);
+      return response;
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.message || '프로필 로딩에 실패했습니다');
     }
   }
 );
