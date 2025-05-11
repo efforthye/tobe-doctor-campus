@@ -41,18 +41,7 @@ const LayoutContainer = styled.div`
 const Main = styled.main`
   flex: 1;
   width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: ${({ theme }) => theme.spacing.xl};
   box-sizing: border-box;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding: ${({ theme }) => theme.spacing.md};
-  }
-  
-  @media (max-width: 1600px) {
-    max-width: 100%;
-  }
 `;
 
 const LoadingOverlay = styled.div`

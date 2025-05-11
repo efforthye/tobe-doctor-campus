@@ -30,7 +30,9 @@ const Header: React.FC = () => {
     <HeaderContainer>
       <HeaderContent>
         <LeftSection>
-          <Logo onClick={() => navigate('/')}>투비닥터 캠퍼스</Logo>
+          <Logo onClick={() => navigate('/')}>
+            <img src="/logo.png" alt="THE DOCTOR CAMPUS" />
+          </Logo>
           <Navigation>
             <NavItem active={isActive('/classes')}>
               <Link to="/classes">CLASS</Link>
@@ -42,302 +44,97 @@ const Header: React.FC = () => {
               <Link to="/connect">CONNECT</Link>
             </NavItem>
           </Navigation>
-          <MobileMenuButton onClick={toggleMobileMenu}>
-            <span></span>
-            <span></span>
-            <span></span>
-          </MobileMenuButton>
         </LeftSection>
 
         <RightSection>
-          {isAuthenticated ? (
-            <>
-              <UserInfo>
-                <Avatar>
-                  {user?.name ? user.name.substring(0, 1).toUpperCase() : 'U'}
-                </Avatar>
-                <UserName>{user?.name}</UserName>
-              </UserInfo>
-              <OutlineButton onClick={handleLogout}>
-                로그아웃
-              </OutlineButton>
-            </>
-          ) : (
-            <>
-              <OutlineButton onClick={() => navigate('/login')}>
-                로그인
-              </OutlineButton>
-              <SolidButton onClick={() => navigate('/signup')}>
-                회원가입
-              </SolidButton>
-            </>
-          )}
+          <IconButton aria-label="알림">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15.8332 6.66671C15.8332 5.34059 15.3063 4.07224 14.3686 3.13455C13.4309 2.19686 12.1626 1.67004 10.8332 1.67004C9.50366 1.67004 8.23531 2.19686 7.29762 3.13455C6.35993 4.07224 5.83311 5.34059 5.83311 6.66671C5.83311 12.5 3.33311 14.1667 3.33311 14.1667H18.3331C18.3331 14.1667 15.8332 12.5 15.8332 6.66671Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M11.6665 17.5C11.4778 17.8536 11.1938 18.1471 10.8456 18.3445C10.4973 18.5419 10.1007 18.6354 9.69978 18.6135C9.2989 18.5915 8.91648 18.4551 8.59412 18.2216C8.27175 17.9881 8.02385 17.6674 7.87646 17.3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </IconButton>
+          <IconButton aria-label="프로필">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16.6667 17.5V15.8333C16.6667 14.9493 16.3155 14.1014 15.6904 13.4763C15.0653 12.8512 14.2174 12.5 13.3334 12.5H6.66675C5.78269 12.5 4.93484 12.8512 4.30971 13.4763C3.68458 14.1014 3.33341 14.9493 3.33341 15.8333V17.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M10.0001 9.16667C11.8411 9.16667 13.3334 7.67428 13.3334 5.83333C13.3334 3.99238 11.8411 2.5 10.0001 2.5C8.15913 2.5 6.66675 3.99238 6.66675 5.83333C6.66675 7.67428 8.15913 9.16667 10.0001 9.16667Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </IconButton>
         </RightSection>
       </HeaderContent>
-
-      {/* 모바일 메뉴 */}
-      {isMobileMenuOpen && (
-        <MobileMenu>
-          <MobileMenuItem onClick={() => {
-            navigate('/classes');
-            setIsMobileMenuOpen(false);
-          }}>
-            CLASS
-          </MobileMenuItem>
-          <MobileMenuItem onClick={() => {
-            navigate('/archive');
-            setIsMobileMenuOpen(false);
-          }}>
-            ARCHIVE
-          </MobileMenuItem>
-          <MobileMenuItem onClick={() => {
-            navigate('/connect');
-            setIsMobileMenuOpen(false);
-          }}>
-            CONNECT
-          </MobileMenuItem>
-          
-          <MobileActions>
-            {isAuthenticated ? (
-              <SolidButton 
-                fullWidth 
-                onClick={() => {
-                  handleLogout();
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                로그아웃
-              </SolidButton>
-            ) : (
-              <>
-                <OutlineButton 
-                  fullWidth 
-                  onClick={() => {
-                    navigate('/login');
-                    setIsMobileMenuOpen(false);
-                  }}
-                >
-                  로그인
-                </OutlineButton>
-                <SolidButton 
-                  fullWidth 
-                  onClick={() => {
-                    navigate('/signup');
-                    setIsMobileMenuOpen(false);
-                  }}
-                >
-                  회원가입
-                </SolidButton>
-              </>
-            )}
-          </MobileActions>
-        </MobileMenu>
-      )}
     </HeaderContainer>
   );
 };
 
 const HeaderContainer = styled.header`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  border-bottom: 1px solid rgba(112, 115, 124, 0.16);
   background-color: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(64px);
+  border-bottom: 1px solid rgba(112, 115, 124, 0.16);
   position: sticky;
   top: 0;
   left: 0;
   z-index: 1000;
-  min-width: 320px; /* 최소 너비 설정 */
+  width: 100%;
 `;
 
 const HeaderContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  max-width: 1440px;
+  max-width: 1600px;
+  margin: 0 auto;
   padding: 24px 20px;
+  height: 80px;
   box-sizing: border-box;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding: 16px;
-  }
-  
-  @media (max-width: 1600px) {
-    max-width: 100%;
-  }
 `;
 
 const LeftSection = styled.div`
   display: flex;
   align-items: center;
   gap: 84px;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    gap: 0;
-  }
 `;
 
 const Logo = styled.div`
-  height: 32px;
-  color: #448181;
-  font-weight: bold;
   cursor: pointer;
-`;
-
-const Navigation = styled.div`
-  display: flex;
-  gap: 40px;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    display: none;
+  img {
+    height: 24px;
+    width: auto;
+    display: block;
   }
 `;
 
+const Navigation = styled.nav`
+  display: flex;
+  gap: 24px;
+`;
+
 const NavItem = styled.div<{ active: boolean }>`
-  font-weight: 600;
-  font-size: 15px;
-  letter-spacing: 0.96%;
-  color: #171719;
-  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
   
   a {
-    color: inherit;
+    color: #333;
     text-decoration: none;
   }
 `;
 
 const RightSection = styled.div`
   display: flex;
-  gap: 8px;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    & > button:first-child {
-      display: none;
-    }
-  }
-`;
-
-const Button = styled.button<{ fullWidth?: boolean }>`
-  display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 7px 14px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.2s;
-  width: ${props => props.fullWidth ? '100%' : 'auto'};
+  gap: 12px;
 `;
 
-const OutlineButton = styled(Button)`
-  border: 1px solid rgba(112, 115, 124, 0.16);
-  background-color: transparent;
-  color: #448181;
-`;
-
-const SolidButton = styled(Button)`
-  background-color: #448181;
-  color: #FFFFFF;
+const IconButton = styled.button`
+  background: none;
   border: none;
-  
-  &:disabled {
-    background-color: #F4F4F5;
-    color: rgba(55, 56, 60, 0.28);
-    cursor: not-allowed;
-  }
-`;
-
-const UserInfo = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: 8px;
-`;
-
-const Avatar = styled.div`
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background-color: #448181;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-`;
-
-const UserName = styled.span`
-  margin-left: 8px;
-  font-weight: 500;
-`;
-
-const MobileMenuButton = styled.div`
-  display: none;
+  padding: 0;
+  cursor: pointer;
+  color: #333;
   width: 24px;
   height: 24px;
-  cursor: pointer;
-  position: relative;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    display: block;
-  }
-  
-  span {
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    background-color: #171719;
-    left: 0;
-    transition: all 0.3s;
-  }
-  
-  span:nth-child(1) {
-    top: 5px;
-  }
-  
-  span:nth-child(2) {
-    top: 11px;
-  }
-  
-  span:nth-child(3) {
-    top: 17px;
-  }
-`;
-
-const MobileMenu = styled.div`
-  display: none;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    display: flex;
-    position: fixed;
-    top: 80px;
-    left: 0;
-    width: 100%;
-    background-color: #FFFFFF;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 999;
-    padding: 16px;
-    flex-direction: column;
-    gap: 16px;
-  }
-`;
-
-const MobileMenuItem = styled.div`
-  font-weight: 600;
-  font-size: 16px;
-  padding: 12px 0;
-  border-bottom: 1px solid rgba(112, 115, 124, 0.16);
-  color: #171719;
-  cursor: pointer;
-`;
-
-const MobileActions = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding-top: 12px;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default Header;
