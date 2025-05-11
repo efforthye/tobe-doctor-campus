@@ -65,9 +65,6 @@ const Login: React.FC = () => {
     if (!formValues.password) {
       errors.password = '비밀번호를 입력해주세요';
       isValid = false;
-    } else if (formValues.password.length < 6) {
-      errors.password = '비밀번호는 최소 6자리 이상이어야 합니다';
-      isValid = false;
     }
 
     setFormErrors(errors);
@@ -89,7 +86,10 @@ const Login: React.FC = () => {
   return (
     <Layout>
       <MainContainer>
-        <Title>로그인</Title>
+        <SloganSection>
+          <SloganText>젊은 의사의 학습 러닝메이트,</SloganText>
+          <SloganTitle>투비닥터 캠퍼스</SloganTitle>
+        </SloganSection>
         
         <FormContainer>
           {error && <ErrorMessage>{error}</ErrorMessage>}
@@ -125,9 +125,9 @@ const Login: React.FC = () => {
               {formErrors.password && <InputHelp error>{formErrors.password}</InputHelp>}
             </FormGroup>
             
-            {/* 로그인 상태 유지 및 비밀번호 찾기 */}
-            <OptionsRow>
-              <RememberMeWrapper>
+            {/* 로그인 상태 유지 체크박스 */}
+            <CheckboxRow>
+              <CheckboxWrapper>
                 <CheckboxInput
                   type="checkbox"
                   id="remember-me"
@@ -135,43 +135,23 @@ const Login: React.FC = () => {
                   onChange={handleRememberMeChange}
                 />
                 <CheckboxLabel htmlFor="remember-me">로그인 상태 유지</CheckboxLabel>
-              </RememberMeWrapper>
-              
-              <ForgotPasswordLink to="/forgot-password">
-                비밀번호를 잊으셨나요?
-              </ForgotPasswordLink>
-            </OptionsRow>
+              </CheckboxWrapper>
+            </CheckboxRow>
             
             {/* 로그인 버튼 */}
-            <ButtonWrapper>
-              <ActionButton 
-                type="submit" 
-                disabled={loading}
-              >
-                {loading ? '처리 중...' : '로그인'}
-              </ActionButton>
-            </ButtonWrapper>
+            <LoginButton 
+              type="submit" 
+              disabled={loading}
+            >
+              {loading ? '처리 중...' : '로그인'}
+            </LoginButton>
             
-            <SignupPrompt>
-              아직 계정이 없으신가요? <SignupLink to="/signup">회원가입</SignupLink>
-            </SignupPrompt>
+            {/* 링크 버튼들 */}
+            <LinkButtonsRow>
+              <LinkButton to="/forgot-password">비밀번호 찾기</LinkButton>
+              <LinkButton to="/signup">회원가입</LinkButton>
+            </LinkButtonsRow>
           </form>
-          
-          <DividerWrapper>
-            <Divider>또는</Divider>
-          </DividerWrapper>
-          
-          {/* 소셜 로그인 */}
-          <SocialButtonsWrapper>
-            <SocialButton type="button">
-              <SocialIcon>G</SocialIcon>
-              Google로 계속하기
-            </SocialButton>
-            <SocialButton type="button">
-              <SocialIcon>f</SocialIcon>
-              Facebook으로 계속하기
-            </SocialButton>
-          </SocialButtonsWrapper>
         </FormContainer>
       </MainContainer>
     </Layout>
@@ -183,35 +163,33 @@ const MainContainer = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 64px;
   max-width: 1440px;
   margin: 0 auto;
   padding: 128px 20px 160px;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding: 100px 16px 120px;
-  }
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    padding: 80px 16px 100px;
-  }
 `;
 
-const Title = styled.h1`
-  font-weight: 700;
+const SloganSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const SloganText = styled.p`
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.36;
+  letter-spacing: -2.36%;
+  color: #171719;
+`;
+
+const SloganTitle = styled.h1`
   font-size: 40px;
-  line-height: 1.3em;
-  margin-bottom: 64px;
-  text-align: center;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    font-size: 36px;
-    margin-bottom: 40px;
-  }
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    font-size: 32px;
-    margin-bottom: 32px;
-  }
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -2.82%;
+  color: #171719;
+  margin-top: 0;
 `;
 
 const FormContainer = styled.div`
@@ -219,7 +197,7 @@ const FormContainer = styled.div`
   max-width: 480px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 36px;
 `;
 
 const ErrorMessage = styled.div`
@@ -236,14 +214,14 @@ const FormGroup = styled.div`
   flex-direction: column;
   gap: 8px;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 `;
 
 const FormLabel = styled.label`
   font-weight: 600;
   font-size: 14px;
   line-height: 1.429em;
-  text-align: left;
+  color: rgba(46, 47, 51, 0.88);
 `;
 
 const InputContainer = styled.div`
@@ -278,20 +256,13 @@ const InputHelp = styled.p<{ error?: boolean }>`
   margin-top: 4px;
 `;
 
-const OptionsRow = styled.div`
+const CheckboxRow = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
+  gap: 8px;
+  margin-bottom: 36px;
 `;
 
-const RememberMeWrapper = styled.div`
+const CheckboxWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
@@ -307,30 +278,7 @@ const CheckboxLabel = styled.label`
   cursor: pointer;
 `;
 
-const ForgotPasswordLink = styled(Link)`
-  font-size: 14px;
-  color: #448181;
-  text-decoration: none;
-  
-  &:hover {
-    text-decoration: underline;
-  }
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    align-self: flex-start;
-  }
-`;
-
-const ButtonWrapper = styled.div`
-  margin-bottom: 16px;
-  width: 100%;
-`;
-
-const ActionButton = styled.button`
-  height: 52px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const LoginButton = styled.button`
   width: 100%;
   background-color: #448181;
   color: #FFFFFF;
@@ -339,8 +287,8 @@ const ActionButton = styled.button`
   font-weight: 600;
   font-size: 16px;
   cursor: pointer;
-  padding: 16px 28px;
-  transition: background-color 0.2s;
+  padding: 12px 28px;
+  margin-bottom: 36px;
   
   &:disabled {
     background-color: #F4F4F5;
@@ -349,77 +297,20 @@ const ActionButton = styled.button`
   }
 `;
 
-const SignupPrompt = styled.div`
-  text-align: center;
-  font-size: 14px;
-  color: rgba(55, 56, 60, 0.61);
-`;
-
-const SignupLink = styled(Link)`
-  color: #448181;
-  text-decoration: none;
-  font-weight: 600;
-  
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
-const DividerWrapper = styled.div`
-  margin: 24px 0;
-`;
-
-const Divider = styled.div`
-  display: flex;
-  align-items: center;
-  text-align: center;
-  color: rgba(55, 56, 60, 0.28);
-  font-size: 14px;
-  
-  &::before,
-  &::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid rgba(112, 115, 124, 0.22);
-  }
-  
-  &::before {
-    margin-right: 16px;
-  }
-  
-  &::after {
-    margin-left: 16px;
-  }
-`;
-
-const SocialButtonsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`;
-
-const SocialButton = styled.button`
+const LinkButtonsRow = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: 12px;
-  background-color: transparent;
-  border: 1px solid rgba(112, 115, 124, 0.16);
-  border-radius: 12px;
-  font-size: 16px;
-  color: rgba(46, 47, 51, 0.88);
-  cursor: pointer;
-  transition: all 0.2s;
-  
-  &:hover {
-    background-color: rgba(112, 115, 124, 0.05);
-  }
+  gap: 96px;
 `;
 
-const SocialIcon = styled.span`
-  margin-right: 8px;
-  font-weight: bold;
+const LinkButton = styled(Link)`
+  color: rgba(55, 56, 60, 0.61);
+  text-decoration: none;
+  font-size: 14px;
+  
+  &:hover {
+    color: #448181;
+  }
 `;
 
 export default Login;
