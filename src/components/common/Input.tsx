@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 export type InputSize = 'small' | 'medium' | 'large';
 export type InputVariant = 'default' | 'outlined' | 'filled';
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label?: string;
   size?: InputSize;
   variant?: InputVariant;

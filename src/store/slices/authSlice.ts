@@ -9,6 +9,7 @@ export interface AuthState {
     email: string;
     name: string;
     role: string;
+    createdAt?: string;
   } | null;
   token: string | null;
   loading: boolean;

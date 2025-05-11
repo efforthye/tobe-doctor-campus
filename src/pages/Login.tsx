@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { login, resetAuthError } from '../store/slices/authSlice';
@@ -8,6 +8,7 @@ import Layout from '../components/layout/Layout';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 import Card from '../components/common/Card';
+import { useAppDispatch } from '../hooks/useAppDispatch';
 
 interface LoginFormValues {
   email: string;
@@ -22,7 +23,7 @@ const Login: React.FC = () => {
   const [formErrors, setFormErrors] = useState<Partial<LoginFormValues>>({});
   const [rememberMe, setRememberMe] = useState(false);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { loading, error, isAuthenticated } = useSelector((state: RootState) => state.auth);
 

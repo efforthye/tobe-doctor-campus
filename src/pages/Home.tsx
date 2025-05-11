@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Layout from '../components/layout/Layout';
@@ -7,9 +7,10 @@ import Button from '../components/common/Button';
 import Card from '../components/common/Card';
 import { RootState } from '../store';
 import { fetchCourses } from '../store/slices/courseSlice';
+import { useAppDispatch } from '../hooks/useAppDispatch';
 
 const Home: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { courses, categories, loading } = useSelector((state: RootState) => state.course);
 
