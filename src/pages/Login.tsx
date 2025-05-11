@@ -81,7 +81,10 @@ const Login: React.FC = () => {
   return (
     <Layout>
       <MainContainer>
-        <Title>로그인</Title>
+        <SloganSection>
+          <SloganText>젊은 의사의 학습 러닝메이트,</SloganText>
+          <SloganTitle>투비닥터 캠퍼스</SloganTitle>
+        </SloganSection>
         
         <FormContainer>
           {error && <ErrorMessage>{error}</ErrorMessage>}
@@ -118,18 +121,18 @@ const Login: React.FC = () => {
             </FormGroup>
             
             {/* 로그인 버튼 */}
-            <ButtonWrapper>
-              <ActionButton 
-                type="submit" 
-                disabled={loading}
-              >
-                {loading ? '처리 중...' : '로그인'}
-              </ActionButton>
-            </ButtonWrapper>
+            <LoginButton 
+              type="submit" 
+              disabled={loading}
+            >
+              {loading ? '처리 중...' : '로그인'}
+            </LoginButton>
             
-            <SignupPrompt>
-              아직 계정이 없으신가요? <SignupLink to="/signup">회원가입</SignupLink>
-            </SignupPrompt>
+            {/* 링크 버튼들 */}
+            <LinkButtonsRow>
+              <LinkButton to="/forgot-password">비밀번호 찾기</LinkButton>
+              <LinkButton to="/signup">회원가입</LinkButton>
+            </LinkButtonsRow>
           </form>
         </FormContainer>
       </MainContainer>
@@ -142,35 +145,33 @@ const MainContainer = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 64px;
   max-width: 1440px;
   margin: 0 auto;
   padding: 128px 20px 160px;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding: 100px 16px 120px;
-  }
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    padding: 80px 16px 100px;
-  }
 `;
 
-const Title = styled.h1`
-  font-weight: 700;
+const SloganSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const SloganText = styled.p`
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.36;
+  letter-spacing: -2.36%;
+  color: #171719;
+`;
+
+const SloganTitle = styled.h1`
   font-size: 40px;
-  line-height: 1.3em;
-  margin-bottom: 64px;
-  text-align: center;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    font-size: 36px;
-    margin-bottom: 40px;
-  }
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    font-size: 32px;
-    margin-bottom: 32px;
-  }
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -2.82%;
+  color: #171719;
+  margin-top: 0;
 `;
 
 const FormContainer = styled.div`
@@ -178,7 +179,7 @@ const FormContainer = styled.div`
   max-width: 480px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 36px;
 `;
 
 const ErrorMessage = styled.div`
@@ -195,14 +196,14 @@ const FormGroup = styled.div`
   flex-direction: column;
   gap: 8px;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 `;
 
 const FormLabel = styled.label`
   font-weight: 600;
   font-size: 14px;
   line-height: 1.429em;
-  text-align: left;
+  color: rgba(46, 47, 51, 0.88);
 `;
 
 const InputContainer = styled.div`
@@ -237,16 +238,7 @@ const InputHelp = styled.p<{ error?: boolean }>`
   margin-top: 4px;
 `;
 
-const ButtonWrapper = styled.div`
-  margin-bottom: 16px;
-  width: 100%;
-`;
-
-const ActionButton = styled.button`
-  height: 52px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const LoginButton = styled.button`
   width: 100%;
   background-color: #448181;
   color: #FFFFFF;
@@ -255,8 +247,8 @@ const ActionButton = styled.button`
   font-weight: 600;
   font-size: 16px;
   cursor: pointer;
-  padding: 16px 28px;
-  transition: background-color 0.2s;
+  padding: 12px 28px;
+  margin-bottom: 36px;
   
   &:disabled {
     background-color: #F4F4F5;
@@ -265,19 +257,19 @@ const ActionButton = styled.button`
   }
 `;
 
-const SignupPrompt = styled.div`
-  text-align: center;
-  font-size: 14px;
-  color: rgba(55, 56, 60, 0.61);
+const LinkButtonsRow = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 96px;
 `;
 
-const SignupLink = styled(Link)`
-  color: #448181;
+const LinkButton = styled(Link)`
+  color: rgba(55, 56, 60, 0.61);
   text-decoration: none;
-  font-weight: 600;
+  font-size: 14px;
   
   &:hover {
-    text-decoration: underline;
+    color: #448181;
   }
 `;
 
