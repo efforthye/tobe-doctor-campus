@@ -142,16 +142,8 @@ const Container = styled.div`
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 36px 80px 160px;
+  padding: 36px 20px 160px;
   box-sizing: border-box;
-  
-  @media (max-width: 1024px) {
-    padding: 36px 40px 120px;
-  }
-  
-  @media (max-width: 768px) {
-    padding: 36px 20px 80px;
-  }
 `;
 
 const BannerSection = styled.section`
