@@ -22,8 +22,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "DANGEROUSLY_DISABLE_HOST_CHECK=true HOST=127.0.0.1 PORT=8080 BROWSER=none WDS_SOCKET_HOST=localhost react-scripts start",
-    "start-mac": "DANGEROUSLY_DISABLE_HOST_CHECK=true HOST=127.0.0.1 PORT=8080 BROWSER=none WDS_SOCKET_HOST=localhost react-scripts start",
+    "start": "DANGEROUSLY_DISABLE_HOST_CHECK=true HOST=127.0.0.1 PORT=3000 BROWSER=none WDS_SOCKET_HOST=localhost react-scripts start",
+    "start-mac": "DANGEROUSLY_DISABLE_HOST_CHECK=true HOST=127.0.0.1 PORT=3000 BROWSER=none WDS_SOCKET_HOST=localhost react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
