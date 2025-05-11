@@ -24,7 +24,7 @@
   "scripts": {
     "start": "DANGEROUSLY_DISABLE_HOST_CHECK=true HOST=127.0.0.1 PORT=4000 BROWSER=none WDS_SOCKET_HOST=localhost react-scripts start",
     "start-mac": "DANGEROUSLY_DISABLE_HOST_CHECK=true HOST=127.0.0.1 PORT=4000 BROWSER=none WDS_SOCKET_HOST=localhost react-scripts start",
-    "build": "react-scripts build",
+    "build": "CI=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
