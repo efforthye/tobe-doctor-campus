@@ -243,19 +243,19 @@ const CardList = styled.div`
 
 const Card = styled.div`
   flex: 0 0 auto;
-  width: 144px;
+  width: 190px; /* 144px에서 190px로 증가 */
   border-radius: 8px;
   overflow: hidden;
   background-color: #F5F5F5;
 `;
 
 const CardThumbnail = styled.div`
-  height: 144px;
+  height: 190px; /* 144px에서 190px로 증가 */
   background-color: #DDD;
 `;
 
 const CardContent = styled.div`
-  padding: 12px;
+  padding: 16px;
   text-align: center;
 `;
 
