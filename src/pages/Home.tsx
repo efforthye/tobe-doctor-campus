@@ -21,7 +21,7 @@ const Home: React.FC = () => {
           <SectionHeader>
             <div>
               <SectionTitle>EXPLORE THE CAMPUS</SectionTitle>
-              <SectionSubtitle>콘텐츠 카테고리를 확인하고 여러분의 배움터로!</SectionSubtitle>
+              <SectionSubtitle>클래스 카테고리별 페이지로 이동하는 버튼입니다</SectionSubtitle>
             </div>
             <SectionArrow>→</SectionArrow>
           </SectionHeader>
@@ -70,7 +70,7 @@ const Home: React.FC = () => {
           <SectionHeader>
             <div>
               <SectionTitle>VISIT THE CLASSROOM</SectionTitle>
-              <SectionSubtitle>콘텐츠 강의를 확인하고 여러분의 배움터로!</SectionSubtitle>
+              <SectionSubtitle>클래스 강의별 페이지로 이동하는 버튼입니다</SectionSubtitle>
             </div>
             <SectionArrow>→</SectionArrow>
           </SectionHeader>
@@ -96,7 +96,7 @@ const Home: React.FC = () => {
           <SectionHeader>
             <div>
               <SectionTitle>CONNECT TO THE WORLD</SectionTitle>
-              <SectionSubtitle>지역별 강사를 확인하고 여러분의 배움터로!</SectionSubtitle>
+              <SectionSubtitle>커피챗 연자별 페이지로 이동하는 버튼입니다</SectionSubtitle>
             </div>
             <SectionArrow>→</SectionArrow>
           </SectionHeader>

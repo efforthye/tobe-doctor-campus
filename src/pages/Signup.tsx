@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { register, resetAuthError } from '../store/slices/authSlice';
 import { RootState } from '../store';
 import Layout from '../components/layout/Layout';
-import Button from '../components/common/Button';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 
 interface SignupFormValues {
