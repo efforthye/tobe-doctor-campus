@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
         <MainSection>
           <LogoSection>
             <Logo>
-              <img src="/logo.png" alt="THE DOCTOR CAMPUS" />
+              <img src="/logo.svg" alt="THE DOCTOR CAMPUS" />
             </Logo>
             <CompanyInfo>
               <p>

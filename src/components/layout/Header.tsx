@@ -31,7 +31,7 @@ const Header: React.FC = () => {
       <HeaderContent>
         <LeftSection>
           <Logo onClick={() => navigate('/')}>
-            <img src="/logo.png" alt="THE DOCTOR CAMPUS" />
+            <img src="/logo.svg" alt="THE DOCTOR CAMPUS" />
           </Logo>
           <Navigation>
             <NavItem active={isActive('/classes')}>
