@@ -93,30 +93,28 @@ const Login: React.FC = () => {
             {/* 이메일 입력 */}
             <FormGroup>
               <FormLabel>이메일</FormLabel>
-              <InputContainer className={formErrors.email ? 'error' : ''}>
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="이메일을 입력해주세요."
-                  value={formValues.email}
-                  onChange={handleChange}
-                />
-              </InputContainer>
+              <EmailInput
+                type="email"
+                name="email"
+                placeholder="이메일을 입력해주세요."
+                value={formValues.email}
+                onChange={handleChange}
+                className={formErrors.email ? 'error' : ''}
+              />
               {formErrors.email && <InputHelp error>{formErrors.email}</InputHelp>}
             </FormGroup>
             
             {/* 비밀번호 입력 */}
             <FormGroup>
               <FormLabel>비밀번호</FormLabel>
-              <InputContainer className={formErrors.password ? 'error' : ''}>
-                <Input
-                  type="password"
-                  name="password"
-                  placeholder="비밀번호를 입력해주세요."
-                  value={formValues.password}
-                  onChange={handleChange}
-                />
-              </InputContainer>
+              <EmailInput
+                type="password"
+                name="password"
+                placeholder="비밀번호를 입력해주세요."
+                value={formValues.password}
+                onChange={handleChange}
+                className={formErrors.password ? 'error' : ''}
+              />
               {formErrors.password && <InputHelp error>{formErrors.password}</InputHelp>}
             </FormGroup>
             
@@ -206,28 +204,23 @@ const FormLabel = styled.label`
   color: rgba(46, 47, 51, 0.88);
 `;
 
-const InputContainer = styled.div`
-  display: flex;
-  border: 1px solid rgba(112, 115, 124, 0.16);
-  border-radius: 12px;
-  padding: 12px;
-  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.03);
-  
-  &.error {
-    border-color: #ff5252;
-  }
-`;
-
-const Input = styled.input`
+// 이메일과 비밀번호 입력 컴포넌트를 동일한 스타일로 변경
+const EmailInput = styled.input`
   width: 100%;
-  border: none;
-  outline: none;
+  padding: 12px;
+  border: 1px solid rgba(112, 115, 124, 0.16);
+  border-radius: 8px;
   font-size: 16px;
   line-height: 1.5em;
-  color: rgba(46, 47, 51, 0.88);
+  outline: none;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.03);
   
   &::placeholder {
     color: rgba(55, 56, 60, 0.28);
+  }
+  
+  &.error {
+    border-color: #ff5252;
   }
 `;
 

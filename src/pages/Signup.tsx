@@ -210,25 +210,24 @@ const Signup: React.FC = () => {
             {/* 이메일 입력 */}
             <FormGroup>
               <FormLabel>이메일</FormLabel>
-              <InputWrapper>
-                <InputContainer className={emailVerified ? 'verified' : (formErrors.email ? 'error' : '')}>
-                  <Input
-                    type="email"
-                    name="email"
-                    placeholder="이메일을 입력해주세요."
-                    value={formValues.email}
-                    onChange={handleChange}
-                    disabled={emailVerified}
-                  />
-                </InputContainer>
-                <InputButton 
+              <EmailInputGroup>
+                <EmailInput
+                  type="email"
+                  name="email"
+                  placeholder="이메일을 입력해주세요."
+                  value={formValues.email}
+                  onChange={handleChange}
+                  disabled={emailVerified}
+                  className={emailVerified ? 'verified' : (formErrors.email ? 'error' : '')}
+                />
+                <EmailButton 
                   type="button" 
                   onClick={verifyEmail}
                   disabled={emailVerified}
                 >
                   {emailVerified ? '확인 완료' : '중복 확인'}
-                </InputButton>
-              </InputWrapper>
+                </EmailButton>
+              </EmailInputGroup>
               {formErrors.email && <InputHelp error>{formErrors.email}</InputHelp>}
             </FormGroup>
             
@@ -296,22 +295,22 @@ const Signup: React.FC = () => {
             {/* 회원 자격 확인 */}
             <FormGroup>
               <FormLabel>회원 자격 확인</FormLabel>
-              <SegmentedControl>
-                <SegmentButton
+              <ToggleGroup>
+                <ToggleButton
                   type="button"
                   className={userType === UserType.STUDENT ? 'active' : ''}
                   onClick={() => handleChangeUserType(UserType.STUDENT)}
                 >
                   의대생
-                </SegmentButton>
-                <SegmentButton
+                </ToggleButton>
+                <ToggleButton
                   type="button"
                   className={userType === UserType.DOCTOR ? 'active' : ''}
                   onClick={() => handleChangeUserType(UserType.DOCTOR)}
                 >
                   의사
-                </SegmentButton>
-              </SegmentedControl>
+                </ToggleButton>
+              </ToggleGroup>
               
               {userType === UserType.STUDENT ? (
                 <div>
@@ -524,6 +523,74 @@ const SectionDescription = styled.p`
   text-align: left;
 `;
 
+// 이메일 입력 영역 스타일 (이미지 1번에 맞게 수정)
+const EmailInputGroup = styled.div`
+  display: flex;
+  width: 100%;
+  
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    flex-direction: column;
+  }
+`;
+
+const EmailInput = styled.input`
+  flex: 1;
+  padding: 12px;
+  border: 1px solid rgba(112, 115, 124, 0.16);
+  border-radius: 8px 0 0 8px;
+  font-size: 16px;
+  line-height: 1.5em;
+  outline: none;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.03);
+  
+  &::placeholder {
+    color: rgba(55, 56, 60, 0.28);
+  }
+  
+  &:disabled {
+    background-color: transparent;
+  }
+  
+  &.verified {
+    border-color: #448181;
+    background-color: rgba(68, 129, 129, 0.05);
+  }
+  
+  &.error {
+    border-color: #ff5252;
+  }
+  
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+`;
+
+const EmailButton = styled.button`
+  padding: 12px 16px;
+  border: 1px solid rgba(112, 115, 124, 0.16);
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  background-color: #F4F4F5;
+  font-weight: 600;
+  font-size: 16px;
+  color: rgba(55, 56, 60, 0.61);
+  cursor: pointer;
+  white-space: nowrap;
+  
+  &:disabled {
+    background-color: #F4F4F5;
+    color: rgba(55, 56, 60, 0.28);
+    cursor: not-allowed;
+  }
+  
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    width: 100%;
+    border-radius: 8px;
+    border-left: 1px solid rgba(112, 115, 124, 0.16);
+  }
+`;
+
 const InputWrapper = styled.div`
   display: flex;
   width: 100%;
@@ -635,40 +702,46 @@ const ActionButton = styled.button`
   }
 `;
 
-const SegmentedControl = styled.div`
-  width: 100%;
+// 회원 자격 확인 토글 스타일 (이미지 2번에 맞게 수정)
+const ToggleGroup = styled.div`
   display: flex;
-  border: 1px solid rgba(112, 115, 124, 0.22);
-  border-radius: 12px;
-  overflow: hidden;
+  width: 100%;
+  font-family: 'Pretendard JP', sans-serif;
   margin-bottom: 16px;
   position: relative;
 `;
 
-const SegmentButton = styled.button`
+const ToggleButton = styled.button`
   flex: 1;
+  padding: 10px 0;
   text-align: center;
-  padding: 12px 9px;
-  font-size: 17px;
+  cursor: pointer;
+  background-color: white;
+  border: 1px solid #ccc;
+  font-size: 15px;
   font-weight: 500;
   color: rgba(55, 56, 60, 0.61);
-  cursor: pointer;
   position: relative;
-  border: none;
-  background: transparent;
-  transition: all 0.3s;
+  z-index: 1;
+  
+  &:first-child {
+    border-radius: 8px 0 0 8px;
+  }
+  
+  &:last-child {
+    border-radius: 0 8px 8px 0;
+    margin-left: -1px; /* 가운데 선 겹치기 */
+  }
   
   &.active {
+    border-color: #448181;
     color: #448181;
     background-color: rgba(68, 129, 129, 0.05);
-    border: 1px solid #448181;
-    border-radius: 12px;
-    opacity: 0.43;
+    z-index: 2; /* 활성화된 버튼이 더 위에 표시되도록 */
   }
   
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    font-size: 15px;
-    padding: 10px 4px;
+    font-size: 14px;
   }
 `;
 
