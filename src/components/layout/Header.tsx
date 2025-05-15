@@ -469,9 +469,9 @@ const NavItem = styled.div<{ active: boolean }>`
 
 const NavLink = styled(Link)<{ $isActive?: boolean; $hasActiveDropdown?: boolean }>`
   /* 기본 상태에서는 검정색 */
+  /* 호버 효과를 즉시 반영하도록 transition 제거 */
   color: var(--Label-Normal, #171719);
   text-decoration: none;
-  transition: color 0.3s ease;
   font-weight: 600;
   font-family: 'Pretendard JP', sans-serif;
   font-size: 15px;
@@ -503,7 +503,7 @@ const DropdownMenu = styled.div`
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.03);
   padding: 19px 20px; /* 피그마 디자인에 맞게 조정 */
   z-index: 10;
-  margin-top: 0;
+  margin-top: 4px; /* 드롭다운을 삼숙 더 아래로 이동 */
   outline: 1px rgba(112, 115, 124, 0.08) solid;
   outline-offset: -1px;
   overflow: hidden;
@@ -570,7 +570,7 @@ const DropdownLink = styled(Link)<{ isHovered?: boolean; hasHoveredItem?: boolea
   line-height: 22.01px;
   letter-spacing: 0.14px;
   display: block;
-  transition: color 0.3s ease;
+  /* 호버 효과를 즉시 반영하도록 transition 제거 */
   word-wrap: break-word;
   
   /* "전체 보기" 항목은 녹색 */
