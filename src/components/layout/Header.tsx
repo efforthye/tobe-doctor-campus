@@ -67,7 +67,7 @@ const Header: React.FC = () => {
               active={isActive('/classes')}
               onMouseEnter={() => handleMouseEnter('classes')}
             >
-              <NavLink to="/classes">CLASS</NavLink>
+              <NavLink to="/classes" $isActive={activeDropdown === 'classes'}>CLASS</NavLink>
               {activeDropdown === 'classes' && (
                 <DropdownMenu>
                   <DropdownItem 
@@ -149,7 +149,7 @@ const Header: React.FC = () => {
               active={isActive('/coffee-chat')}
               onMouseEnter={() => handleMouseEnter('coffee-chat')}
             >
-              <NavLink to="/coffee-chat">COFFEE CHAT</NavLink>
+              <NavLink to="/coffee-chat" $isActive={activeDropdown === 'coffee-chat'}>COFFEE CHAT</NavLink>
               {activeDropdown === 'coffee-chat' && (
                 <DropdownMenu>
                   <DropdownItem 
@@ -201,7 +201,7 @@ const Header: React.FC = () => {
               active={isActive('/archive')}
               onMouseEnter={() => handleMouseEnter('archive')}
             >
-              <NavLink to="/archive">ARCHIVE</NavLink>
+              <NavLink to="/archive" $isActive={activeDropdown === 'archive'}>ARCHIVE</NavLink>
               {activeDropdown === 'archive' && (
                 <DropdownMenu>
                   <DropdownItem 
@@ -253,7 +253,7 @@ const Header: React.FC = () => {
               active={isActive('/community')}
               onMouseEnter={() => handleMouseEnter('community')}
             >
-              <NavLink to="/community">COMMUNITY</NavLink>
+              <NavLink to="/community" $isActive={activeDropdown === 'community'}>COMMUNITY</NavLink>
               {activeDropdown === 'community' && (
                 <DropdownMenu>
                   <DropdownItem 
@@ -462,8 +462,8 @@ const NavItem = styled.div<{ active: boolean }>`
   }
 `;
 
-const NavLink = styled(Link)`
-  color: ${({ theme }) => theme.colors.text};
+const NavLink = styled(Link)<{ $isActive?: boolean }>`
+  color: ${({ $isActive, theme }) => $isActive ? '#171719' : 'rgba(55, 56, 60, 0.60)'};
   text-decoration: none;
   transition: color 0.3s ease;
   font-weight: 500;
@@ -472,15 +472,15 @@ const NavLink = styled(Link)`
   
   /* 피그마 디자인에 따라 호버 시 밑줄 효과 제거 */
   &:hover {
-    color: ${({ theme }) => theme.colors.text};
+    color: #171719;
   }
 `;
 
 const DropdownMenu = styled.div`
   position: absolute;
   top: 100%;
-  left: 35%; /* 이미지 기반으로 조정 */
-  transform: translateX(-50%); /* 텍스트 중앙 아래로 정렬 */
+  left: 0;
+  transform: translateX(0); /* 텍스트 아래로 정렬 */
   background-color: white;
   min-width: 180px;
   border-radius: 18px;
