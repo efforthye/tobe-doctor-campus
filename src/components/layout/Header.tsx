@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { useSelector } from 'react-redux';
@@ -12,6 +12,9 @@ const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  
+  // 마우스 떠날 때 딜레이 추가를 위한 참조
+  const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // 스크롤 이벤트 감지
   useEffect(() => {
@@ -33,15 +36,28 @@ const Header: React.FC = () => {
 
   // 호버한 메뉴 아이템에 따라 다른 메뉴를 비활성화하고 해당 메뉴만 활성화하는 로직
   const handleMouseEnter = (menu: string) => {
+    // 이전 타이머가 있으면 취소
+    if (dropdownTimeoutRef.current) {
+      clearTimeout(dropdownTimeoutRef.current);
+      dropdownTimeoutRef.current = null;
+    }
     setActiveDropdown(menu);
   };
 
   const handleMouseLeave = () => {
-    setActiveDropdown(null);
-    setHoveredItem(null);
+    // 마우스가 떠나도 바로 사라지지 않고 지연 후 사라짐
+    dropdownTimeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null);
+      setHoveredItem(null);
+    }, 150); // 150ms 딜레이
   };
 
   const handleItemMouseEnter = (item: string) => {
+    // 이전 타이머가 있으면 취소
+    if (dropdownTimeoutRef.current) {
+      clearTimeout(dropdownTimeoutRef.current);
+      dropdownTimeoutRef.current = null;
+    }
     setHoveredItem(item);
   };
 
@@ -497,7 +513,7 @@ const DropdownMenu = styled.div`
   position: absolute;
   top: 100%;
   left: 0; /* 텍스트 앞에 정렬 */
-  transform: translateX(-40px); /* 너비가 넘어져서 더 왼쪽으로 이동 */
+  transform: translateX(-30px); /* 너비가 넘어져서 왼쪽으로 이동, 정확한 값으로 조정 */
   width: 304px; /* 피그마 디자인 스펙에 맞게 수정 */
   background: var(--Background-Elevated-Normal, white);
   border-radius: 18px;
@@ -520,6 +536,11 @@ const DropdownMenu = styled.div`
     left: 0;
     width: 100%;
     height: 4px; /* 피그마 디자인에 맞게 조정 */
+  };
+  
+  /* 드롭다운에 마우스 진입 시 타이머 취소를 위한 건 */
+  &:hover {
+    pointer-events: auto;
   }
   
   @media (max-width: 768px) {
