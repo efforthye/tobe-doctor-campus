@@ -49,7 +49,7 @@ const Header: React.FC = () => {
     dropdownTimeoutRef.current = setTimeout(() => {
       setActiveDropdown(null);
       setHoveredItem(null);
-    }, 150); // 150ms 딜레이
+    }, 100); // 100ms 딜레이
   };
 
   const handleItemMouseEnter = (item: string) => {
