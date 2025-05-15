@@ -139,6 +139,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/classes"
                       isHovered={hoveredItem === 'classes-all'}
+                      isSpecial
                     >클래스 전체 보기</DropdownLink>
                   </DropdownItem>
                 </DropdownMenu>
@@ -151,18 +152,47 @@ const Header: React.FC = () => {
               <NavLink to="/coffee-chat">COFFEE CHAT</NavLink>
               {activeDropdown === 'coffee-chat' && (
                 <DropdownMenu>
-                  <DropdownItem>
-                    <DropdownLink to="/coffee-chat/all">메뉴 하나</DropdownLink>
+                  <DropdownItem 
+                    isHovered={hoveredItem === 'coffee-1'}
+                    onMouseEnter={() => handleItemMouseEnter('coffee-1')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/coffee-chat/all"
+                      isHovered={hoveredItem === 'coffee-1'}
+                    >메뉴 하나</DropdownLink>
                   </DropdownItem>
-                  <DropdownItem>
-                    <DropdownLink to="/coffee-chat/new">메뉴 둘</DropdownLink>
+                  <DropdownItem 
+                    isHovered={hoveredItem === 'coffee-2'}
+                    onMouseEnter={() => handleItemMouseEnter('coffee-2')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/coffee-chat/new"
+                      isHovered={hoveredItem === 'coffee-2'}
+                    >메뉴 둘</DropdownLink>
                   </DropdownItem>
-                  <DropdownItem>
-                    <DropdownLink to="/coffee-chat/popular">메뉴 셋</DropdownLink>
+                  <DropdownItem 
+                    isHovered={hoveredItem === 'coffee-3'}
+                    onMouseEnter={() => handleItemMouseEnter('coffee-3')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/coffee-chat/popular"
+                      isHovered={hoveredItem === 'coffee-3'}
+                    >메뉴 셋</DropdownLink>
                   </DropdownItem>
                   <DropdownSeparator />
-                  <DropdownItem>
-                    <DropdownLink to="/coffee-chat">전체 보기</DropdownLink>
+                  <DropdownItem 
+                    isHovered={hoveredItem === 'coffee-all'}
+                    onMouseEnter={() => handleItemMouseEnter('coffee-all')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/coffee-chat"
+                      isHovered={hoveredItem === 'coffee-all'}
+                      isSpecial
+                    >커피챗 전체 보기</DropdownLink>
                   </DropdownItem>
                 </DropdownMenu>
               )}
@@ -174,18 +204,47 @@ const Header: React.FC = () => {
               <NavLink to="/archive">ARCHIVE</NavLink>
               {activeDropdown === 'archive' && (
                 <DropdownMenu>
-                  <DropdownItem>
-                    <DropdownLink to="/archive/articles">메뉴 하나</DropdownLink>
+                  <DropdownItem 
+                    isHovered={hoveredItem === 'archive-1'}
+                    onMouseEnter={() => handleItemMouseEnter('archive-1')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/archive/articles"
+                      isHovered={hoveredItem === 'archive-1'}
+                    >메뉴 하나</DropdownLink>
                   </DropdownItem>
-                  <DropdownItem>
-                    <DropdownLink to="/archive/videos">메뉴 둘</DropdownLink>
+                  <DropdownItem 
+                    isHovered={hoveredItem === 'archive-2'}
+                    onMouseEnter={() => handleItemMouseEnter('archive-2')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/archive/videos"
+                      isHovered={hoveredItem === 'archive-2'}
+                    >메뉴 둘</DropdownLink>
                   </DropdownItem>
-                  <DropdownItem>
-                    <DropdownLink to="/archive/podcasts">메뉴 셋</DropdownLink>
+                  <DropdownItem 
+                    isHovered={hoveredItem === 'archive-3'}
+                    onMouseEnter={() => handleItemMouseEnter('archive-3')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/archive/podcasts"
+                      isHovered={hoveredItem === 'archive-3'}
+                    >메뉴 셋</DropdownLink>
                   </DropdownItem>
                   <DropdownSeparator />
-                  <DropdownItem>
-                    <DropdownLink to="/archive">전체 보기</DropdownLink>
+                  <DropdownItem 
+                    isHovered={hoveredItem === 'archive-all'}
+                    onMouseEnter={() => handleItemMouseEnter('archive-all')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/archive"
+                      isHovered={hoveredItem === 'archive-all'}
+                      isSpecial
+                    >아카이브 전체 보기</DropdownLink>
                   </DropdownItem>
                 </DropdownMenu>
               )}
@@ -197,18 +256,47 @@ const Header: React.FC = () => {
               <NavLink to="/community">COMMUNITY</NavLink>
               {activeDropdown === 'community' && (
                 <DropdownMenu>
-                  <DropdownItem>
-                    <DropdownLink to="/community/events">메뉴 하나</DropdownLink>
+                  <DropdownItem 
+                    isHovered={hoveredItem === 'community-1'}
+                    onMouseEnter={() => handleItemMouseEnter('community-1')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/community/events"
+                      isHovered={hoveredItem === 'community-1'}
+                    >메뉴 하나</DropdownLink>
                   </DropdownItem>
-                  <DropdownItem>
-                    <DropdownLink to="/community/mentoring">메뉴 둘</DropdownLink>
+                  <DropdownItem 
+                    isHovered={hoveredItem === 'community-2'}
+                    onMouseEnter={() => handleItemMouseEnter('community-2')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/community/mentoring"
+                      isHovered={hoveredItem === 'community-2'}
+                    >메뉴 둘</DropdownLink>
                   </DropdownItem>
-                  <DropdownItem>
-                    <DropdownLink to="/community/forum">메뉴 셋</DropdownLink>
+                  <DropdownItem 
+                    isHovered={hoveredItem === 'community-3'}
+                    onMouseEnter={() => handleItemMouseEnter('community-3')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/community/forum"
+                      isHovered={hoveredItem === 'community-3'}
+                    >메뉴 셋</DropdownLink>
                   </DropdownItem>
                   <DropdownSeparator />
-                  <DropdownItem>
-                    <DropdownLink to="/community">전체 보기</DropdownLink>
+                  <DropdownItem 
+                    isHovered={hoveredItem === 'community-all'}
+                    onMouseEnter={() => handleItemMouseEnter('community-all')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/community"
+                      isHovered={hoveredItem === 'community-all'}
+                      isSpecial
+                    >커뮤니티 전체 보기</DropdownLink>
                   </DropdownItem>
                 </DropdownMenu>
               )}
@@ -434,8 +522,12 @@ const DropdownSeparator = styled.div`
   margin: 8px 0;
 `;
 
-const DropdownLink = styled(Link)<{ isHovered?: boolean }>`
-  color: ${({ isHovered, theme }) => isHovered ? 'rgba(55, 56, 60, 0.28)' : theme.colors.text};
+const DropdownLink = styled(Link)<{ isHovered?: boolean; isSpecial?: boolean }>`
+  color: ${({ isHovered, isSpecial, theme }) => 
+    isHovered ? 'rgba(55, 56, 60, 0.28)' : 
+    isSpecial ? '#296768' : 
+    theme.colors.text
+  };
   text-decoration: none;
   font-size: 14px;
   display: block;
