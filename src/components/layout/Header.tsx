@@ -497,7 +497,7 @@ const DropdownMenu = styled.div`
   position: absolute;
   top: 100%;
   left: 0; /* 텍스트 앞에 정렬 */
-  transform: translateX(-20px); /* 드롭다운 메뉴를 왼쪽으로 이동하여 텍스트 시작점에 맞춰서 정렬 */
+  transform: translateX(-40px); /* 너비가 넘어져서 더 왼쪽으로 이동 */
   width: 304px; /* 피그마 디자인 스펙에 맞게 수정 */
   background: var(--Background-Elevated-Normal, white);
   border-radius: 18px;
