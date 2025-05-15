@@ -469,9 +469,10 @@ const NavItem = styled.div<{ active: boolean }>`
 
 const NavLink = styled(Link)<{ $isActive?: boolean; $hasActiveDropdown?: boolean }>`
   /* 기본 상태에서는 검정색 */
-  /* 호버 효과를 즉시 반영하도록 transition 제거 */
+  /* 호버 효과를 빠르게 반영하도록 transition 값 조정 */
   color: var(--Label-Normal, #171719);
   text-decoration: none;
+  transition: color 0.1s ease;
   font-weight: 600;
   font-family: 'Pretendard JP', sans-serif;
   font-size: 15px;
@@ -570,7 +571,8 @@ const DropdownLink = styled(Link)<{ isHovered?: boolean; hasHoveredItem?: boolea
   line-height: 22.01px;
   letter-spacing: 0.14px;
   display: block;
-  /* 호버 효과를 즉시 반영하도록 transition 제거 */
+  /* 호버 효과를 빠르게 반영하도록 transition 값 조정 */
+  transition: color 0.1s ease;
   word-wrap: break-word;
   
   /* "전체 보기" 항목은 녹색 */
