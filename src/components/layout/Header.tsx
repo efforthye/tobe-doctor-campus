@@ -528,9 +528,9 @@ const DropdownSeparator = styled.div`
 
 const DropdownLink = styled(Link)<{ isHovered?: boolean; isSpecial?: boolean }>`
   color: ${({ isHovered, isSpecial, theme }) => 
-    isHovered ? 'rgba(55, 56, 60, 0.28)' : 
     isSpecial ? '#296768' : 
-    '#171719'
+    isHovered ? '#171719' : 
+    'rgba(55, 56, 60, 0.60)'
   };
   text-decoration: none;
   font-size: 14px;
