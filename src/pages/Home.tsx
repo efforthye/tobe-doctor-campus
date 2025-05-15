@@ -140,9 +140,7 @@ const Home: React.FC = () => {
 // 스타일 컴포넌트
 const Container = styled.div`
   width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 36px 20px 160px;
+  padding: 36px 0 160px;
   box-sizing: border-box;
 `;
 
@@ -150,17 +148,21 @@ const BannerSection = styled.section`
   position: relative;
   width: 100%;
   height: auto;
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
-  margin-bottom: 64px;
+  margin-bottom: 80px;
 `;
 
 const BannerImage = styled.img`
   width: 100%;
   height: auto;
   object-fit: cover;
-  aspect-ratio: 16 / 6;
+  aspect-ratio: 16 / 5;
   display: block;
+  
+  @media (max-width: 768px) {
+    aspect-ratio: 16 / 9;
+  }
 `;
 
 const BannerGradient = styled.div`
@@ -174,24 +176,47 @@ const BannerGradient = styled.div`
 
 const BannerContent = styled.div`
   position: absolute;
-  bottom: 32px;
-  left: 32px;
+  bottom: 60px;
+  left: 60px;
   color: white;
+  
+  @media (max-width: 768px) {
+    bottom: 30px;
+    left: 30px;
+  }
 `;
 
 const BannerSubtitle = styled.p`
-  font-size: 14px;
-  margin-bottom: 4px;
+  font-size: 18px;
+  margin-bottom: 8px;
+  
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 const BannerTitle = styled.h1`
-  font-size: 24px;
+  font-size: 40px;
   font-weight: 700;
   margin: 0;
+  
+  @media (max-width: 768px) {
+    font-size: 28px;
+  }
 `;
 
 const Section = styled.section`
-  margin-bottom: 64px;
+  margin-bottom: 80px;
+  padding: 0 80px;
+  
+  @media (max-width: 1024px) {
+    padding: 0 40px;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 0 20px;
+    margin-bottom: 60px;
+  }
 `;
 
 const SectionHeader = styled.div`
@@ -202,17 +227,25 @@ const SectionHeader = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
-  margin: 0 0 8px 0;
+  margin: 0 0 10px 0;
   line-height: 1.35;
+  
+  @media (max-width: 768px) {
+    font-size: 28px;
+  }
 `;
 
 const SectionSubtitle = styled.p`
-  font-size: 20px;
+  font-size: 18px;
   color: rgba(0, 0, 0, 0.6);
   margin: 0;
   line-height: 1.4;
+  
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 const SectionArrow = styled.button`
@@ -229,10 +262,10 @@ const SectionArrow = styled.button`
 
 const CardContainer = styled.div`
   display: flex;
-  gap: 20px;
+  gap: 24px;
   width: 100%;
   overflow-x: auto;
-  padding-bottom: 8px;
+  padding-bottom: 12px;
   
   /* 스크롤바 숨기기 */
   -ms-overflow-style: none; /* IE and Edge */
@@ -247,23 +280,30 @@ const CardContainer = styled.div`
 `;
 
 const baseCardStyles = `
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
   background-color: #F5F5F5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 // EXPLORE THE CAMPUS 카드 스타일 (5개의 카드)
 const ExploreCard = styled.div`
   ${baseCardStyles}
   flex: 0 0 auto;
-  width: calc((100% - 80px) / 5); /* 5개 카드, 4개의 간격(20px * 4) */
+  width: calc((100% - 96px) / 5); /* 5개 카드, 4개의 간격(24px * 4) */
   
   @media (max-width: 1024px) {
-    width: calc((100% - 40px) / 3);
+    width: calc((100% - 48px) / 3);
   }
   
   @media (max-width: 768px) {
-    width: calc((100% - 20px) / 2);
+    width: calc((100% - 24px) / 2);
   }
 `;
 
@@ -271,66 +311,115 @@ const ExploreCard = styled.div`
 const ConnectCard = styled.div`
   ${baseCardStyles}
   flex: 0 0 auto;
-  width: calc((100% - 60px) / 4); /* 4개 카드, 3개의 간격(20px * 3) */
+  width: calc((100% - 72px) / 4); /* 4개 카드, 3개의 간격(24px * 3) */
   
   @media (max-width: 1024px) {
-    width: calc((100% - 40px) / 3);
+    width: calc((100% - 48px) / 3);
   }
   
   @media (max-width: 768px) {
-    width: calc((100% - 20px) / 2);
+    width: calc((100% - 24px) / 2);
   }
 `;
 
 const CardThumbnail = styled.div`
-  height: 190px;
-  background-color: #DDD;
+  height: 210px;
+  background-color: #E5E5E5;
+  transition: filter 0.3s ease;
+  
+  ${ExploreCard}:hover &, ${ConnectCard}:hover & {
+    filter: brightness(1.05);
+  }
 `;
 
 const CardContent = styled.div`
-  padding: 16px;
+  padding: 20px;
   text-align: center;
 `;
 
 const CardTitle = styled.h3`
-  font-size: 14px;
-  font-weight: 500;
-  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 const CardDescription = styled.p`
-  font-size: 12px;
-  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+  color: rgba(55, 56, 60, 0.61);
   margin: 0;
+  line-height: 1.5;
 `;
 
 const ClassroomList = styled.div`
   display: flex;
-  gap: 20px;
+  gap: 24px;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const ClassroomCard = styled.div`
   flex: 1;
-  height: 160px;
-  background-color: #4A6E6E;
-  border-radius: 8px;
-  padding: 16px;
+  height: 180px;
+  background-color: ${({ theme }) => theme.colors.primary};
+  border-radius: 12px;
+  padding: 24px;
   color: white;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
+    z-index: 1;
+  }
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  @media (max-width: 768px) {
+    height: 160px;
+  }
 `;
 
 const ClassroomTitle = styled.h3`
-  font-size: 16px;
-  font-weight: 500;
-  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  position: relative;
+  z-index: 2;
+  
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 const ClassroomDescription = styled.p`
-  font-size: 12px;
-  opacity: 0.8;
+  font-size: 14px;
+  opacity: 0.9;
   margin: 0;
+  position: relative;
+  z-index: 2;
+  line-height: 1.5;
+  
+  @media (max-width: 768px) {
+    font-size: 13px;
+  }
 `;
 
 export default Home;
