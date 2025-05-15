@@ -11,24 +11,10 @@ import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
 import './styles/global.css';
 
-// 새로운 페이지 구조
 // 클래스 라우트
 import ClassIndex from './pages/class/ClassIndex';
-import ClassCategory from './pages/class/ClassCategory';
 import ClassDetail from './pages/class/ClassDetail';
 import ClassRoom from './pages/class/ClassRoom';
-
-// 아카이브 라우트
-import ArchiveIndex from './pages/archive/ArchiveIndex';
-import ArchiveCategory from './pages/archive/ArchiveCategory';
-import ArchiveDetail from './pages/archive/ArchiveDetail';
-
-// 커넥트 라우트
-import ConnectIndex from './pages/connect/ConnectIndex';
-import ConnectEvents from './pages/connect/ConnectEvents';
-import ConnectMentoring from './pages/connect/ConnectMentoring';
-import ConnectCommunity from './pages/connect/ConnectCommunity';
-import ConnectDetail from './pages/connect/ConnectDetail';
 
 function App() {
   return (
@@ -44,21 +30,21 @@ function App() {
         
         {/* 클래스 */}
         <Route path="/classes" element={<ClassIndex />} />
-        <Route path="/classes/:category" element={<ClassCategory />} />
         <Route path="/classes/detail/:id" element={<ClassDetail />} />
         <Route path="/classes/classroom/:id" element={<ClassRoom />} />
+        <Route path="/classes/:category" element={<NotFound />} />
+        
+        {/* 커피챗 */}
+        <Route path="/coffee-chat" element={<NotFound />} />
+        <Route path="/coffee-chat/:category" element={<NotFound />} />
         
         {/* 아카이브 */}
-        <Route path="/archive" element={<ArchiveIndex />} />
-        <Route path="/archive/:category" element={<ArchiveCategory />} />
-        <Route path="/archive/detail/:id" element={<ArchiveDetail />} />
+        <Route path="/archive" element={<NotFound />} />
+        <Route path="/archive/:category" element={<NotFound />} />
         
-        {/* 커넥트 */}
-        <Route path="/connect" element={<ConnectIndex />} />
-        <Route path="/connect/events" element={<ConnectEvents />} />
-        <Route path="/connect/mentoring" element={<ConnectMentoring />} />
-        <Route path="/connect/community" element={<ConnectCommunity />} />
-        <Route path="/connect/detail/:id" element={<ConnectDetail />} />
+        {/* 커뮤니티 */}
+        <Route path="/community" element={<NotFound />} />
+        <Route path="/community/:category" element={<NotFound />} />
         
         {/* 사용자 */}
         <Route path="/dashboard" element={<Dashboard />} />

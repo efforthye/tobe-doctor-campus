@@ -57,58 +57,106 @@ const Header: React.FC = () => {
               active={isActive('/classes')} 
               onMouseEnter={() => handleDropdownEnter('classes')}
               onMouseLeave={handleDropdownLeave}
-              className={activeDropdown === 'classes' ? 'active-dropdown' : ''}
             >
               <NavLink to="/classes">CLASS</NavLink>
-              <DropdownMenu className={activeDropdown === 'classes' ? 'show' : ''}>
-                <DropdownItem>
-                  <DropdownLink to="/classes/all">전체 클래스</DropdownLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <DropdownLink to="/classes/new">신규 클래스</DropdownLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <DropdownLink to="/classes/popular">인기 클래스</DropdownLink>
-                </DropdownItem>
-              </DropdownMenu>
+              {activeDropdown === 'classes' && (
+                <DropdownMenu>
+                  <DropdownItem>
+                    <DropdownLink to="/classes/all">메뉴 하나</DropdownLink>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <DropdownLink to="/classes/new">메뉴 둘</DropdownLink>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <DropdownLink to="/classes/popular">메뉴 셋</DropdownLink>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <DropdownLink to="/classes/popular">메뉴 넷</DropdownLink>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <DropdownLink to="/classes/popular">메뉴 다섯</DropdownLink>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <DropdownLink to="/classes/popular">메뉴 여섯</DropdownLink>
+                  </DropdownItem>
+                  <DropdownSeparator />
+                  <DropdownItem>
+                    <DropdownLink to="/classes">클래스 전체 보기</DropdownLink>
+                  </DropdownItem>
+                </DropdownMenu>
+              )}
+            </NavItem>
+            <NavItem 
+              active={isActive('/coffee-chat')} 
+              onMouseEnter={() => handleDropdownEnter('coffee-chat')}
+              onMouseLeave={handleDropdownLeave}
+            >
+              <NavLink to="/coffee-chat">COFFEE CHAT</NavLink>
+              {activeDropdown === 'coffee-chat' && (
+                <DropdownMenu>
+                  <DropdownItem>
+                    <DropdownLink to="/coffee-chat/all">메뉴 하나</DropdownLink>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <DropdownLink to="/coffee-chat/new">메뉴 둘</DropdownLink>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <DropdownLink to="/coffee-chat/popular">메뉴 셋</DropdownLink>
+                  </DropdownItem>
+                  <DropdownSeparator />
+                  <DropdownItem>
+                    <DropdownLink to="/coffee-chat">전체 보기</DropdownLink>
+                  </DropdownItem>
+                </DropdownMenu>
+              )}
             </NavItem>
             <NavItem 
               active={isActive('/archive')} 
               onMouseEnter={() => handleDropdownEnter('archive')}
               onMouseLeave={handleDropdownLeave}
-              className={activeDropdown === 'archive' ? 'active-dropdown' : ''}
             >
               <NavLink to="/archive">ARCHIVE</NavLink>
-              <DropdownMenu className={activeDropdown === 'archive' ? 'show' : ''}>
-                <DropdownItem>
-                  <DropdownLink to="/archive/articles">아티클</DropdownLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <DropdownLink to="/archive/videos">비디오</DropdownLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <DropdownLink to="/archive/podcasts">팟캐스트</DropdownLink>
-                </DropdownItem>
-              </DropdownMenu>
+              {activeDropdown === 'archive' && (
+                <DropdownMenu>
+                  <DropdownItem>
+                    <DropdownLink to="/archive/articles">메뉴 하나</DropdownLink>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <DropdownLink to="/archive/videos">메뉴 둘</DropdownLink>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <DropdownLink to="/archive/podcasts">메뉴 셋</DropdownLink>
+                  </DropdownItem>
+                  <DropdownSeparator />
+                  <DropdownItem>
+                    <DropdownLink to="/archive">전체 보기</DropdownLink>
+                  </DropdownItem>
+                </DropdownMenu>
+              )}
             </NavItem>
             <NavItem 
-              active={isActive('/connect')} 
-              onMouseEnter={() => handleDropdownEnter('connect')}
+              active={isActive('/community')} 
+              onMouseEnter={() => handleDropdownEnter('community')}
               onMouseLeave={handleDropdownLeave}
-              className={activeDropdown === 'connect' ? 'active-dropdown' : ''}
             >
-              <NavLink to="/connect">CONNECT</NavLink>
-              <DropdownMenu className={activeDropdown === 'connect' ? 'show' : ''}>
-                <DropdownItem>
-                  <DropdownLink to="/connect/events">이벤트</DropdownLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <DropdownLink to="/connect/mentoring">멘토링</DropdownLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <DropdownLink to="/connect/community">커뮤니티</DropdownLink>
-                </DropdownItem>
-              </DropdownMenu>
+              <NavLink to="/community">COMMUNITY</NavLink>
+              {activeDropdown === 'community' && (
+                <DropdownMenu>
+                  <DropdownItem>
+                    <DropdownLink to="/community/events">메뉴 하나</DropdownLink>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <DropdownLink to="/community/mentoring">메뉴 둘</DropdownLink>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <DropdownLink to="/community/forum">메뉴 셋</DropdownLink>
+                  </DropdownItem>
+                  <DropdownSeparator />
+                  <DropdownItem>
+                    <DropdownLink to="/community">전체 보기</DropdownLink>
+                  </DropdownItem>
+                </DropdownMenu>
+              )}
             </NavItem>
             <MobileCloseButton onClick={toggleMobileMenu}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -263,31 +311,10 @@ const NavItem = styled.div<{ active: boolean }>`
   position: relative;
   padding: 8px 0;
   
-  &.active-dropdown, &:hover {
-    &::after {
-      width: 100%;
-    }
-  }
-  
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: ${props => props.active ? '100%' : '0'};
-    height: 2px;
-    background-color: ${({ theme }) => theme.colors.primary};
-    transition: width 0.3s ease;
-  }
-  
   @media (max-width: 768px) {
     padding: 12px 0;
     border-bottom: 1px solid ${({ theme }) => theme.colors.border};
     width: 100%;
-    
-    &::after {
-      display: none;
-    }
   }
 `;
 
@@ -302,31 +329,22 @@ const NavLink = styled(Link)`
 `;
 
 const DropdownMenu = styled.div`
-  display: none;
   position: absolute;
   top: 100%;
   left: 0;
   background-color: white;
   min-width: 180px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 18px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   padding: 12px 0;
   z-index: 10;
-  
-  &.show {
-    display: block;
-  }
+  margin-top: 8px;
   
   @media (max-width: 768px) {
     position: static;
     box-shadow: none;
     padding: 8px 0 8px 16px;
     border-radius: 0;
-    display: none;
-    
-    &.show {
-      display: block;
-    }
   }
 `;
 
@@ -344,6 +362,12 @@ const DropdownItem = styled.div`
       background-color: transparent;
     }
   }
+`;
+
+const DropdownSeparator = styled.div`
+  height: 1px;
+  background-color: ${({ theme }) => theme.colors.border};
+  margin: 8px 0;
 `;
 
 const DropdownLink = styled(Link)`
