@@ -66,29 +66,30 @@ const Footer: React.FC = () => {
 };
 
 const FooterContainer = styled.footer`
-  background-color: #F9F9F9;
+  background-color: #F4F4F5;
   width: 100%;
+  border-top: 1px solid rgba(112, 115, 124, 0.16);
 `;
 
 const FooterContent = styled.div`
-  max-width: 1600px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 40px 80px 24px;
+  padding: 60px 80px 40px;
   
   @media (max-width: 1024px) {
-    padding: 40px 40px 24px;
+    padding: 50px 40px 30px;
   }
   
   @media (max-width: 768px) {
-    padding: 40px 20px 24px;
+    padding: 40px 20px 20px;
   }
 `;
 
 const MainSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 28px;
-  margin-bottom: 32px;
+  gap: 32px;
+  margin-bottom: 48px;
   
   @media (min-width: 768px) {
     flex-direction: row;
@@ -104,20 +105,20 @@ const LogoSection = styled.div`
 
 const Logo = styled.div`
   img {
-    height: 24px;
+    height: 28px;
     width: auto;
     display: block;
   }
 `;
 
 const CompanyInfo = styled.div`
-  font-size: 12px;
-  color: #777;
+  font-size: 13px;
+  color: rgba(55, 56, 60, 0.61);
   line-height: 1.6;
   max-width: 760px;
   
   p {
-    margin: 0 0 10px 0;
+    margin: 0 0 12px 0;
   }
 `;
 
@@ -130,22 +131,22 @@ const SocialLink = styled.a`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  color: #777;
+  width: 36px;
+  height: 36px;
+  color: rgba(55, 56, 60, 0.61);
   transition: color 0.2s;
   
   &:hover {
-    color: #448181;
+    color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
 const BottomSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
   border-top: 1px solid rgba(112, 115, 124, 0.08);
-  padding-top: 20px;
+  padding-top: 24px;
   
   @media (min-width: 768px) {
     flex-direction: row;
@@ -155,24 +156,32 @@ const BottomSection = styled.div`
 `;
 
 const Copyright = styled.p`
-  font-size: 12px;
-  color: #999;
+  font-size: 13px;
+  color: rgba(55, 56, 60, 0.61);
   margin: 0;
 `;
 
 const Links = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 16px;
 `;
 
 const StyledLink = styled(Link)`
-  font-size: 12px;
-  color: #999;
+  font-size: 13px;
+  color: rgba(55, 56, 60, 0.61);
   text-decoration: none;
+  position: relative;
+  
+  &:not(:last-child)::after {
+    content: '·';
+    position: absolute;
+    right: -10px;
+    color: rgba(112, 115, 124, 0.35);
+  }
   
   &:hover {
-    color: #448181;
+    color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
