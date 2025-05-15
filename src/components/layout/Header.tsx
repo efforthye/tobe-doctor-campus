@@ -495,8 +495,8 @@ const NavLink = styled(Link)<{ $isActive?: boolean; $hasActiveDropdown?: boolean
 const DropdownMenu = styled.div`
   position: absolute;
   top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0; /* 텍스트 앞에 정렬 */
+  transform: translateX(-10px); /* 텍스트 시작점 여백 고려하여 새라 왼쪽으로 조정 */
   width: 180px; /* 피그마 디자인에 맞게 고정 너비 설정 */
   background: var(--Background-Elevated-Normal, white);
   border-radius: 18px;
@@ -520,7 +520,7 @@ const DropdownMenu = styled.div`
   
   @media (max-width: 768px) {
     position: static;
-    transform: none;
+    transform: none; /* 모바일에서는 중앙 정렬 제거 */
     left: auto;
     width: 100%;
     box-shadow: none;
