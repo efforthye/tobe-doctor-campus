@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import Layout from '../../components/layout/Layout';
 
 const ClassRoom: React.FC = () => {

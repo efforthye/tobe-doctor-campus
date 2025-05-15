@@ -466,9 +466,13 @@ const NavLink = styled(Link)`
   color: ${({ theme }) => theme.colors.text};
   text-decoration: none;
   transition: color 0.3s ease;
+  font-weight: 500;
+  font-size: 15px;
+  text-transform: uppercase;
   
+  /* 피그마 디자인에 따라 호버 시 밑줄 효과 제거 */
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.text};
   }
 `;
 
@@ -479,7 +483,7 @@ const DropdownMenu = styled.div`
   background-color: white;
   min-width: 180px;
   border-radius: 18px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 10px 24px 0px rgba(0, 0, 0, 0.08);
   padding: 12px 0;
   z-index: 10;
   margin-top: 8px;
@@ -509,7 +513,7 @@ const DropdownMenu = styled.div`
 
 const DropdownItem = styled.div<{ isHovered?: boolean }>`
   padding: 8px 16px;
-  background-color: ${({ isHovered, theme }) => isHovered ? theme.colors.backgroundGray : 'transparent'};
+  background-color: transparent;
   
   @media (max-width: 768px) {
     padding: 8px 0;
@@ -518,20 +522,21 @@ const DropdownItem = styled.div<{ isHovered?: boolean }>`
 
 const DropdownSeparator = styled.div`
   height: 1px;
-  background-color: ${({ theme }) => theme.colors.border};
-  margin: 8px 0;
+  background-color: #E5E6EB;
+  margin: 8px 16px;
 `;
 
 const DropdownLink = styled(Link)<{ isHovered?: boolean; isSpecial?: boolean }>`
   color: ${({ isHovered, isSpecial, theme }) => 
     isHovered ? 'rgba(55, 56, 60, 0.28)' : 
     isSpecial ? '#296768' : 
-    theme.colors.text
+    '#171719'
   };
   text-decoration: none;
   font-size: 14px;
   display: block;
   transition: color 0.3s ease;
+  font-weight: 500;
 `;
 
 const RightSection = styled.div`
