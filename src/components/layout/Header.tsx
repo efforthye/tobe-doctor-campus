@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
@@ -12,6 +12,17 @@ const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const navRefs = useRef<{ [key: string]: React.RefObject<HTMLDivElement> }>({});
+
+  // 각 메뉴에 대한 ref 생성
+  useEffect(() => {
+    navRefs.current = {
+      'classes': React.createRef<HTMLDivElement>(),
+      'coffee-chat': React.createRef<HTMLDivElement>(),
+      'archive': React.createRef<HTMLDivElement>(),
+      'community': React.createRef<HTMLDivElement>(),
+    };
+  }, []);
 
   // 스크롤 이벤트 감지
   useEffect(() => {
@@ -27,6 +38,27 @@ const Header: React.FC = () => {
     return location.pathname.startsWith(path);
   };
   
+  // 드롭다운 영역 밖으로 클릭 시 드롭다운 콘텐츠 닫기
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (activeDropdown) {
+        const ref = navRefs.current[activeDropdown];
+        if (ref && ref.current && !ref.current.contains(event.target as Node)) {
+          setActiveDropdown(null);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [activeDropdown]);
+
+  const toggleDropdown = (menu: string) => {
+    setActiveDropdown(activeDropdown === menu ? null : menu);
+  };
+  
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
     setSearchOpen(false);
@@ -35,14 +67,6 @@ const Header: React.FC = () => {
   const toggleSearch = () => {
     setSearchOpen(!searchOpen);
     setMobileMenuOpen(false);
-  };
-
-  const handleDropdownEnter = (menu: string) => {
-    setActiveDropdown(menu);
-  };
-
-  const handleDropdownLeave = () => {
-    setActiveDropdown(null);
   };
 
   return (
@@ -54,9 +78,9 @@ const Header: React.FC = () => {
           </Logo>
           <Navigation className={mobileMenuOpen ? 'mobile-open' : ''}>
             <NavItem 
-              active={isActive('/classes')} 
-              onMouseEnter={() => handleDropdownEnter('classes')}
-              onMouseLeave={handleDropdownLeave}
+              active={isActive('/classes')}
+              onClick={() => toggleDropdown('classes')}
+              ref={navRefs.current['classes']}
             >
               <NavLink to="/classes">CLASS</NavLink>
               {activeDropdown === 'classes' && (
@@ -87,9 +111,9 @@ const Header: React.FC = () => {
               )}
             </NavItem>
             <NavItem 
-              active={isActive('/coffee-chat')} 
-              onMouseEnter={() => handleDropdownEnter('coffee-chat')}
-              onMouseLeave={handleDropdownLeave}
+              active={isActive('/coffee-chat')}
+              onClick={() => toggleDropdown('coffee-chat')}
+              ref={navRefs.current['coffee-chat']}
             >
               <NavLink to="/coffee-chat">COFFEE CHAT</NavLink>
               {activeDropdown === 'coffee-chat' && (
@@ -111,9 +135,9 @@ const Header: React.FC = () => {
               )}
             </NavItem>
             <NavItem 
-              active={isActive('/archive')} 
-              onMouseEnter={() => handleDropdownEnter('archive')}
-              onMouseLeave={handleDropdownLeave}
+              active={isActive('/archive')}
+              onClick={() => toggleDropdown('archive')}
+              ref={navRefs.current['archive']}
             >
               <NavLink to="/archive">ARCHIVE</NavLink>
               {activeDropdown === 'archive' && (
@@ -135,9 +159,9 @@ const Header: React.FC = () => {
               )}
             </NavItem>
             <NavItem 
-              active={isActive('/community')} 
-              onMouseEnter={() => handleDropdownEnter('community')}
-              onMouseLeave={handleDropdownLeave}
+              active={isActive('/community')}
+              onClick={() => toggleDropdown('community')}
+              ref={navRefs.current['community']}
             >
               <NavLink to="/community">COMMUNITY</NavLink>
               {activeDropdown === 'community' && (
@@ -304,12 +328,13 @@ const Navigation = styled.nav`
   }
 `;
 
-const NavItem = styled.div<{ active: boolean }>`
+const NavItem = styled.div.attrs({ tabIndex: 0 })<{ active: boolean }>`
   font-size: 15px;
   font-weight: 500;
   text-transform: uppercase;
   position: relative;
   padding: 8px 0;
+  cursor: pointer;
   
   @media (max-width: 768px) {
     padding: 12px 0;
