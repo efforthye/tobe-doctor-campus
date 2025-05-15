@@ -38,6 +38,7 @@ const Header: React.FC = () => {
     setMobileMenuOpen(false);
   };
 
+  // 호버한 메뉴 아이템에 따라 다른 메뉴를 비활성화하고 해당 메뉴만 활성화하는 로직
   const handleMouseEnter = (menu: string) => {
     setActiveDropdown(menu);
   };
