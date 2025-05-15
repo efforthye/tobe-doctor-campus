@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
@@ -8,45 +8,182 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+
+  // 스크롤 이벤트 감지
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const isActive = (path: string) => {
-    return location.pathname === path;
+    return location.pathname.startsWith(path);
+  };
+  
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+    setSearchOpen(false);
+  };
+  
+  const toggleSearch = () => {
+    setSearchOpen(!searchOpen);
+    setMobileMenuOpen(false);
+  };
+
+  const handleDropdownEnter = (menu: string) => {
+    setActiveDropdown(menu);
+  };
+
+  const handleDropdownLeave = () => {
+    setActiveDropdown(null);
   };
 
   return (
-    <HeaderContainer>
+    <HeaderContainer scrolled={isScrolled}>
       <HeaderContent>
         <LeftSection>
           <Logo onClick={() => navigate('/')}>
             <img src="/logo.svg" alt="THE DOCTOR CAMPUS" />
           </Logo>
-          <Navigation>
-            <NavItem active={isActive('/classes')}>
-              <Link to="/classes">CLASS</Link>
+          <Navigation className={mobileMenuOpen ? 'mobile-open' : ''}>
+            <NavItem 
+              active={isActive('/classes')} 
+              onMouseEnter={() => handleDropdownEnter('classes')}
+              onMouseLeave={handleDropdownLeave}
+              className={activeDropdown === 'classes' ? 'active-dropdown' : ''}
+            >
+              <NavLink to="/classes">CLASS</NavLink>
+              <DropdownMenu className={activeDropdown === 'classes' ? 'show' : ''}>
+                <DropdownItem>
+                  <DropdownLink to="/classes/all">전체 클래스</DropdownLink>
+                </DropdownItem>
+                <DropdownItem>
+                  <DropdownLink to="/classes/new">신규 클래스</DropdownLink>
+                </DropdownItem>
+                <DropdownItem>
+                  <DropdownLink to="/classes/popular">인기 클래스</DropdownLink>
+                </DropdownItem>
+              </DropdownMenu>
             </NavItem>
-            <NavItem active={isActive('/archive')}>
-              <Link to="/archive">ARCHIVE</Link>
+            <NavItem 
+              active={isActive('/archive')} 
+              onMouseEnter={() => handleDropdownEnter('archive')}
+              onMouseLeave={handleDropdownLeave}
+              className={activeDropdown === 'archive' ? 'active-dropdown' : ''}
+            >
+              <NavLink to="/archive">ARCHIVE</NavLink>
+              <DropdownMenu className={activeDropdown === 'archive' ? 'show' : ''}>
+                <DropdownItem>
+                  <DropdownLink to="/archive/articles">아티클</DropdownLink>
+                </DropdownItem>
+                <DropdownItem>
+                  <DropdownLink to="/archive/videos">비디오</DropdownLink>
+                </DropdownItem>
+                <DropdownItem>
+                  <DropdownLink to="/archive/podcasts">팟캐스트</DropdownLink>
+                </DropdownItem>
+              </DropdownMenu>
             </NavItem>
-            <NavItem active={isActive('/connect')}>
-              <Link to="/connect">CONNECT</Link>
+            <NavItem 
+              active={isActive('/connect')} 
+              onMouseEnter={() => handleDropdownEnter('connect')}
+              onMouseLeave={handleDropdownLeave}
+              className={activeDropdown === 'connect' ? 'active-dropdown' : ''}
+            >
+              <NavLink to="/connect">CONNECT</NavLink>
+              <DropdownMenu className={activeDropdown === 'connect' ? 'show' : ''}>
+                <DropdownItem>
+                  <DropdownLink to="/connect/events">이벤트</DropdownLink>
+                </DropdownItem>
+                <DropdownItem>
+                  <DropdownLink to="/connect/mentoring">멘토링</DropdownLink>
+                </DropdownItem>
+                <DropdownItem>
+                  <DropdownLink to="/connect/community">커뮤니티</DropdownLink>
+                </DropdownItem>
+              </DropdownMenu>
             </NavItem>
+            <MobileCloseButton onClick={toggleMobileMenu}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 6L6 18M6 6L18 18" stroke="#333333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </MobileCloseButton>
           </Navigation>
         </LeftSection>
 
         <RightSection>
-          {/* 항상 비로그인 상태로 표시 (테스트용) */}
-          <>
-            <LoginButton onClick={() => navigate('/login')}>로그인</LoginButton>
-            <SignupButton onClick={() => navigate('/signup')}>회원가입</SignupButton>
-          </>
+          <SearchButton onClick={toggleSearch}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.5 17.5L13.875 13.875M15.8333 9.16667C15.8333 12.8486 12.8486 15.8333 9.16667 15.8333C5.48477 15.8333 2.5 12.8486 2.5 9.16667C2.5 5.48477 5.48477 2.5 9.16667 2.5C12.8486 2.5 15.8333 5.48477 15.8333 9.16667Z" stroke="#333333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </SearchButton>
+          {isAuthenticated ? (
+            <>
+              <NotificationButton>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7.5 15.8333H12.5M4.16667 9.16667V7.5C4.16667 4.27834 6.77834 1.66667 10 1.66667C13.2217 1.66667 15.8333 4.27834 15.8333 7.5V9.16667C15.8333 10.4673 16.4477 11.7008 17.5 12.5V12.5C18.0602 12.9371 17.7545 13.8333 17.0796 13.8333H2.92038C2.24545 13.8333 1.93982 12.9371 2.5 12.5V12.5C3.55228 11.7008 4.16667 10.4673 4.16667 9.16667Z" stroke="#333333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </NotificationButton>
+              <ProfileButton onClick={() => navigate('/profile')}>
+                <img src="/default-avatar.png" alt="Profile" />
+              </ProfileButton>
+            </>
+          ) : (
+            <>
+              <LoginButton onClick={() => navigate('/login')}>로그인</LoginButton>
+              <SignupButton onClick={() => navigate('/signup')}>회원가입</SignupButton>
+            </>
+          )}
+          <MobileMenuButton onClick={toggleMobileMenu}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 12H21M3 6H21M3 18H21" stroke="#333333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </MobileMenuButton>
         </RightSection>
       </HeaderContent>
+      
+      {/* 검색 오버레이 */}
+      {searchOpen && (
+        <SearchOverlay>
+          <SearchContainer>
+            <SearchCloseButton onClick={toggleSearch}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 6L6 18M6 6L18 18" stroke="#333333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </SearchCloseButton>
+            <SearchForm>
+              <SearchInput type="text" placeholder="검색어를 입력하세요" autoFocus />
+              <SearchSubmitButton type="submit">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M17.5 17.5L13.875 13.875M15.8333 9.16667C15.8333 12.8486 12.8486 15.8333 9.16667 15.8333C5.48477 15.8333 2.5 12.8486 2.5 9.16667C2.5 5.48477 5.48477 2.5 9.16667 2.5C12.8486 2.5 15.8333 5.48477 15.8333 9.16667Z" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </SearchSubmitButton>
+            </SearchForm>
+            <SearchKeywords>
+              <KeywordTitle>인기 검색어</KeywordTitle>
+              <KeywordList>
+                <KeywordItem>의학 연구</KeywordItem>
+                <KeywordItem>논문 작성</KeywordItem>
+                <KeywordItem>ChatGPT</KeywordItem>
+                <KeywordItem>디지털 헬스케어</KeywordItem>
+              </KeywordList>
+            </SearchKeywords>
+          </SearchContainer>
+        </SearchOverlay>
+      )}
     </HeaderContainer>
   );
 };
 
-const HeaderContainer = styled.header`
-  background-color: rgba(255, 255, 255, 0.88);
+const HeaderContainer = styled.header<{ scrolled: boolean }>`
+  background-color: ${props => props.scrolled ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.88)'};
   backdrop-filter: blur(64px);
   border-bottom: 1px solid rgba(112, 115, 124, 0.16);
   position: sticky;
@@ -54,13 +191,15 @@ const HeaderContainer = styled.header`
   left: 0;
   z-index: 1000;
   width: 100%;
+  transition: all 0.3s ease;
+  box-shadow: ${props => props.scrolled ? '0 1px 3px rgba(0, 0, 0, 0.1)' : 'none'};
 `;
 
 const HeaderContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1600px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 0 80px;
   height: 80px;
@@ -78,7 +217,7 @@ const HeaderContent = styled.div`
 const LeftSection = styled.div`
   display: flex;
   align-items: center;
-  gap: 84px;
+  gap: 64px;
   
   @media (max-width: 768px) {
     gap: 32px;
@@ -88,7 +227,7 @@ const LeftSection = styled.div`
 const Logo = styled.div`
   cursor: pointer;
   img {
-    height: 24px;
+    height: 28px;
     width: auto;
     display: block;
   }
@@ -96,43 +235,207 @@ const Logo = styled.div`
 
 const Navigation = styled.nav`
   display: flex;
-  gap: 24px;
+  gap: 36px;
+  
+  @media (max-width: 768px) {
+    display: none;
+    
+    &.mobile-open {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: white;
+      z-index: 1100;
+      padding: 80px 20px 20px;
+      gap: 16px;
+    }
+  }
 `;
 
 const NavItem = styled.div<{ active: boolean }>`
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   text-transform: uppercase;
+  position: relative;
+  padding: 8px 0;
   
-  a {
-    color: #333;
-    text-decoration: none;
+  &.active-dropdown, &:hover {
+    &::after {
+      width: 100%;
+    }
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: ${props => props.active ? '100%' : '0'};
+    height: 2px;
+    background-color: ${({ theme }) => theme.colors.primary};
+    transition: width 0.3s ease;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 12px 0;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+    width: 100%;
+    
+    &::after {
+      display: none;
+    }
+  }
+`;
+
+const NavLink = styled(Link)`
+  color: ${({ theme }) => theme.colors.text};
+  text-decoration: none;
+  transition: color 0.3s ease;
+  
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+const DropdownMenu = styled.div`
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  min-width: 180px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 12px 0;
+  z-index: 10;
+  
+  &.show {
+    display: block;
+  }
+  
+  @media (max-width: 768px) {
+    position: static;
+    box-shadow: none;
+    padding: 8px 0 8px 16px;
+    border-radius: 0;
+    display: none;
+    
+    &.show {
+      display: block;
+    }
+  }
+`;
+
+const DropdownItem = styled.div`
+  padding: 8px 16px;
+  
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.backgroundGray};
+  }
+  
+  @media (max-width: 768px) {
+    padding: 8px 0;
+    
+    &:hover {
+      background-color: transparent;
+    }
+  }
+`;
+
+const DropdownLink = styled(Link)`
+  color: ${({ theme }) => theme.colors.text};
+  text-decoration: none;
+  font-size: 14px;
+  display: block;
+  transition: color 0.3s ease;
+  
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
 const RightSection = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 `;
 
-const IconButton = styled.button`
+const SearchButton = styled.button`
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+  
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+`;
+
+const NotificationButton = styled.button`
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+  
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const ProfileButton = styled.button`
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
-  color: #333;
-  width: 24px;
-  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const LoginButton = styled.button`
   font-size: 14px;
   font-weight: 500;
-  color: #444;
+  color: ${({ theme }) => theme.colors.text};
   background: none;
   border: 1px solid rgba(112, 115, 124, 0.25);
   border-radius: 4px;
@@ -142,6 +445,10 @@ const LoginButton = styled.button`
   
   &:hover {
     background: rgba(112, 115, 124, 0.05);
+  }
+  
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -158,6 +465,168 @@ const SignupButton = styled.button`
   
   &:hover {
     background: ${({ theme }) => theme.colors.primaryDark};
+  }
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const MobileMenuButton = styled.button`
+  display: none;
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const MobileCloseButton = styled.button`
+  display: none;
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const SearchOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  animation: fadeIn 0.3s ease;
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+`;
+
+const SearchContainer = styled.div`
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 600px;
+  padding: 24px;
+  position: relative;
+  animation: slideDown 0.3s ease;
+  
+  @keyframes slideDown {
+    from {
+      transform: translateY(-20px);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+`;
+
+const SearchCloseButton = styled.button`
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SearchForm = styled.form`
+  display: flex;
+  margin-bottom: 24px;
+`;
+
+const SearchInput = styled.input`
+  flex: 1;
+  border: none;
+  border-bottom: 2px solid ${({ theme }) => theme.colors.border};
+  padding: 12px 0;
+  font-size: 18px;
+  outline: none;
+  transition: border-color 0.3s;
+  
+  &:focus {
+    border-color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+const SearchSubmitButton = styled.button`
+  background-color: ${({ theme }) => theme.colors.primary};
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.primaryDark};
+  }
+`;
+
+const SearchKeywords = styled.div`
+  margin-top: 20px;
+`;
+
+const KeywordTitle = styled.p`
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.textLight};
+  margin-bottom: 8px;
+`;
+
+const KeywordList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+`;
+
+const KeywordItem = styled.button`
+  background-color: ${({ theme }) => theme.colors.backgroundGray};
+  border: none;
+  border-radius: 16px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  cursor: pointer;
+  transition: all 0.2s;
+  
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.border};
+    color: ${({ theme }) => theme.colors.text};
   }
 `;
 
