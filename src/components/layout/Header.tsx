@@ -480,26 +480,28 @@ const DropdownMenu = styled.div`
   position: absolute;
   top: 100%;
   left: 0;
+  transform: translateX(-8px); /* 살짝 왼쪽으로 이동 */
   background-color: white;
   min-width: 180px;
   border-radius: 18px;
   box-shadow: 0px 10px 24px 0px rgba(0, 0, 0, 0.08);
   padding: 12px 0;
   z-index: 10;
-  margin-top: 8px;
+  margin-top: 4px; /* 커서에 더 가까이 위치하게 조정 */
   
   /* 드롭다운과 네비게이션 아이템 사이의 공간 메움 */
   &:before {
     content: '';
     position: absolute;
-    top: -8px;
+    top: -4px; /* 커서에 더 가까이 위치하게 조정 */
     left: 0;
     width: 100%;
-    height: 8px;
+    height: 4px;
   }
   
   @media (max-width: 768px) {
     position: static;
+    transform: none;
     box-shadow: none;
     padding: 8px 0 8px 16px;
     border-radius: 0;
