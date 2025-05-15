@@ -498,15 +498,18 @@ const DropdownMenu = styled.div`
   top: 100%;
   left: 0; /* 텍스트 앞에 정렬 */
   transform: translateX(-20px); /* 드롭다운 메뉴를 왼쪽으로 이동하여 텍스트 시작점에 맞춰서 정렬 */
-  width: 180px; /* 피그마 디자인에 맞게 고정 너비 설정 */
+  width: 304px; /* 피그마 디자인 스펙에 맞게 수정 */
   background: var(--Background-Elevated-Normal, white);
   border-radius: 18px;
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.03);
-  padding: 19px 20px; /* 피그마 디자인에 맞게 조정 */
+  padding: 19px 32px; /* 피그마 디자인 스펙에 맞게 수정 */
   z-index: 10;
   margin-top: 4px; /* 드롭다운을 삼숙 더 아래로 이동 */
   outline: 1px rgba(112, 115, 124, 0.08) solid;
   outline-offset: -1px;
+  display: flex; /* 피그마 스펙에 맞게 flex 추가 */
+  flex-direction: column; /* 피그마 스펙에 맞게 수직 배치 */
+  align-items: flex-start; /* 피그마 스펙에 맞게 왼쪽 정렬 */
   overflow: hidden;
   
   /* 드롭다운과 네비게이션 아이템 사이의 공간 메움 */
@@ -537,7 +540,7 @@ const DropdownMenu = styled.div`
 
 const DropdownItem = styled.div<{ isHovered?: boolean }>`
   padding: 11px 0;
-  width: 100%;
+  width: 100%; /* 너비 전체 차지 */
   display: flex;
   align-items: center;
   justify-content: flex-start;
