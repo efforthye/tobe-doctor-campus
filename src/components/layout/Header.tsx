@@ -12,6 +12,7 @@ const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
   // 스크롤 이벤트 감지
   useEffect(() => {
@@ -43,6 +44,15 @@ const Header: React.FC = () => {
 
   const handleMouseLeave = () => {
     setActiveDropdown(null);
+    setHoveredItem(null);
+  };
+
+  const handleItemMouseEnter = (item: string) => {
+    setHoveredItem(item);
+  };
+
+  const handleItemMouseLeave = () => {
+    setHoveredItem(null);
   };
 
   return (
@@ -60,27 +70,76 @@ const Header: React.FC = () => {
               <NavLink to="/classes">CLASS</NavLink>
               {activeDropdown === 'classes' && (
                 <DropdownMenu>
-                  <DropdownItem>
-                    <DropdownLink to="/classes/all">메뉴 하나</DropdownLink>
+                  <DropdownItem 
+                    isHovered={hoveredItem === 'classes-1'}
+                    onMouseEnter={() => handleItemMouseEnter('classes-1')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/classes/all"
+                      isHovered={hoveredItem === 'classes-1'}
+                    >메뉴 하나</DropdownLink>
                   </DropdownItem>
-                  <DropdownItem>
-                    <DropdownLink to="/classes/new">메뉴 둘</DropdownLink>
+                  <DropdownItem 
+                    isHovered={hoveredItem === 'classes-2'}
+                    onMouseEnter={() => handleItemMouseEnter('classes-2')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/classes/new"
+                      isHovered={hoveredItem === 'classes-2'}
+                    >메뉴 둘</DropdownLink>
                   </DropdownItem>
-                  <DropdownItem>
-                    <DropdownLink to="/classes/popular">메뉴 셋</DropdownLink>
+                  <DropdownItem 
+                    isHovered={hoveredItem === 'classes-3'}
+                    onMouseEnter={() => handleItemMouseEnter('classes-3')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/classes/popular"
+                      isHovered={hoveredItem === 'classes-3'}
+                    >메뉴 셋</DropdownLink>
                   </DropdownItem>
-                  <DropdownItem>
-                    <DropdownLink to="/classes/popular">메뉴 넷</DropdownLink>
+                  <DropdownItem 
+                    isHovered={hoveredItem === 'classes-4'}
+                    onMouseEnter={() => handleItemMouseEnter('classes-4')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/classes/popular"
+                      isHovered={hoveredItem === 'classes-4'}
+                    >메뉴 넷</DropdownLink>
                   </DropdownItem>
-                  <DropdownItem>
-                    <DropdownLink to="/classes/popular">메뉴 다섯</DropdownLink>
+                  <DropdownItem 
+                    isHovered={hoveredItem === 'classes-5'}
+                    onMouseEnter={() => handleItemMouseEnter('classes-5')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/classes/popular"
+                      isHovered={hoveredItem === 'classes-5'}
+                    >메뉴 다섯</DropdownLink>
                   </DropdownItem>
-                  <DropdownItem>
-                    <DropdownLink to="/classes/popular">메뉴 여섯</DropdownLink>
+                  <DropdownItem 
+                    isHovered={hoveredItem === 'classes-6'}
+                    onMouseEnter={() => handleItemMouseEnter('classes-6')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/classes/popular"
+                      isHovered={hoveredItem === 'classes-6'}
+                    >메뉴 여섯</DropdownLink>
                   </DropdownItem>
                   <DropdownSeparator />
-                  <DropdownItem>
-                    <DropdownLink to="/classes">클래스 전체 보기</DropdownLink>
+                  <DropdownItem 
+                    isHovered={hoveredItem === 'classes-all'}
+                    onMouseEnter={() => handleItemMouseEnter('classes-all')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/classes"
+                      isHovered={hoveredItem === 'classes-all'}
+                    >클래스 전체 보기</DropdownLink>
                   </DropdownItem>
                 </DropdownMenu>
               )}
@@ -360,19 +419,12 @@ const DropdownMenu = styled.div`
   }
 `;
 
-const DropdownItem = styled.div`
+const DropdownItem = styled.div<{ isHovered?: boolean }>`
   padding: 8px 16px;
-  
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.backgroundGray};
-  }
+  background-color: ${({ isHovered, theme }) => isHovered ? theme.colors.backgroundGray : 'transparent'};
   
   @media (max-width: 768px) {
     padding: 8px 0;
-    
-    &:hover {
-      background-color: transparent;
-    }
   }
 `;
 
@@ -382,16 +434,12 @@ const DropdownSeparator = styled.div`
   margin: 8px 0;
 `;
 
-const DropdownLink = styled(Link)`
-  color: ${({ theme }) => theme.colors.text};
+const DropdownLink = styled(Link)<{ isHovered?: boolean }>`
+  color: ${({ isHovered, theme }) => isHovered ? 'rgba(55, 56, 60, 0.28)' : theme.colors.text};
   text-decoration: none;
   font-size: 14px;
   display: block;
   transition: color 0.3s ease;
-  
-  &:hover {
-    color: ${({ theme }) => theme.colors.primary};
-  }
 `;
 
 const RightSection = styled.div`
