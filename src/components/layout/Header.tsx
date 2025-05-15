@@ -140,7 +140,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/classes"
                       isHovered={hoveredItem === 'classes-all'}
-                      isSpecial
+                      isSpecial={true}
                     >클래스 전체 보기</DropdownLink>
                   </DropdownItem>
                 </DropdownMenu>
@@ -192,7 +192,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/coffee-chat"
                       isHovered={hoveredItem === 'coffee-all'}
-                      isSpecial
+                      isSpecial={true}
                     >커피챗 전체 보기</DropdownLink>
                   </DropdownItem>
                 </DropdownMenu>
@@ -244,7 +244,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/archive"
                       isHovered={hoveredItem === 'archive-all'}
-                      isSpecial
+                      isSpecial={true}
                     >아카이브 전체 보기</DropdownLink>
                   </DropdownItem>
                 </DropdownMenu>
@@ -296,7 +296,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/community"
                       isHovered={hoveredItem === 'community-all'}
-                      isSpecial
+                      isSpecial={true}
                     >커뮤니티 전체 보기</DropdownLink>
                   </DropdownItem>
                 </DropdownMenu>
@@ -449,12 +449,13 @@ const Navigation = styled.nav`
 `;
 
 const NavItem = styled.div<{ active: boolean }>`
-  font-size: 15px;
-  font-weight: 500;
-  text-transform: uppercase;
   position: relative;
   padding: 8px 0;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
   
   @media (max-width: 768px) {
     padding: 12px 0;
@@ -464,18 +465,22 @@ const NavItem = styled.div<{ active: boolean }>`
 `;
 
 const NavLink = styled(Link)<{ $isActive?: boolean }>`
-  color: ${({ $isActive }) => $isActive ? '#171719' : 'rgba(55, 56, 60, 0.61)'};
+  color: ${({ $isActive }) => 
+    $isActive ? 'var(--Label-Normal, #171719)' : 
+    'var(--Label-Assistive, rgba(55, 56, 60, 0.28))'
+  };
   text-decoration: none;
   transition: color 0.3s ease;
-  font-weight: 500;
+  font-weight: 600;
   font-family: 'Pretendard JP', sans-serif;
   font-size: 15px;
-  letter-spacing: 0.96%;
-  line-height: 1.47em;
+  line-height: 22.01px;
+  letter-spacing: 0.14px;
+  text-align: center;
   text-transform: uppercase;
   
   &:hover {
-    color: #171719;
+    color: var(--Label-Normal, #171719);
   }
 `;
 
@@ -483,14 +488,16 @@ const DropdownMenu = styled.div`
   position: absolute;
   top: 100%;
   left: 0;
-  background-color: white;
-  min-width: 180px;
+  width: 100%;
+  background: var(--Background-Elevated-Normal, white);
   border-radius: 18px;
-  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.03); /* 과 같이 바꾸어줘 */
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.03);
   padding: 19px 32px;
   z-index: 10;
   margin-top: 8px;
-  border: 1px solid rgba(112, 115, 124, 0.08);
+  outline: 1px rgba(112, 115, 124, 0.08) solid;
+  outline-offset: -1px;
+  overflow: hidden;
   
   /* 드롭다운과 네비게이션 아이템 사이의 공간 메움 */
   &:before {
@@ -517,8 +524,11 @@ const DropdownMenu = styled.div`
 `;
 
 const DropdownItem = styled.div<{ isHovered?: boolean }>`
-  padding: 11px 0px;
-  background-color: transparent;
+  padding: 11px 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   
   @media (max-width: 768px) {
     padding: 8px 0;
@@ -526,24 +536,34 @@ const DropdownItem = styled.div<{ isHovered?: boolean }>`
 `;
 
 const DropdownSeparator = styled.div`
-  height: 1px;
-  background-color: rgba(112, 115, 124, 0.08);
-  margin: 8px 0px;
+  align-self: stretch;
+  padding: 8px 0;
+  
+  &:after {
+    content: '';
+    display: block;
+    height: 1px;
+    background: rgba(112, 115, 124, 0.08);
+    width: 100%;
+  }
 `;
 
 const DropdownLink = styled(Link)<{ isHovered?: boolean; isSpecial?: boolean }>`
-  color: ${({ isSpecial }) => 
-    isSpecial ? 'rgba(55, 56, 60, 0.61)' : 
-    '#171719'
+  flex: 1 1 0;
+  color: ${({ isHovered, isSpecial }) => 
+    isSpecial ? 'var(--Primary-Strong, #296768)' : 
+    isHovered ? 'var(--Label-Normal, #171719)' : 
+    'var(--Label-Assistive, rgba(55, 56, 60, 0.28))'
   };
   text-decoration: none;
   font-size: 15px;
   font-family: 'Pretendard JP', sans-serif;
   font-weight: 500;
-  line-height: 1.47em;
-  letter-spacing: 0.96%;
+  line-height: 22.01px;
+  letter-spacing: 0.14px;
   display: block;
   transition: color 0.3s ease;
+  word-wrap: break-word;
 `;
 
 const RightSection = styled.div`
