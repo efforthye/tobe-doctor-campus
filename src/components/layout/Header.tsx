@@ -453,7 +453,7 @@ const Navigation = styled.nav`
 
 const NavItem = styled.div<{ active: boolean }>`
   position: relative;
-  padding: 8px 0;
+  padding: 8px 10px; /* 양옥 여백 추가하여 텍스트와 드롭다운 정렬 맞춤 */
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -477,7 +477,7 @@ const NavLink = styled(Link)<{ $isActive?: boolean; $hasActiveDropdown?: boolean
   font-size: 15px;
   line-height: 22.01px;
   letter-spacing: 0.14px;
-  text-align: center;
+  text-align: left; /* 텍스트 좀 외쪽 정렬로 변경 */
   text-transform: uppercase;
   
   /* 드롭다운이 활성화되면 호버되지 않은 항목은 회색으로 변경 */
@@ -496,7 +496,7 @@ const DropdownMenu = styled.div`
   position: absolute;
   top: 100%;
   left: 0; /* 텍스트 앞에 정렬 */
-  transform: translateX(-10px); /* 텍스트 시작점 여백 고려하여 새라 왼쪽으로 조정 */
+  transform: translateX(0); /* 텍스트 정렬에 맞춰 조정 */
   width: 180px; /* 피그마 디자인에 맞게 고정 너비 설정 */
   background: var(--Background-Elevated-Normal, white);
   border-radius: 18px;
