@@ -463,14 +463,16 @@ const NavItem = styled.div<{ active: boolean }>`
 `;
 
 const NavLink = styled(Link)<{ $isActive?: boolean }>`
-  color: ${({ $isActive, theme }) => $isActive ? '#171719' : 'rgba(55, 56, 60, 0.60)'};
+  color: ${({ $isActive }) => $isActive ? '#171719' : 'rgba(55, 56, 60, 0.61)'};
   text-decoration: none;
   transition: color 0.3s ease;
   font-weight: 500;
+  font-family: 'Pretendard JP', sans-serif;
   font-size: 15px;
+  letter-spacing: 0.96%;
+  line-height: 1.47em;
   text-transform: uppercase;
   
-  /* 피그마 디자인에 따라 호버 시 밑줄 효과 제거 */
   &:hover {
     color: #171719;
   }
@@ -480,23 +482,23 @@ const DropdownMenu = styled.div`
   position: absolute;
   top: 100%;
   left: 0;
-  transform: translateX(0); /* 텍스트 아래로 정렬 */
   background-color: white;
   min-width: 180px;
   border-radius: 18px;
-  box-shadow: 0px 10px 24px 0px rgba(0, 0, 0, 0.08);
-  padding: 12px 0;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.03); /* 과 같이 바꾸어줘 */
+  padding: 19px 32px;
   z-index: 10;
-  margin-top: 0; /* 텍스트 바로 아래로 붙이기 */
+  margin-top: 8px;
+  border: 1px solid rgba(112, 115, 124, 0.08);
   
   /* 드롭다운과 네비게이션 아이템 사이의 공간 메움 */
   &:before {
     content: '';
     position: absolute;
-    top: -4px; /* 커서에 더 가까이 위치하게 조정 */
+    top: -8px;
     left: 0;
     width: 100%;
-    height: 4px;
+    height: 8px;
   }
   
   @media (max-width: 768px) {
@@ -514,7 +516,7 @@ const DropdownMenu = styled.div`
 `;
 
 const DropdownItem = styled.div<{ isHovered?: boolean }>`
-  padding: 8px 16px;
+  padding: 11px 0px;
   background-color: transparent;
   
   @media (max-width: 768px) {
@@ -524,20 +526,23 @@ const DropdownItem = styled.div<{ isHovered?: boolean }>`
 
 const DropdownSeparator = styled.div`
   height: 1px;
-  background-color: #E5E6EB;
-  margin: 8px 16px;
+  background-color: rgba(112, 115, 124, 0.08);
+  margin: 8px 0px;
 `;
 
 const DropdownLink = styled(Link)<{ isHovered?: boolean; isSpecial?: boolean }>`
   color: ${({ isSpecial }) => 
-    isSpecial ? '#296768' : 
+    isSpecial ? 'rgba(55, 56, 60, 0.61)' : 
     '#171719'
   };
   text-decoration: none;
-  font-size: 14px;
+  font-size: 15px;
+  font-family: 'Pretendard JP', sans-serif;
+  font-weight: 500;
+  line-height: 1.47em;
+  letter-spacing: 0.96%;
   display: block;
   transition: color 0.3s ease;
-  font-weight: 500;
 `;
 
 const RightSection = styled.div`
