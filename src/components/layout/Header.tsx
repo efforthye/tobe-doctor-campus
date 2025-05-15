@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
@@ -10,7 +10,6 @@ const Header: React.FC = () => {
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
@@ -30,12 +29,6 @@ const Header: React.FC = () => {
   
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
-    setSearchOpen(false);
-  };
-  
-  const toggleSearch = () => {
-    setSearchOpen(!searchOpen);
-    setMobileMenuOpen(false);
   };
 
   // 호버한 메뉴 아이템에 따라 다른 메뉴를 비활성화하고 해당 메뉴만 활성화하는 로직
@@ -53,7 +46,8 @@ const Header: React.FC = () => {
   };
 
   const handleItemMouseLeave = () => {
-    setHoveredItem(null);
+    // 피그마 디자인에 맞게 호버 상태 유지
+    // setHoveredItem(null);
   };
 
   return (
@@ -68,7 +62,13 @@ const Header: React.FC = () => {
               active={isActive('/classes')}
               onMouseEnter={() => handleMouseEnter('classes')}
             >
-              <NavLink to="/classes" $isActive={activeDropdown === 'classes'}>CLASS</NavLink>
+              <NavLink 
+                to="/classes" 
+                $isActive={activeDropdown === 'classes'}
+                $hasActiveDropdown={activeDropdown !== null}
+              >
+                CLASS
+              </NavLink>
               {activeDropdown === 'classes' && (
                 <DropdownMenu>
                   <DropdownItem 
@@ -79,6 +79,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/classes/all"
                       isHovered={hoveredItem === 'classes-1'}
+                      hasHoveredItem={hoveredItem !== null}
                     >메뉴 하나</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -89,6 +90,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/classes/new"
                       isHovered={hoveredItem === 'classes-2'}
+                      hasHoveredItem={hoveredItem !== null}
                     >메뉴 둘</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -99,6 +101,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/classes/popular"
                       isHovered={hoveredItem === 'classes-3'}
+                      hasHoveredItem={hoveredItem !== null}
                     >메뉴 셋</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -109,6 +112,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/classes/popular"
                       isHovered={hoveredItem === 'classes-4'}
+                      hasHoveredItem={hoveredItem !== null}
                     >메뉴 넷</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -119,6 +123,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/classes/popular"
                       isHovered={hoveredItem === 'classes-5'}
+                      hasHoveredItem={hoveredItem !== null}
                     >메뉴 다섯</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -129,6 +134,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/classes/popular"
                       isHovered={hoveredItem === 'classes-6'}
+                      hasHoveredItem={hoveredItem !== null}
                     >메뉴 여섯</DropdownLink>
                   </DropdownItem>
                   <DropdownSeparator />
@@ -140,6 +146,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/classes"
                       isHovered={hoveredItem === 'classes-all'}
+                      hasHoveredItem={hoveredItem !== null}
                       isSpecial={true}
                     >클래스 전체 보기</DropdownLink>
                   </DropdownItem>
@@ -150,7 +157,13 @@ const Header: React.FC = () => {
               active={isActive('/coffee-chat')}
               onMouseEnter={() => handleMouseEnter('coffee-chat')}
             >
-              <NavLink to="/coffee-chat" $isActive={activeDropdown === 'coffee-chat'}>COFFEE CHAT</NavLink>
+              <NavLink 
+                to="/coffee-chat" 
+                $isActive={activeDropdown === 'coffee-chat'}
+                $hasActiveDropdown={activeDropdown !== null}
+              >
+                COFFEE CHAT
+              </NavLink>
               {activeDropdown === 'coffee-chat' && (
                 <DropdownMenu>
                   <DropdownItem 
@@ -161,6 +174,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/coffee-chat/all"
                       isHovered={hoveredItem === 'coffee-1'}
+                      hasHoveredItem={hoveredItem !== null}
                     >메뉴 하나</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -171,6 +185,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/coffee-chat/new"
                       isHovered={hoveredItem === 'coffee-2'}
+                      hasHoveredItem={hoveredItem !== null}
                     >메뉴 둘</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -181,6 +196,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/coffee-chat/popular"
                       isHovered={hoveredItem === 'coffee-3'}
+                      hasHoveredItem={hoveredItem !== null}
                     >메뉴 셋</DropdownLink>
                   </DropdownItem>
                   <DropdownSeparator />
@@ -192,6 +208,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/coffee-chat"
                       isHovered={hoveredItem === 'coffee-all'}
+                      hasHoveredItem={hoveredItem !== null}
                       isSpecial={true}
                     >커피챗 전체 보기</DropdownLink>
                   </DropdownItem>
@@ -202,7 +219,13 @@ const Header: React.FC = () => {
               active={isActive('/archive')}
               onMouseEnter={() => handleMouseEnter('archive')}
             >
-              <NavLink to="/archive" $isActive={activeDropdown === 'archive'}>ARCHIVE</NavLink>
+              <NavLink 
+                to="/archive" 
+                $isActive={activeDropdown === 'archive'}
+                $hasActiveDropdown={activeDropdown !== null}
+              >
+                ARCHIVE
+              </NavLink>
               {activeDropdown === 'archive' && (
                 <DropdownMenu>
                   <DropdownItem 
@@ -213,6 +236,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/archive/articles"
                       isHovered={hoveredItem === 'archive-1'}
+                      hasHoveredItem={hoveredItem !== null}
                     >메뉴 하나</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -223,6 +247,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/archive/videos"
                       isHovered={hoveredItem === 'archive-2'}
+                      hasHoveredItem={hoveredItem !== null}
                     >메뉴 둘</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -233,6 +258,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/archive/podcasts"
                       isHovered={hoveredItem === 'archive-3'}
+                      hasHoveredItem={hoveredItem !== null}
                     >메뉴 셋</DropdownLink>
                   </DropdownItem>
                   <DropdownSeparator />
@@ -244,6 +270,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/archive"
                       isHovered={hoveredItem === 'archive-all'}
+                      hasHoveredItem={hoveredItem !== null}
                       isSpecial={true}
                     >아카이브 전체 보기</DropdownLink>
                   </DropdownItem>
@@ -254,7 +281,13 @@ const Header: React.FC = () => {
               active={isActive('/community')}
               onMouseEnter={() => handleMouseEnter('community')}
             >
-              <NavLink to="/community" $isActive={activeDropdown === 'community'}>COMMUNITY</NavLink>
+              <NavLink 
+                to="/community" 
+                $isActive={activeDropdown === 'community'}
+                $hasActiveDropdown={activeDropdown !== null}
+              >
+                COMMUNITY
+              </NavLink>
               {activeDropdown === 'community' && (
                 <DropdownMenu>
                   <DropdownItem 
@@ -265,6 +298,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/community/events"
                       isHovered={hoveredItem === 'community-1'}
+                      hasHoveredItem={hoveredItem !== null}
                     >메뉴 하나</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -275,6 +309,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/community/mentoring"
                       isHovered={hoveredItem === 'community-2'}
+                      hasHoveredItem={hoveredItem !== null}
                     >메뉴 둘</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -285,6 +320,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/community/forum"
                       isHovered={hoveredItem === 'community-3'}
+                      hasHoveredItem={hoveredItem !== null}
                     >메뉴 셋</DropdownLink>
                   </DropdownItem>
                   <DropdownSeparator />
@@ -296,6 +332,7 @@ const Header: React.FC = () => {
                     <DropdownLink 
                       to="/community"
                       isHovered={hoveredItem === 'community-all'}
+                      hasHoveredItem={hoveredItem !== null}
                       isSpecial={true}
                     >커뮤니티 전체 보기</DropdownLink>
                   </DropdownItem>
@@ -311,11 +348,7 @@ const Header: React.FC = () => {
         </LeftSection>
 
         <RightSection>
-          <SearchButton onClick={toggleSearch}>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17.5 17.5L13.875 13.875M15.8333 9.16667C15.8333 12.8486 12.8486 15.8333 9.16667 15.8333C5.48477 15.8333 2.5 12.8486 2.5 9.16667C2.5 5.48477 5.48477 2.5 9.16667 2.5C12.8486 2.5 15.8333 5.48477 15.8333 9.16667Z" stroke="#333333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </SearchButton>
+          {/* 피그마 디자인에 따라 검색 버튼 제거 */}
           {isAuthenticated ? (
             <>
               <NotificationButton>
@@ -340,36 +373,6 @@ const Header: React.FC = () => {
           </MobileMenuButton>
         </RightSection>
       </HeaderContent>
-      
-      {/* 검색 오버레이 */}
-      {searchOpen && (
-        <SearchOverlay>
-          <SearchContainer>
-            <SearchCloseButton onClick={toggleSearch}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18 6L6 18M6 6L18 18" stroke="#333333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </SearchCloseButton>
-            <SearchForm>
-              <SearchInput type="text" placeholder="검색어를 입력하세요" autoFocus />
-              <SearchSubmitButton type="submit">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M17.5 17.5L13.875 13.875M15.8333 9.16667C15.8333 12.8486 12.8486 15.8333 9.16667 15.8333C5.48477 15.8333 2.5 12.8486 2.5 9.16667C2.5 5.48477 5.48477 2.5 9.16667 2.5C12.8486 2.5 15.8333 5.48477 15.8333 9.16667Z" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </SearchSubmitButton>
-            </SearchForm>
-            <SearchKeywords>
-              <KeywordTitle>인기 검색어</KeywordTitle>
-              <KeywordList>
-                <KeywordItem>의학 연구</KeywordItem>
-                <KeywordItem>논문 작성</KeywordItem>
-                <KeywordItem>ChatGPT</KeywordItem>
-                <KeywordItem>디지털 헬스케어</KeywordItem>
-              </KeywordList>
-            </SearchKeywords>
-          </SearchContainer>
-        </SearchOverlay>
-      )}
     </HeaderContainer>
   );
 };
@@ -464,11 +467,9 @@ const NavItem = styled.div<{ active: boolean }>`
   }
 `;
 
-const NavLink = styled(Link)<{ $isActive?: boolean }>`
-  color: ${({ $isActive }) => 
-    $isActive ? 'var(--Label-Normal, #171719)' : 
-    'var(--Label-Assistive, rgba(55, 56, 60, 0.28))'
-  };
+const NavLink = styled(Link)<{ $isActive?: boolean; $hasActiveDropdown?: boolean }>`
+  /* 기본 상태에서는 검정색 */
+  color: var(--Label-Normal, #171719);
   text-decoration: none;
   transition: color 0.3s ease;
   font-weight: 600;
@@ -478,6 +479,13 @@ const NavLink = styled(Link)<{ $isActive?: boolean }>`
   letter-spacing: 0.14px;
   text-align: center;
   text-transform: uppercase;
+  
+  /* 드롭다운이 활성화되면 호버되지 않은 항목은 회색으로 변경 */
+  ${({ $isActive, $hasActiveDropdown }) => 
+    $hasActiveDropdown && !$isActive && css`
+      color: var(--Label-Assistive, rgba(55, 56, 60, 0.28));
+    `
+  }
   
   &:hover {
     color: var(--Label-Normal, #171719);
@@ -494,7 +502,7 @@ const DropdownMenu = styled.div`
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.03);
   padding: 19px 32px;
   z-index: 10;
-  margin-top: 8px;
+  margin-top: 0; /* 피그마 디자인에 맞게 조정 */
   outline: 1px rgba(112, 115, 124, 0.08) solid;
   outline-offset: -1px;
   overflow: hidden;
@@ -503,10 +511,10 @@ const DropdownMenu = styled.div`
   &:before {
     content: '';
     position: absolute;
-    top: -8px;
+    top: -4px; /* 피그마 디자인에 맞게 조정 */
     left: 0;
     width: 100%;
-    height: 8px;
+    height: 4px; /* 피그마 디자인에 맞게 조정 */
   }
   
   @media (max-width: 768px) {
@@ -548,13 +556,10 @@ const DropdownSeparator = styled.div`
   }
 `;
 
-const DropdownLink = styled(Link)<{ isHovered?: boolean; isSpecial?: boolean }>`
+const DropdownLink = styled(Link)<{ isHovered?: boolean; hasHoveredItem?: boolean; isSpecial?: boolean }>`
   flex: 1 1 0;
-  color: ${({ isHovered, isSpecial }) => 
-    isSpecial ? 'var(--Primary-Strong, #296768)' : 
-    isHovered ? 'var(--Label-Normal, #171719)' : 
-    'var(--Label-Assistive, rgba(55, 56, 60, 0.28))'
-  };
+  /* 기본 상태는 검정색 */
+  color: var(--Label-Normal, #171719);
   text-decoration: none;
   font-size: 15px;
   font-family: 'Pretendard JP', sans-serif;
@@ -564,32 +569,26 @@ const DropdownLink = styled(Link)<{ isHovered?: boolean; isSpecial?: boolean }>`
   display: block;
   transition: color 0.3s ease;
   word-wrap: break-word;
+  
+  /* "전체 보기" 항목은 녹색 */
+  ${({ isSpecial }) => 
+    isSpecial && css`
+      color: var(--Primary-Strong, #296768);
+    `
+  }
+  
+  /* 다른 항목이 호버되었을 때 호버되지 않은 항목은 회색으로 표시 */
+  ${({ isHovered, hasHoveredItem, isSpecial }) => 
+    hasHoveredItem && !isHovered && !isSpecial && css`
+      color: var(--Label-Assistive, rgba(55, 56, 60, 0.28));
+    `
+  }
 `;
 
 const RightSection = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
-`;
-
-const SearchButton = styled.button`
-  background: none;
-  border: none;
-  padding: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s;
-  
-  &:hover {
-    transform: scale(1.05);
-  }
-  
-  svg {
-    width: 20px;
-    height: 20px;
-  }
 `;
 
 const NotificationButton = styled.button`
@@ -708,133 +707,6 @@ const MobileCloseButton = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-`;
-
-const SearchOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 20px;
-  animation: fadeIn 0.3s ease;
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-`;
-
-const SearchContainer = styled.div`
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  width: 100%;
-  max-width: 600px;
-  padding: 24px;
-  position: relative;
-  animation: slideDown 0.3s ease;
-  
-  @keyframes slideDown {
-    from {
-      transform: translateY(-20px);
-    }
-    to {
-      transform: translateY(0);
-    }
-  }
-`;
-
-const SearchCloseButton = styled.button`
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: none;
-  border: none;
-  padding: 4px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const SearchForm = styled.form`
-  display: flex;
-  margin-bottom: 24px;
-`;
-
-const SearchInput = styled.input`
-  flex: 1;
-  border: none;
-  border-bottom: 2px solid ${({ theme }) => theme.colors.border};
-  padding: 12px 0;
-  font-size: 18px;
-  outline: none;
-  transition: border-color 0.3s;
-  
-  &:focus {
-    border-color: ${({ theme }) => theme.colors.primary};
-  }
-`;
-
-const SearchSubmitButton = styled.button`
-  background-color: ${({ theme }) => theme.colors.primary};
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.primaryDark};
-  }
-`;
-
-const SearchKeywords = styled.div`
-  margin-top: 20px;
-`;
-
-const KeywordTitle = styled.p`
-  font-size: 14px;
-  color: ${({ theme }) => theme.colors.textLight};
-  margin-bottom: 8px;
-`;
-
-const KeywordList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-`;
-
-const KeywordItem = styled.button`
-  background-color: ${({ theme }) => theme.colors.backgroundGray};
-  border: none;
-  border-radius: 16px;
-  padding: 8px 12px;
-  font-size: 13px;
-  color: ${({ theme }) => theme.colors.textSecondary};
-  cursor: pointer;
-  transition: all 0.2s;
-  
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.border};
-    color: ${({ theme }) => theme.colors.text};
   }
 `;
 
