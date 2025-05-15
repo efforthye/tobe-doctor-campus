@@ -495,14 +495,15 @@ const NavLink = styled(Link)<{ $isActive?: boolean; $hasActiveDropdown?: boolean
 const DropdownMenu = styled.div`
   position: absolute;
   top: 100%;
-  left: 0;
-  width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px; /* 피그마 디자인에 맞게 고정 너비 설정 */
   background: var(--Background-Elevated-Normal, white);
   border-radius: 18px;
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.03);
-  padding: 19px 32px;
+  padding: 19px 20px; /* 피그마 디자인에 맞게 조정 */
   z-index: 10;
-  margin-top: 0; /* 피그마 디자인에 맞게 조정 */
+  margin-top: 0;
   outline: 1px rgba(112, 115, 124, 0.08) solid;
   outline-offset: -1px;
   overflow: hidden;
@@ -520,6 +521,8 @@ const DropdownMenu = styled.div`
   @media (max-width: 768px) {
     position: static;
     transform: none;
+    left: auto;
+    width: 100%;
     box-shadow: none;
     padding: 8px 0 8px 16px;
     border-radius: 0;
