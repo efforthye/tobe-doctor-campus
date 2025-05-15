@@ -479,15 +479,15 @@ const NavLink = styled(Link)`
 const DropdownMenu = styled.div`
   position: absolute;
   top: 100%;
-  left: 0;
-  transform: translateX(-8px); /* 살짝 왼쪽으로 이동 */
+  left: 35%; /* 이미지 기반으로 조정 */
+  transform: translateX(-50%); /* 텍스트 중앙 아래로 정렬 */
   background-color: white;
   min-width: 180px;
   border-radius: 18px;
   box-shadow: 0px 10px 24px 0px rgba(0, 0, 0, 0.08);
   padding: 12px 0;
   z-index: 10;
-  margin-top: 4px; /* 커서에 더 가까이 위치하게 조정 */
+  margin-top: 0; /* 텍스트 바로 아래로 붙이기 */
   
   /* 드롭다운과 네비게이션 아이템 사이의 공간 메움 */
   &:before {
@@ -529,10 +529,9 @@ const DropdownSeparator = styled.div`
 `;
 
 const DropdownLink = styled(Link)<{ isHovered?: boolean; isSpecial?: boolean }>`
-  color: ${({ isHovered, isSpecial, theme }) => 
+  color: ${({ isSpecial }) => 
     isSpecial ? '#296768' : 
-    isHovered ? '#171719' : 
-    'rgba(55, 56, 60, 0.60)'
+    '#171719'
   };
   text-decoration: none;
   font-size: 14px;
