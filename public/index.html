@@ -14,6 +14,23 @@
     <title>투비닥터 캠퍼스</title>
     <!-- 프리텐다드 JP 폰트 추가 -->
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-jp.css" />
+    
+    <!-- 확장 프로그램 에러 완전 차단 스크립트 (가장 우선 실행) -->
+    <script src="%PUBLIC_URL%/extension-blocker.js"></script>
+    
+    <!-- 추가 인라인 보강 스크립트 -->
+    <script>
+      // 추가 안전장치 - React 앱 로딩 전 마지막 체크
+      window.__SUPPRESS_EXTENSION_ERRORS__ = true;
+      
+      // 극단적인 방법: 특정 에러 메시지를 아예 차단
+      const originalThrow = function() { throw arguments[0]; };
+      window.addEventListener('beforeunload', function() {
+        // 페이지 언로드 시 에러들 모두 무시
+        window.onerror = function() { return true; };
+        window.onunhandledrejection = function(e) { e.preventDefault(); };
+      });
+    </script>
   </head>
   <body>
     <noscript>이 앱을 실행하려면 자바스크립트를 활성화해야 합니다.</noscript>

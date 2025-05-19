@@ -1,58 +1,124 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-import GlobalStyle from './styles/GlobalStyle';
-import { theme } from './styles/theme';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Dashboard from './pages/Dashboard';
-import Profile from './pages/Profile';
+import ErrorBoundary from './components/ErrorBoundary';
 import NotFound from './pages/NotFound';
 import './styles/global.css';
+import GlobalStyle from './styles/GlobalStyle';
+import { theme } from './styles/theme';
 
 // 클래스 라우트
-import ClassIndex from './pages/class/ClassIndex';
-import ClassDetail from './pages/class/ClassDetail';
-import ClassRoom from './pages/class/ClassRoom';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <Routes>
-        {/* 홈 */}
-        <Route path="/" element={<Home />} />
-        
-        {/* 인증 */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        
-        {/* 클래스 */}
-        <Route path="/classes" element={<ClassIndex />} />
-        <Route path="/classes/detail/:id" element={<ClassDetail />} />
-        <Route path="/classes/classroom/:id" element={<ClassRoom />} />
-        <Route path="/classes/:category" element={<NotFound />} />
-        
-        {/* 커피챗 */}
-        <Route path="/coffee-chat" element={<NotFound />} />
-        <Route path="/coffee-chat/:category" element={<NotFound />} />
-        
-        {/* 아카이브 */}
-        <Route path="/archive" element={<NotFound />} />
-        <Route path="/archive/:category" element={<NotFound />} />
-        
-        {/* 커뮤니티 */}
-        <Route path="/community" element={<NotFound />} />
-        <Route path="/community/:category" element={<NotFound />} />
-        
-        {/* 사용자 */}
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/profile" element={<Profile />} />
-        
-        {/* 변경 됨. not found 화면 */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <ErrorBoundary>
+        <Routes>
+          {/* 홈 */}
+          <Route path="/" element={
+            <ErrorBoundary>
+              {/* <Home /> */}
+              <NotFound />
+            </ErrorBoundary>
+          } />
+          
+          {/* 인증 */}
+          <Route path="/login" element={
+            <ErrorBoundary>
+              {/* <Login /> */}
+              <NotFound />
+            </ErrorBoundary>
+          } />
+          <Route path="/signup" element={
+            <ErrorBoundary>
+              {/* <Signup /> */}
+              <NotFound />
+            </ErrorBoundary>
+          } />
+          
+          {/* 클래스 */}
+          <Route path="/classes" element={
+            <ErrorBoundary>
+              {/* <ClassIndex /> */}
+              <NotFound />
+            </ErrorBoundary>
+          } />
+          <Route path="/classes/detail/:id" element={
+            <ErrorBoundary>
+              {/* <ClassDetail /> */}
+              <NotFound />
+            </ErrorBoundary>
+          } />
+          <Route path="/classes/classroom/:id" element={
+            <ErrorBoundary>
+              {/* <ClassRoom /> */}
+              <NotFound />
+            </ErrorBoundary>
+          } />
+          <Route path="/classes/:category" element={
+            <ErrorBoundary>
+              <NotFound />
+            </ErrorBoundary>
+          } />
+          
+          {/* 커피챗 */}
+          <Route path="/coffee-chat" element={
+            <ErrorBoundary>
+              <NotFound />
+            </ErrorBoundary>
+          } />
+          <Route path="/coffee-chat/:category" element={
+            <ErrorBoundary>
+              <NotFound />
+            </ErrorBoundary>
+          } />
+          
+          {/* 아카이브 */}
+          <Route path="/archive" element={
+            <ErrorBoundary>
+              <NotFound />
+            </ErrorBoundary>
+          } />
+          <Route path="/archive/:category" element={
+            <ErrorBoundary>
+              <NotFound />
+            </ErrorBoundary>
+          } />
+          
+          {/* 커뮤니티 */}
+          <Route path="/community" element={
+            <ErrorBoundary>
+              <NotFound />
+            </ErrorBoundary>
+          } />
+          <Route path="/community/:category" element={
+            <ErrorBoundary>
+              <NotFound />
+            </ErrorBoundary>
+          } />
+          
+          {/* 사용자 */}
+          <Route path="/dashboard" element={
+            <ErrorBoundary>
+              {/* <Dashboard /> */}
+              <NotFound />
+            </ErrorBoundary>
+          } />
+          <Route path="/profile" element={
+            <ErrorBoundary>
+              {/* <Profile /> */}
+              <NotFound />
+            </ErrorBoundary>
+          } />
+          
+          {/* 변경 됨. not found 화면 */}
+          <Route path="*" element={
+            <ErrorBoundary>
+              <NotFound />
+            </ErrorBoundary>
+          } />
+        </Routes>
+      </ErrorBoundary>
     </ThemeProvider>
   );
 }
