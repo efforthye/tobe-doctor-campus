@@ -1,12 +1,11 @@
 import { Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import ErrorBoundary from './components/ErrorBoundary';
+import Empty from './pages/Empty';
 import NotFound from './pages/NotFound';
 import './styles/global.css';
 import GlobalStyle from './styles/GlobalStyle';
 import { theme } from './styles/theme';
-
-// 클래스 라우트
 
 function App() {
   return (
@@ -19,6 +18,7 @@ function App() {
             <ErrorBoundary>
               {/* <Home /> */}
               <NotFound />
+              <Empty />
             </ErrorBoundary>
           } />
           
