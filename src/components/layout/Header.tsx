@@ -20,6 +20,7 @@ const Header: React.FC = () => {
   const [mockAuth, setMockAuth] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [loginClickTime, setLoginClickTime] = useState(0);
   
   // 알림 및 프로필 메뉴 참조
   const notificationRef = useRef<HTMLDivElement>(null);
@@ -105,7 +106,16 @@ const Header: React.FC = () => {
   
   // 로그인 토글 (임시)
   const toggleLogin = () => {
-    setMockAuth(prevState => !prevState);
+    // 더블 클릭 인식을 위한 변수
+    const currentTime = new Date().getTime();
+    if (loginClickTime && currentTime - loginClickTime < 300) {
+      // 더블 클릭 감지 (300ms 이내에 두 번 클릭함)
+      setMockAuth(prevState => !prevState);
+      setLoginClickTime(0);
+    } else {
+      // 첫 번째 클릭
+      setLoginClickTime(currentTime);
+    }
   };
   
   // 알림 메뉴나 프로필 메뉴 외부 클릭 시 닫기
@@ -445,8 +455,8 @@ const Header: React.FC = () => {
                   onClick={toggleNotification}
                   isActive={notificationOpen}
                 >
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M7.5 15.8333H12.5M4.16667 9.16667V7.5C4.16667 4.27834 6.77834 1.66667 10 1.66667C13.2217 1.66667 15.8333 4.27834 15.8333 7.5V9.16667C15.8333 10.4673 16.4477 11.7008 17.5 12.5V12.5C18.0602 12.9371 17.7545 13.8333 17.0796 13.8333H2.92038C2.24545 13.8333 1.93982 12.9371 2.5 12.5V12.5C3.55228 11.7008 4.16667 10.4673 4.16667 9.16667Z" stroke="#333333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 19H15M5 11V9C5 5.134 8.134 2 12 2C15.866 2 19 5.134 19 9V11C19 12.5607 19.7375 14.0609 21 15V15C21.6724 15.5244 21.3058 16.6627 20.4854 16.6627H3.51457C2.69415 16.6627 2.32757 15.5244 3 15V15C4.2625 14.0609 5 12.5607 5 11Z" stroke="#171719" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                   {/* 알림이 있을 경우 뱃지 표시 */}
                   <NotificationBadge />
@@ -464,7 +474,7 @@ const Header: React.FC = () => {
                   onClick={toggleProfileMenu}
                   isActive={profileMenuOpen}
                 >
-                  <img src="/default-avatar.png" alt="Profile" />
+                  <img src="https://placehold.co/24x24" alt="Profile" />
                 </ProfileButton>
                 <ProfileMenu 
                   ref={profileMenuRef}
@@ -477,8 +487,7 @@ const Header: React.FC = () => {
           ) : (
             <>
               <LoginButton onClick={toggleLogin}>
-                {/* 두번 누르면 임시로 로그인 된것처럼 처리함 */}
-                {mockAuth ? '로그인 됨' : '로그인'}
+                로그인
               </LoginButton>
               <SignupButton onClick={() => navigate('/signup')}>회원가입</SignupButton>
             </>
@@ -723,6 +732,7 @@ const RightSection = styled.div`
 
 const NotificationButtonWrapper = styled.div`
   position: relative;
+  height: 24px;
   
   @media (max-width: 768px) {
     display: none;
@@ -732,21 +742,43 @@ const NotificationButtonWrapper = styled.div`
 const NotificationButton = styled.button<{ isActive?: boolean }>`
   background: none;
   border: none;
-  padding: 8px;
+  padding: 0;
+  height: 24px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s;
   position: relative;
-  
-  &:hover {
-    transform: scale(1.05);
-  }
+  flex-direction: column;
+  flex: 1 1 0;
   
   svg {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
+  }
+  
+  /* 호버 시 배경 효과 */
+  &:after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 1000px;
+    background-color: var(--Label-Normal, #171719);
+    opacity: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    transition: opacity 0.2s ease;
+  }
+  
+  &:hover:after {
+    opacity: 0.04;
+  }
+  
+  &:active:after {
+    opacity: 0.09;
   }
   
   @media (max-width: 768px) {
@@ -760,12 +792,17 @@ const NotificationBadge = styled.span`
   height: 6px;
   border-radius: 50%;
   background-color: #E53935;
-  top: 8px;
-  right: 8px;
+  top: 0;
+  right: 0;
 `;
 
 const ProfileButtonWrapper = styled.div`
   position: relative;
+  height: 24px;
+  border-radius: 10000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   
   @media (max-width: 768px) {
     display: none;
@@ -780,17 +817,43 @@ const ProfileButton = styled.button<{ isActive?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   overflow: hidden;
-  border: ${props => props.isActive ? '2px solid #296768' : '2px solid transparent'};
-  transition: border-color 0.2s ease;
+  background: var(--Static-White, white);
+  outline: 1px var(--Line-Normal-Alternative, rgba(112, 115, 124, 0.08)) solid;
+  outline-offset: -1px;
+  position: relative;
   
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+  
+  /* 호버 시 배경 효과 */
+  &:after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 1000px;
+    background-color: var(--Label-Normal, #171719);
+    opacity: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    transition: opacity 0.2s ease;
+  }
+  
+  &:hover:after {
+    opacity: 0.04;
+  }
+  
+  &:active:after {
+    opacity: 0.09;
   }
   
   @media (max-width: 768px) {

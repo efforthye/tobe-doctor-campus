@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -9,31 +9,47 @@ interface ProfileMenuProps {
 }
 
 const menuItems = [
-  { id: 'profile', title: '내 프로필', link: '/profile' },
-  { id: 'myclass', title: '내 클래스', link: '/my-classes' },
-  { id: 'settings', title: '계정 설정', link: '/settings' },
-  { id: 'support', title: '고객센터', link: '/support' },
+  { id: 'mypage', title: '마이페이지', link: '/profile' },
+  { id: 'classroom', title: '나의 강의실', link: '/my-classes' },
+  { id: 'cert', title: '수료증', link: '/certificates' }
 ];
 
 const ProfileMenu = forwardRef<HTMLDivElement, ProfileMenuProps>(
   ({ isOpen, onClose, onLogout }, ref) => {
+    const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+
     if (!isOpen) return null;
 
+    const handleMouseEnter = (id: string) => {
+      setHoveredItem(id);
+    };
+
+    const handleMouseLeave = () => {
+      // setHoveredItem(null);
+    };
+    
     return (
-      <Container ref={ref}>
-        <MenuList>
-          {menuItems.map((item) => (
-            <MenuItem key={item.id}>
-              <StyledLink to={item.link} onClick={onClose}>
-                {item.title}
-              </StyledLink>
-            </MenuItem>
-          ))}
-          <Separator />
-          <MenuItem>
-            <LogoutButton onClick={onLogout}>로그아웃</LogoutButton>
+      <Container ref={ref} data-variant="Menu">
+        {menuItems.map((item) => (
+          <MenuItem 
+            key={item.id} 
+            onMouseEnter={() => handleMouseEnter(item.id)}
+            onMouseLeave={handleMouseLeave}
+          >
+            <MenuLink 
+              to={item.link} 
+              onClick={onClose} 
+              $isHovered={hoveredItem === item.id}
+              $hasHovered={hoveredItem !== null}
+            >
+              {item.title}
+            </MenuLink>
           </MenuItem>
-        </MenuList>
+        ))}
+        <Separator />
+        <MenuItem>
+          <LogoutButton onClick={onLogout}>로그아웃</LogoutButton>
+        </MenuItem>
       </Container>
     );
   }
@@ -43,82 +59,89 @@ const Container = styled.div`
   position: absolute;
   top: 100%;
   right: 0;
-  width: 304px;
+  width: 180px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-top: 19px;
+  padding-bottom: 19px;
   background: var(--Background-Elevated-Normal, white);
-  border-radius: 18px;
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.03);
-  z-index: 10;
-  margin-top: 4px;
+  overflow: hidden;
+  border-radius: 18px;
   outline: 1px rgba(112, 115, 124, 0.08) solid;
   outline-offset: -1px;
-  overflow: hidden;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  z-index: 100;
+  margin-top: 8px;
   
-  /* 드롭다운과 버튼 사이의 공간 메움 */
   &:before {
     content: '';
     position: absolute;
-    top: -4px;
+    top: -8px;
     left: 0;
     width: 100%;
-    height: 4px;
+    height: 8px;
   }
 `;
 
-const MenuList = styled.ul`
-  list-style: none;
-  padding: 19px 32px;
-  margin: 0;
+const MenuItem = styled.div`
+  align-self: stretch;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
 `;
 
-const MenuItem = styled.li`
-  padding: 11px 0;
-`;
-
-const StyledLink = styled(Link)`
-  display: block;
-  color: var(--Label-Normal, #171719);
+const MenuLink = styled(Link)<{ $isHovered?: boolean; $hasHovered?: boolean }>`
+  flex: 1 1 0;
   text-decoration: none;
+  color: ${({ $isHovered, $hasHovered }) => 
+    $hasHovered && !$isHovered ? 'var(--Label-Assistive, rgba(55, 56, 60, 0.28))' : 'var(--Label-Normal, #171719)'};
   font-size: 15px;
   font-family: 'Pretendard JP', sans-serif;
   font-weight: 500;
   line-height: 22.01px;
   letter-spacing: 0.14px;
+  word-wrap: break-word;
   transition: color 0.1s ease;
-  
-  &:hover {
-    color: var(--Primary-Strong, #296768);
-  }
 `;
 
 const Separator = styled.div`
-  padding: 8px 0;
+  align-self: stretch;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  display: flex;
   
   &:after {
     content: '';
-    display: block;
+    align-self: stretch;
     height: 1px;
-    background: rgba(112, 115, 124, 0.08);
-    width: 100%;
+    background: var(--Line-Normal-Alternative, rgba(112, 115, 124, 0.08));
   }
 `;
 
 const LogoutButton = styled.button`
+  flex: 1 1 0;
   background: none;
   border: none;
   padding: 0;
-  width: 100%;
   text-align: left;
-  color: var(--Label-Error, #e53935);
-  cursor: pointer;
+  color: var(--Label-Alternative, rgba(55, 56, 60, 0.61));
   font-size: 15px;
   font-family: 'Pretendard JP', sans-serif;
   font-weight: 500;
   line-height: 22.01px;
   letter-spacing: 0.14px;
-  
-  &:hover {
-    opacity: 0.8;
-  }
+  word-wrap: break-word;
+  cursor: pointer;
 `;
 
 export default ProfileMenu;

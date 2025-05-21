@@ -10,38 +10,27 @@ interface NotificationMenuProps {
 const notifications = [
   {
     id: 1,
-    title: '알림 메시지 테스트 1',
-    date: '2분 전',
+    caption: '캡션',
+    title: '알림의 내용이 들어갑니다. 내용이 길어지면 다음 줄로 넘어가요.',
+    date: '날짜 또는 부가 정보',
     read: false,
     link: '/notification/1'
   },
   {
     id: 2,
-    title: '알림 메시지 테스트 2 - 조금 더 긴 메시지로 어떻게 보이는지 확인',
-    date: '3시간 전',
+    caption: '캡션',
+    title: '알림의 내용이 들어갑니다. 내용이 길어지면 다음 줄로 넘어가요.',
+    date: '날짜 또는 부가 정보',
     read: false,
     link: '/notification/2'
   },
   {
     id: 3,
-    title: '알림 메시지 테스트 3',
-    date: '어제',
+    caption: '캡션',
+    title: '알림의 내용이 들어갑니다. 내용이 길어지면 다음 줄로 넘어가요.',
+    date: '2023.07.06(목)',
     read: true,
     link: '/notification/3'
-  },
-  {
-    id: 4,
-    title: '알림 메시지 테스트 4',
-    date: '3일 전',
-    read: true,
-    link: '/notification/4'
-  },
-  {
-    id: 5,
-    title: '알림 메시지 테스트 5',
-    date: '1주일 전',
-    read: true,
-    link: '/notification/5'
   }
 ];
 
@@ -50,136 +39,155 @@ const NotificationMenu = forwardRef<HTMLDivElement, NotificationMenuProps>(
     if (!isOpen) return null;
 
     return (
-      <Container ref={ref}>
-        <Header>
-          <Title>알림</Title>
-        </Header>
-        
-        <NotificationList>
-          {notifications.map((notification) => (
-            <NotificationItem key={notification.id} read={notification.read}>
-              <StyledLink to={notification.link}>
-                <NotificationContent>
-                  <NotificationTitle>{notification.title}</NotificationTitle>
-                  <NotificationDate>{notification.date}</NotificationDate>
-                </NotificationContent>
-              </StyledLink>
-            </NotificationItem>
-          ))}
-        </NotificationList>
-        
-        <Footer>
-          <AllNotificationsLink to="/notifications">모든 알림 보기</AllNotificationsLink>
-        </Footer>
+      <Container ref={ref} hasNotifications={notifications.length > 0} data-variant="Notification">
+        <NotificationContent>
+          {notifications.length > 0 ? (
+            notifications.map((notification, index) => (
+              <React.Fragment key={notification.id}>
+                <NotificationItem>
+                  <StyledLink to={notification.link}>
+                    <NotificationCaption>{notification.caption}</NotificationCaption>
+                    <NotificationTitle>{notification.title}</NotificationTitle>
+                    <NotificationDate>{notification.date}</NotificationDate>
+                  </StyledLink>
+                </NotificationItem>
+                {index < notifications.length - 1 && <Separator />}
+              </React.Fragment>
+            ))
+          ) : (
+            <EmptyNotification>
+              <EmptyText>새로운 알림이 없습니다.</EmptyText>
+            </EmptyNotification>
+          )}
+        </NotificationContent>
       </Container>
     );
   }
 );
 
-const Container = styled.div`
+const Container = styled.div<{ hasNotifications: boolean }>`
   position: absolute;
   top: 100%;
   right: 0;
-  width: 304px;
+  width: 392px;
   background: var(--Background-Elevated-Normal, white);
-  border-radius: 18px;
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.03);
-  z-index: 10;
-  margin-top: 4px;
+  overflow: hidden;
+  border-radius: 18px;
   outline: 1px rgba(112, 115, 124, 0.08) solid;
   outline-offset: -1px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  align-items: center;
+  gap: 8px;
+  z-index: 100;
+  margin-top: 8px;
   
-  /* 드롭다운과 네비게이션 아이템 사이의 공간 메움 */
   &:before {
     content: '';
     position: absolute;
-    top: -4px;
+    top: -8px;
     left: 0;
     width: 100%;
-    height: 4px;
+    height: 8px;
   }
-`;
-
-const Header = styled.div`
-  padding: 19px 32px 10px;
-  border-bottom: 1px solid rgba(112, 115, 124, 0.08);
-`;
-
-const Title = styled.h3`
-  margin: 0;
-  font-size: 15px;
-  font-weight: 600;
-  font-family: 'Pretendard JP', sans-serif;
-  color: var(--Label-Normal, #171719);
-`;
-
-const NotificationList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  max-height: 400px;
-  overflow-y: auto;
-`;
-
-const NotificationItem = styled.li<{ read: boolean }>`
-  padding: 0;
-  border-bottom: 1px solid rgba(112, 115, 124, 0.08);
-  background-color: ${(props) => props.read ? 'transparent' : 'rgba(41, 103, 104, 0.05)'};
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: rgba(112, 115, 124, 0.05);
-  }
-  
-  &:last-child {
-    border-bottom: none;
-  }
-`;
-
-const StyledLink = styled(Link)`
-  display: block;
-  padding: 16px 32px;
-  text-decoration: none;
-  color: inherit;
 `;
 
 const NotificationContent = styled.div`
+  align-self: stretch;
+  padding-top: 20px;
+  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  justify-content: flex-start;
+  align-items: center;
 `;
 
-const NotificationTitle = styled.p`
-  margin: 0;
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--Label-Normal, #171719);
-  line-height: 1.4;
+const NotificationItem = styled.div`
+  width: 392px;
+  padding: 12px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 8px;
 `;
 
-const NotificationDate = styled.span`
-  font-size: 13px;
-  color: var(--Label-Assistive, rgba(55, 56, 60, 0.28));
-`;
-
-const Footer = styled.div`
-  padding: 12px 0;
-  border-top: 1px solid rgba(112, 115, 124, 0.08);
-  text-align: center;
-`;
-
-const AllNotificationsLink = styled(Link)`
-  font-size: 14px;
-  color: var(--Primary-Strong, #296768);
+const StyledLink = styled(Link)`
   text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+`;
+
+const NotificationCaption = styled.div`
+  color: var(--Primary-Normal, #448181);
+  font-size: 12px;
+  font-family: 'Pretendard JP', sans-serif;
+  font-weight: 600;
+  line-height: 16.01px;
+  letter-spacing: 0.30px;
+  word-wrap: break-word;
+`;
+
+const NotificationTitle = styled.div`
+  align-self: stretch;
+  color: var(--Label-Normal, #171719);
+  font-size: 14px;
+  font-family: 'Pretendard JP', sans-serif;
   font-weight: 500;
+  line-height: 21.99px;
+  letter-spacing: 0.20px;
+  word-wrap: break-word;
+`;
+
+const NotificationDate = styled.div`
+  color: var(--Label-Alternative, rgba(55, 56, 60, 0.61));
+  font-size: 12px;
+  font-family: 'Pretendard JP', sans-serif;
+  font-weight: 400;
+  line-height: 16.01px;
+  letter-spacing: 0.30px;
+  word-wrap: break-word;
+`;
+
+const Separator = styled.div`
+  align-self: stretch;
+  padding: 8px 32px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  display: flex;
   
-  &:hover {
-    text-decoration: underline;
+  &:after {
+    content: '';
+    align-self: stretch;
+    height: 1px;
+    background: var(--Line-Normal-Alternative, rgba(112, 115, 124, 0.08));
   }
+`;
+
+const EmptyNotification = styled.div`
+  width: 392px;
+  padding: 12px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 8px;
+`;
+
+const EmptyText = styled.div`
+  align-self: stretch;
+  text-align: center;
+  color: var(--Label-Alternative, rgba(55, 56, 60, 0.61));
+  font-size: 14px;
+  font-family: 'Pretendard JP', sans-serif;
+  font-weight: 500;
+  line-height: 21.99px;
+  letter-spacing: 0.20px;
+  word-wrap: break-word;
 `;
 
 export default NotificationMenu;
