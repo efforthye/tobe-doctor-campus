@@ -6,6 +6,7 @@ import NotFound from './pages/NotFound';
 import './styles/global.css';
 import GlobalStyle from './styles/GlobalStyle';
 import { theme } from './styles/theme';
+import Home from './pages/Home';
 
 function App() {
   return (
@@ -17,8 +18,8 @@ function App() {
           <Route path="/" element={
             <ErrorBoundary>
               {/* <Home /> */}
+              {/* <Empty /> */}
               <NotFound />
-              <Empty />
             </ErrorBoundary>
           } />
           
