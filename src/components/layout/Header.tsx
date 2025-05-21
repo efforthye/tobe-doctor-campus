@@ -1,17 +1,31 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
+import NotificationMenu from './NotificationMenu';
+import ProfileMenu from './ProfileMenu';
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  
+  // 임시로 로그인 처리를 위한 상태
+  const [mockAuth, setMockAuth] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  
+  // 알림 및 프로필 메뉴 참조
+  const notificationRef = useRef<HTMLDivElement>(null);
+  const profileMenuRef = useRef<HTMLDivElement>(null);
+  const notificationButtonRef = useRef<HTMLButtonElement>(null);
+  const profileButtonRef = useRef<HTMLButtonElement>(null);
   
   // 마우스 떠날 때 딜레이 추가를 위한 참조
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -65,6 +79,64 @@ const Header: React.FC = () => {
     // 피그마 디자인에 맞게 호버 상태 유지
     // setHoveredItem(null);
   };
+  
+  // 알림 메뉴 열기/닫기
+  const toggleNotification = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setNotificationOpen(!notificationOpen);
+    setProfileMenuOpen(false);
+  };
+  
+  // 프로필 메뉴 열기/닫기
+  const toggleProfileMenu = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setProfileMenuOpen(!profileMenuOpen);
+    setNotificationOpen(false);
+  };
+  
+  // 로그아웃 처리
+  const handleLogout = () => {
+    setMockAuth(false);
+    setProfileMenuOpen(false);
+    // 실제 로그아웃 처리 추가
+    // dispatch(logout());
+    navigate('/');
+  };
+  
+  // 로그인 토글 (임시)
+  const toggleLogin = () => {
+    setMockAuth(prevState => !prevState);
+  };
+  
+  // 알림 메뉴나 프로필 메뉴 외부 클릭 시 닫기
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // 알림 메뉴 외부 클릭 처리
+      if (
+        notificationOpen &&
+        notificationRef.current && 
+        !notificationRef.current.contains(event.target as Node) &&
+        notificationButtonRef.current &&
+        !notificationButtonRef.current.contains(event.target as Node)
+      ) {
+        setNotificationOpen(false);
+      }
+      
+      // 프로필 메뉴 외부 클릭 처리
+      if (
+        profileMenuOpen &&
+        profileMenuRef.current && 
+        !profileMenuRef.current.contains(event.target as Node) &&
+        profileButtonRef.current &&
+        !profileButtonRef.current.contains(event.target as Node)
+      ) {
+        setProfileMenuOpen(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [notificationOpen, profileMenuOpen]);
 
   return (
     <HeaderContainer scrolled={isScrolled}>
@@ -365,20 +437,49 @@ const Header: React.FC = () => {
 
         <RightSection>
           {/* 피그마 디자인에 따라 검색 버튼 제거 */}
-          {isAuthenticated ? (
+          {isAuthenticated || mockAuth ? (
             <>
-              <NotificationButton>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M7.5 15.8333H12.5M4.16667 9.16667V7.5C4.16667 4.27834 6.77834 1.66667 10 1.66667C13.2217 1.66667 15.8333 4.27834 15.8333 7.5V9.16667C15.8333 10.4673 16.4477 11.7008 17.5 12.5V12.5C18.0602 12.9371 17.7545 13.8333 17.0796 13.8333H2.92038C2.24545 13.8333 1.93982 12.9371 2.5 12.5V12.5C3.55228 11.7008 4.16667 10.4673 4.16667 9.16667Z" stroke="#333333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </NotificationButton>
-              <ProfileButton onClick={() => navigate('/profile')}>
-                <img src="/default-avatar.png" alt="Profile" />
-              </ProfileButton>
+              <NotificationButtonWrapper>
+                <NotificationButton 
+                  ref={notificationButtonRef}
+                  onClick={toggleNotification}
+                  isActive={notificationOpen}
+                >
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.5 15.8333H12.5M4.16667 9.16667V7.5C4.16667 4.27834 6.77834 1.66667 10 1.66667C13.2217 1.66667 15.8333 4.27834 15.8333 7.5V9.16667C15.8333 10.4673 16.4477 11.7008 17.5 12.5V12.5C18.0602 12.9371 17.7545 13.8333 17.0796 13.8333H2.92038C2.24545 13.8333 1.93982 12.9371 2.5 12.5V12.5C3.55228 11.7008 4.16667 10.4673 4.16667 9.16667Z" stroke="#333333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  {/* 알림이 있을 경우 뱃지 표시 */}
+                  <NotificationBadge />
+                </NotificationButton>
+                <NotificationMenu 
+                  ref={notificationRef}
+                  isOpen={notificationOpen} 
+                  onClose={() => setNotificationOpen(false)} 
+                />
+              </NotificationButtonWrapper>
+              
+              <ProfileButtonWrapper>
+                <ProfileButton 
+                  ref={profileButtonRef}
+                  onClick={toggleProfileMenu}
+                  isActive={profileMenuOpen}
+                >
+                  <img src="/default-avatar.png" alt="Profile" />
+                </ProfileButton>
+                <ProfileMenu 
+                  ref={profileMenuRef}
+                  isOpen={profileMenuOpen} 
+                  onClose={() => setProfileMenuOpen(false)} 
+                  onLogout={handleLogout} 
+                />
+              </ProfileButtonWrapper>
             </>
           ) : (
             <>
-              <LoginButton onClick={() => navigate('/login')}>로그인</LoginButton>
+              <LoginButton onClick={toggleLogin}>
+                {/* 두번 누르면 임시로 로그인 된것처럼 처리함 */}
+                {mockAuth ? '로그인 됨' : '로그인'}
+              </LoginButton>
               <SignupButton onClick={() => navigate('/signup')}>회원가입</SignupButton>
             </>
           )}
@@ -620,7 +721,15 @@ const RightSection = styled.div`
   gap: 16px;
 `;
 
-const NotificationButton = styled.button`
+const NotificationButtonWrapper = styled.div`
+  position: relative;
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const NotificationButton = styled.button<{ isActive?: boolean }>`
   background: none;
   border: none;
   padding: 8px;
@@ -629,6 +738,7 @@ const NotificationButton = styled.button`
   align-items: center;
   justify-content: center;
   transition: transform 0.2s;
+  position: relative;
   
   &:hover {
     transform: scale(1.05);
@@ -644,7 +754,25 @@ const NotificationButton = styled.button`
   }
 `;
 
-const ProfileButton = styled.button`
+const NotificationBadge = styled.span`
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #E53935;
+  top: 8px;
+  right: 8px;
+`;
+
+const ProfileButtonWrapper = styled.div`
+  position: relative;
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const ProfileButton = styled.button<{ isActive?: boolean }>`
   background: none;
   border: none;
   padding: 0;
@@ -656,6 +784,8 @@ const ProfileButton = styled.button`
   height: 32px;
   border-radius: 50%;
   overflow: hidden;
+  border: ${props => props.isActive ? '2px solid #296768' : '2px solid transparent'};
+  transition: border-color 0.2s ease;
   
   img {
     width: 100%;

@@ -7,6 +7,8 @@ import './styles/global.css';
 import GlobalStyle from './styles/GlobalStyle';
 import { theme } from './styles/theme';
 import Home from './pages/Home';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 
 function App() {
   return (
@@ -26,14 +28,14 @@ function App() {
           {/* 인증 */}
           <Route path="/login" element={
             <ErrorBoundary>
-              {/* <Login /> */}
-              <NotFound />
+              <Login />
+              {/* <NotFound /> */}
             </ErrorBoundary>
           } />
           <Route path="/signup" element={
             <ErrorBoundary>
-              {/* <Signup /> */}
-              <NotFound />
+              <Signup />
+              {/* <NotFound /> */}
             </ErrorBoundary>
           } />
           
