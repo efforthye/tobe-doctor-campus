@@ -10,7 +10,7 @@ interface LayoutProps {
   hideFooter?: boolean;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, hideFooter = false }) => {
+const Layout: React.FC<LayoutProps> = ({ children, hideFooter = true }) => {
   const { isLoading } = useSelector((state: RootState) => state.ui);
 
   return (
