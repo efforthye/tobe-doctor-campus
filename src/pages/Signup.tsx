@@ -17,6 +17,39 @@ interface SignupFormValues {
   licenseNumber?: string;
 }
 
+interface ValidationErrors {
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+interface ValidationSuccess {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  phoneVerification: string;
+}
+
+// 의대생 대학교 목록
+const UNIVERSITIES = [
+  '가천대학교', '가톨릭대학교', '강원대학교', '건국대학교', '건양대학교', '경북대학교',
+  '경상대학교', '경희대학교', '계명대학교', '고려대학교', '고신대학교', '가톨릭관동대학교',
+  '단국대학교', '대구가톨릭대학교', '동국대학교', '동아대학교', '부산대학교', '서울대학교',
+  '성균관대학교', '순천향대학교', '아주대학교', '연세대학교', '연세대학교 미래캠퍼스',
+  '영남대학교', '울산대학교', '원광대학교', '을지대학교', '이화여자대학교', '인제대학교',
+  '인하대학교', '전남대학교', '전북대학교', '제주대학교', '조선대학교', '차의과학대학교',
+  '중앙대학교', '충남대학교', '충북대학교', '한림대학교', '한양대학교', '기타'
+];
+
+// 의사 진료과 목록
+const DEPARTMENTS = [
+  '일반진료', '가정의학과', '기초의학', '내과', '마취통증의학과', '방사선종양학과',
+  '병리과', '비뇨의학과', '소아청소년과', '산부인과', '성형외과', '신경과', '신경외과',
+  '심장혈관흉부외과', '안과', '영상의학과', '예방의학과', '응급의학과', '이비인후과',
+  '임상약리학과', '외과', '재활의학과', '정신건강의학과', '정형외과', '직업환경의학과',
+  '진단검사의학과', '피부과', '핵의학과', '기타'
+];
+
 const Signup: React.FC = () => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState<SignupFormValues>({
@@ -52,6 +85,34 @@ const Signup: React.FC = () => {
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
   const [isImageUploaded, setIsImageUploaded] = useState(false);
+  const [uploadedFileName, setUploadedFileName] = useState('');
+
+  // 유효성 검사 에러 상태
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+
+  // 유효성 검사 성공 메시지 상태
+  const [validationSuccess, setValidationSuccess] = useState<ValidationSuccess>({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    phoneVerification: ''
+  });
+
+  // 이메일 유효성 검사 함수
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // 비밀번호 유효성 검사 함수
+  const validatePassword = (password: string): boolean => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/;
+    return passwordRegex.test(password);
+  };
 
   // 생년월일 옵션 생성
   const currentYear = new Date().getFullYear();
@@ -68,13 +129,81 @@ const Signup: React.FC = () => {
     }
   }, [agreements.age, agreements.terms, agreements.privacy, agreements.marketing]);
 
+  // 실시간 유효성 검사
+  useEffect(() => {
+    // 이메일 유효성 검사
+    if (formValues.email) {
+      if (!validateEmail(formValues.email)) {
+        setValidationErrors(prev => ({ ...prev, email: '올바른 이메일을 입력해주세요.' }));
+        setValidationSuccess(prev => ({ ...prev, email: '' }));
+      } else if (isEmailVerified) {
+        setValidationErrors(prev => ({ ...prev, email: '' }));
+        setValidationSuccess(prev => ({ ...prev, email: '사용 가능한 이메일입니다.' }));
+      } else {
+        setValidationErrors(prev => ({ ...prev, email: '' }));
+        setValidationSuccess(prev => ({ ...prev, email: '' }));
+      }
+    } else {
+      setValidationErrors(prev => ({ ...prev, email: '' }));
+      setValidationSuccess(prev => ({ ...prev, email: '' }));
+    }
+
+    // 비밀번호 유효성 검사
+    if (formValues.password) {
+      if (!validatePassword(formValues.password)) {
+        setValidationErrors(prev => ({ ...prev, password: '비밀번호 양식이 올바르지 않습니다.' }));
+        setValidationSuccess(prev => ({ ...prev, password: '' }));
+      } else {
+        setValidationErrors(prev => ({ ...prev, password: '' }));
+        setValidationSuccess(prev => ({ ...prev, password: '사용 가능한 비밀번호입니다.' }));
+      }
+    } else {
+      setValidationErrors(prev => ({ ...prev, password: '' }));
+      setValidationSuccess(prev => ({ ...prev, password: '' }));
+    }
+
+    // 비밀번호 확인 검사
+    if (formValues.confirmPassword) {
+      if (formValues.password !== formValues.confirmPassword) {
+        setValidationErrors(prev => ({ ...prev, confirmPassword: '비밀번호가 서로 일치하지 않습니다.' }));
+        setValidationSuccess(prev => ({ ...prev, confirmPassword: '' }));
+      } else if (validatePassword(formValues.password)) {
+        setValidationErrors(prev => ({ ...prev, confirmPassword: '' }));
+        setValidationSuccess(prev => ({ ...prev, confirmPassword: '사용 가능한 비밀번호입니다.' }));
+      } else {
+        setValidationErrors(prev => ({ ...prev, confirmPassword: '' }));
+        setValidationSuccess(prev => ({ ...prev, confirmPassword: '' }));
+      }
+    } else {
+      setValidationErrors(prev => ({ ...prev, confirmPassword: '' }));
+      setValidationSuccess(prev => ({ ...prev, confirmPassword: '' }));
+    }
+  }, [formValues.email, formValues.password, formValues.confirmPassword, isEmailVerified]);
+
+  // 휴대폰 인증 완료 메시지
+  useEffect(() => {
+    if (isPhoneVerified) {
+      setValidationSuccess(prev => ({ ...prev, phoneVerification: '인증되었습니다.' }));
+    } else {
+      setValidationSuccess(prev => ({ ...prev, phoneVerification: '' }));
+    }
+  }, [isPhoneVerified]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormValues(prev => ({ ...prev, [name]: value }));
   };
 
   const handleUserTypeChange = (type: 'student' | 'doctor') => {
-    setFormValues(prev => ({ ...prev, userType: type }));
+    setFormValues(prev => ({ 
+      ...prev, 
+      userType: type,
+      university: '',
+      department: '',
+      licenseNumber: ''
+    }));
+    setIsImageUploaded(false);
+    setUploadedFileName('');
   };
 
   const handleDropdownToggle = (dropdown: keyof typeof dropdownStates) => {
@@ -91,13 +220,19 @@ const Signup: React.FC = () => {
       setFormValues(prev => ({ ...prev, birthMonth: value }));
     } else if (dropdown === 'day') {
       setFormValues(prev => ({ ...prev, birthDay: value }));
+    } else if (dropdown === 'university') {
+      setFormValues(prev => ({ ...prev, university: value }));
+    } else if (dropdown === 'department') {
+      setFormValues(prev => ({ ...prev, department: value }));
     }
     
     setDropdownStates(prev => ({ ...prev, [dropdown]: false }));
   };
 
   const handleEmailVerification = () => {
-    setIsEmailVerified(true);
+    if (validateEmail(formValues.email)) {
+      setIsEmailVerified(true);
+    }
   };
 
   const handlePhoneVerification = () => {
@@ -106,6 +241,7 @@ const Signup: React.FC = () => {
 
   const handleImageUpload = () => {
     setIsImageUploaded(true);
+    setUploadedFileName('파일명'); // 실제로는 파일 선택 다이얼로그에서 가져온 파일명
   };
 
   const handleAllAgreementChange = () => {
@@ -129,11 +265,18 @@ const Signup: React.FC = () => {
   };
 
   const isFormValid = () => {
-    return agreements.age && agreements.terms && agreements.privacy && 
-           isEmailVerified && isPhoneVerified && isImageUploaded &&
-           formValues.email && formValues.name && formValues.password && 
-           formValues.confirmPassword && formValues.birthYear && 
-           formValues.birthMonth && formValues.birthDay;
+    const basicValidation = agreements.age && agreements.terms && agreements.privacy &&
+                           validateEmail(formValues.email) && isEmailVerified && 
+                           formValues.name && validatePassword(formValues.password) && 
+                           formValues.password === formValues.confirmPassword &&
+                           formValues.birthYear && formValues.birthMonth && formValues.birthDay &&
+                           isPhoneVerified;
+
+    if (formValues.userType === 'student') {
+      return basicValidation && formValues.university && isImageUploaded;
+    } else {
+      return basicValidation && formValues.department && formValues.licenseNumber;
+    }
   };
 
   return (
@@ -154,16 +297,22 @@ const Signup: React.FC = () => {
                   value={formValues.email}
                   onChange={handleInputChange}
                   disabled={isEmailVerified}
-                  className={isEmailVerified ? 'verified' : ''}
+                  className={`${isEmailVerified ? 'verified' : ''} ${validationErrors.email ? 'error' : ''}`}
                 />
                 <EmailButton 
                   type="button"
                   onClick={handleEmailVerification}
-                  disabled={isEmailVerified}
+                  disabled={isEmailVerified || !validateEmail(formValues.email)}
                 >
                   {isEmailVerified ? '확인 완료' : '중복 확인'}
                 </EmailButton>
               </EmailInputGroup>
+              {validationErrors.email && (
+                <ErrorMessage>{validationErrors.email}</ErrorMessage>
+              )}
+              {validationSuccess.email && (
+                <SuccessMessage>{validationSuccess.email}</SuccessMessage>
+              )}
             </FormGroup>
 
             {/* 이름 */}
@@ -187,6 +336,7 @@ const Signup: React.FC = () => {
                     type="button"
                     onClick={() => handleDropdownToggle('year')}
                     isOpen={dropdownStates.year}
+                    hasValue={!!formValues.birthYear}
                   >
                     <span>{formValues.birthYear || '연'}</span>
                     <ChevronIcon isOpen={dropdownStates.year}>
@@ -214,6 +364,7 @@ const Signup: React.FC = () => {
                     type="button"
                     onClick={() => handleDropdownToggle('month')}
                     isOpen={dropdownStates.month}
+                    hasValue={!!formValues.birthMonth}
                   >
                     <span>{formValues.birthMonth || '월'}</span>
                     <ChevronIcon isOpen={dropdownStates.month}>
@@ -241,6 +392,7 @@ const Signup: React.FC = () => {
                     type="button"
                     onClick={() => handleDropdownToggle('day')}
                     isOpen={dropdownStates.day}
+                    hasValue={!!formValues.birthDay}
                   >
                     <span>{formValues.birthDay || '일'}</span>
                     <ChevronIcon isOpen={dropdownStates.day}>
@@ -273,9 +425,13 @@ const Signup: React.FC = () => {
                 type="button"
                 onClick={handlePhoneVerification}
                 disabled={isPhoneVerified}
+                className={isPhoneVerified ? 'disabled' : ''}
               >
                 {isPhoneVerified ? '인증 완료' : '휴대폰 인증'}
               </ActionButton>
+              {validationSuccess.phoneVerification && (
+                <SuccessMessage>{validationSuccess.phoneVerification}</SuccessMessage>
+              )}
             </FormGroup>
 
             {/* 비밀번호 */}
@@ -287,14 +443,30 @@ const Signup: React.FC = () => {
                 placeholder="비밀번호를 입력해주세요."
                 value={formValues.password}
                 onChange={handleInputChange}
+                className={validationErrors.password ? 'error' : ''}
               />
+              {validationErrors.password && (
+                <ErrorMessage>{validationErrors.password}</ErrorMessage>
+              )}
+              {validationSuccess.password && (
+                <SuccessMessage>{validationSuccess.password}</SuccessMessage>
+              )}
+              
               <Input
                 type="password"
                 name="confirmPassword"
                 placeholder="비밀번호를 다시 입력해주세요."
                 value={formValues.confirmPassword}
                 onChange={handleInputChange}
+                className={validationErrors.confirmPassword ? 'error' : ''}
               />
+              {validationErrors.confirmPassword && (
+                <ErrorMessage>{validationErrors.confirmPassword}</ErrorMessage>
+              )}
+              {validationSuccess.confirmPassword && (
+                <SuccessMessage>{validationSuccess.confirmPassword}</SuccessMessage>
+              )}
+              
               <InputHelp>영문 대소문자, 숫자를 조합하여 8자 이상 16자 이하로 입력해주세요.</InputHelp>
             </FormGroup>
 
@@ -325,15 +497,37 @@ const Signup: React.FC = () => {
 
               {formValues.userType === 'student' ? (
                 <div>
-                  <Input
-                    type="text"
-                    placeholder="소속 대학을 선택해주세요."
-                    value={formValues.university || ''}
-                    readOnly
-                  />
+                  <DropdownContainer>
+                    <DropdownButton 
+                      type="button"
+                      onClick={() => handleDropdownToggle('university')}
+                      isOpen={dropdownStates.university}
+                      hasValue={!!formValues.university}
+                    >
+                      <span>{formValues.university || '소속 대학을 선택해주세요.'}</span>
+                      <ChevronIcon isOpen={dropdownStates.university}>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                          <path d="M11.07 6.40L8 9.47L4.93 6.40" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </ChevronIcon>
+                    </DropdownButton>
+                    {dropdownStates.university && (
+                      <DropdownMenu>
+                        {UNIVERSITIES.map(university => (
+                          <DropdownItem
+                            key={university}
+                            onClick={() => handleDropdownSelect('university', university)}
+                          >
+                            {university}
+                          </DropdownItem>
+                        ))}
+                      </DropdownMenu>
+                    )}
+                  </DropdownContainer>
+                  
                   <UploadSection>
                     <UploadDescription>
-                      이름, 소속 대학, 학번이 식별 가능한 학생증 혹은 재학증명서 이미지를 업로드해주세요.
+                      {isImageUploaded ? uploadedFileName : '이름, 소속 대학, 학번이 식별 가능한 학생증 혹은 재학증명서 이미지를 업로드해주세요.'}
                     </UploadDescription>
                     <UploadButton 
                       type="button"
@@ -349,12 +543,35 @@ const Signup: React.FC = () => {
                   <MedicalDescription>
                     투비닥터 캠퍼스는 보건복지부 면허민원 서비스를 통해 면허번호 인증 절차를 진행하고 있습니다.
                   </MedicalDescription>
-                  <Input
-                    type="text"
-                    placeholder="진료과를 선택해주세요."
-                    value={formValues.department || ''}
-                    readOnly
-                  />
+                  
+                  <DropdownContainer>
+                    <DropdownButton 
+                      type="button"
+                      onClick={() => handleDropdownToggle('department')}
+                      isOpen={dropdownStates.department}
+                      hasValue={!!formValues.department}
+                    >
+                      <span>{formValues.department || '진료과를 선택해주세요.'}</span>
+                      <ChevronIcon isOpen={dropdownStates.department}>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                          <path d="M11.07 6.40L8 9.47L4.93 6.40" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </ChevronIcon>
+                    </DropdownButton>
+                    {dropdownStates.department && (
+                      <DropdownMenu>
+                        {DEPARTMENTS.map(department => (
+                          <DropdownItem
+                            key={department}
+                            onClick={() => handleDropdownSelect('department', department)}
+                          >
+                            {department}
+                          </DropdownItem>
+                        ))}
+                      </DropdownMenu>
+                    )}
+                  </DropdownContainer>
+                  <Temp8Div></Temp8Div>
                   <Input
                     type="text"
                     name="licenseNumber"
@@ -452,6 +669,10 @@ const Signup: React.FC = () => {
   );
 };
 
+const Temp8Div = styled.div`
+  height: 8px;
+`;
+
 // 기존 스타일 유지하면서 피그마 디자인 적용
 const MainContainer = styled.main`
   display: flex;
@@ -474,7 +695,7 @@ const Title = styled.h1`
   font-weight: 700;
   font-size: 40px;
   line-height: 1.3em;
-  margin-bottom: 64px;
+  margin-bottom: 28px;
   text-align: center;
   
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -496,16 +717,20 @@ const FormContainer = styled.div`
   gap: 36px;
   
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    gap: 32px;
+  }
+  
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     gap: 28px;
   }
 `;
 
 const FormGroup = styled.div`
+  margin-top: 36px;
   display: flex;
   flex-direction: column;
   gap: 8px;
   width: 100%;
-  margin-bottom: 16px;
 `;
 
 const FormLabel = styled.label`
@@ -513,12 +738,14 @@ const FormLabel = styled.label`
   font-size: 14px;
   line-height: 1.429em;
   color: rgba(46, 47, 51, 0.88);
+  margin-bottom: 8px;
 `;
 
 const SectionTitle = styled.div`
   font-weight: 600;
   font-size: 14px;
   color: rgba(46, 47, 51, 0.88);
+  margin-bottom: 8px;
 `;
 
 const SectionDescription = styled.p`
@@ -530,8 +757,25 @@ const SectionDescription = styled.p`
 
 const MedicalDescription = styled.div`
   font-size: 13px;
+  line-height: 18px;
   color: rgba(55, 56, 60, 0.61);
-  margin-bottom: 16px;
+  margin-bottom: 10px;
+  text-align: center;
+`;
+
+// 에러 및 성공 메시지
+const ErrorMessage = styled.div`
+  font-size: 12px;
+  line-height: 1.334em;
+  color: #FF4242;
+  margin-top: 4px;
+`;
+
+const SuccessMessage = styled.div`
+  font-size: 12px;
+  line-height: 1.334em;
+  color: #00BF40;
+  margin-top: 4px;
 `;
 
 // 이메일 입력 그룹
@@ -570,6 +814,10 @@ const EmailInput = styled.input`
   &.verified {
     border-color: #448181;
     background-color: rgba(68, 129, 129, 0.05);
+  }
+  
+  &.error {
+    border-color: rgba(255, 66, 66, 0.28);
   }
   
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
@@ -622,6 +870,10 @@ const Input = styled.input`
     border-width: 2px;
   }
   
+  &.error {
+    border-color: rgba(255, 66, 66, 0.28);
+  }
+  
   & + & {
     margin-top: 8px;
   }
@@ -646,7 +898,7 @@ const DropdownContainer = styled.div`
   position: relative;
 `;
 
-const DropdownButton = styled.button<{ isOpen: boolean }>`
+const DropdownButton = styled.button<{ isOpen: boolean; hasValue: boolean }>`
   width: 100%;
   height: 48px;
   padding: 12px;
@@ -660,7 +912,7 @@ const DropdownButton = styled.button<{ isOpen: boolean }>`
   cursor: pointer;
   
   span {
-    color: rgba(55, 56, 60, 0.28);
+    color: ${props => props.hasValue ? '#171719' : 'rgba(55, 56, 60, 0.28)'};
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
@@ -718,7 +970,7 @@ const ActionButton = styled.button`
   padding: 16px 28px;
   transition: background-color 0.2s;
   
-  &:disabled {
+  &:disabled, &.disabled {
     background-color: #F4F4F5;
     color: rgba(55, 56, 60, 0.28);
     cursor: not-allowed;
@@ -777,7 +1029,7 @@ const UploadSection = styled.div`
 
 const UploadDescription = styled.div`
   flex: 1;
-  color: rgba(55, 56, 60, 0.61);
+  color: ${props => props.children?.toString().startsWith('파일명') ? '#171719' : 'rgba(55, 56, 60, 0.61)'};
   font-size: 13px;
   line-height: 18px;
 `;

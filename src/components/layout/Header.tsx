@@ -871,7 +871,7 @@ const ProfileButton = styled.button<{ isActive?: boolean }>`
 const LoginButton = styled.button`
   font-size: 14px;
   font-weight: 500;
-  color: ${({ theme }) => theme.colors.text};
+  color: ${({ theme }) => theme.colors.primary};
   background: none;
   border: 1px solid rgba(112, 115, 124, 0.25);
   border-radius: 4px;
