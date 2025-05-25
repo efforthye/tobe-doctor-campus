@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
         <MainSection>
           <LogoSection>
             <Logo>
-              <img src="/logo.svg" alt="THE DOCTOR CAMPUS" />
+              <img src="/logo.svg" alt="TOBE DOCTOR CAMPUS" />
             </Logo>
             <CompanyInfo>
               <p>
@@ -52,7 +52,7 @@ const Footer: React.FC = () => {
         </MainSection>
 
         <BottomSection>
-          <Copyright>© {currentYear} THE DOCTOR CAMPUS All Rights Reserved.</Copyright>
+          <Copyright>© {currentYear} TOBE DOCTOR CAMPUS All Rights Reserved.</Copyright>
           <Links>
             <StyledLink to="/privacy">개인정보처리방침</StyledLink>
             <StyledLink to="/terms">이용약관</StyledLink>

@@ -160,7 +160,19 @@ const Header: React.FC = () => {
       <HeaderContent>
         <LeftSection>
           <Logo onClick={() => navigate('/')}>
-            <img src="/logo.svg" alt="THE DOCTOR CAMPUS" />
+            <img 
+              src={`${process.env.PUBLIC_URL}/logo.svg`}
+              alt="TOBE DOCTOR CAMPUS" 
+              onError={(e) => {
+                console.error('Logo failed to load');
+                const target = e.currentTarget;
+                target.style.display = 'none';
+                const logoDiv = target.parentElement;
+                if (logoDiv) {
+                  logoDiv.innerHTML = '<div style="color: #448181; font-weight: 600; font-size: 16px; white-space: nowrap;">TOBE DOCTOR CAMPUS</div>';
+                }
+              }}
+            />
           </Logo>
           <Navigation className={mobileMenuOpen ? 'mobile-open' : ''} onMouseLeave={handleMouseLeave}>
             <NavItem 
@@ -558,6 +570,17 @@ const Logo = styled.div`
     height: 28px;
     width: auto;
     display: block;
+  }
+  
+  /* 로고가 안 보이는 경우를 대비한 디버깅 스타일 */
+  min-height: 28px;
+  min-width: 134px;
+  background-color: transparent;
+  
+  /* 이미지 로딩 실패 시 텍스트 표시 */
+  &::after {
+    content: '';
+    display: ${props => props.theme ? 'none' : 'block'};
   }
 `;
 
