@@ -32,7 +32,7 @@ const Signup: React.FC = () => {
   const [emailVerified, setEmailVerified] = useState(false);
   const [phoneVerified, setPhoneVerified] = useState(false);
   const [licenseVerified, setLicenseVerified] = useState(false);
-  const [userType, setUserType] = useState<UserType>(UserType.DOCTOR);
+  const [userType, setUserType] = useState<UserType>(UserType.STUDENT);
   const [agreeAll, setAgreeAll] = useState(false);
   const [agreeAge, setAgreeAge] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
@@ -295,6 +295,7 @@ const Signup: React.FC = () => {
             {/* 회원 자격 확인 */}
             <FormGroup>
               <FormLabel>회원 자격 확인</FormLabel>
+              <SectionDescription>회원 자격 확인을 위해 제출해주신 정보를 바탕으로 관리자 확인을 거쳐 회원가입이 최종 승인됩니다. 제출해주신 정보가 허위로 판명될 시 회원가입이 취소될 수 있습니다.</SectionDescription>
               <ToggleGroup>
                 <ToggleButton
                   type="button"
