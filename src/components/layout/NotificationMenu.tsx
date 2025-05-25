@@ -31,6 +31,14 @@ const notifications = [
     date: '2023.07.06(목)',
     read: true,
     link: '/notification/3'
+  },
+  {
+    id: 4,
+    caption: '새 알림',
+    title: '네 번째 알림입니다. 알림이 많아지면 스크롤바가 나타납니다.',
+    date: '2023.07.07(금)',
+    read: false,
+    link: '/notification/4'
   }
 ];
 
@@ -70,6 +78,7 @@ const Container = styled.div<{ hasNotifications: boolean }>`
   top: 100%;
   right: 0;
   width: 392px;
+  max-height: 500px;
   background: var(--Background-Elevated-Normal, white);
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.03);
   overflow: hidden;
@@ -101,10 +110,35 @@ const NotificationContent = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  overflow-y: auto;
+  max-height: 460px;
+  
+  /* 커스텀 스크롤바 */
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 1000px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(112, 115, 124, 0.16);
+    border-radius: 1000px;
+    
+    &:hover {
+      background: var(--Label-Normal, #171719);
+    }
+  }
+  
+  &::-webkit-scrollbar-thumb:active {
+    background: var(--Label-Normal, #171719);
+  }
 `;
 
 const NotificationItem = styled.div`
-  width: 392px;
+  width: calc(392px - 5px);
   padding: 12px 32px;
   display: flex;
   flex-direction: column;
@@ -169,7 +203,7 @@ const Separator = styled.div`
 `;
 
 const EmptyNotification = styled.div`
-  width: 392px;
+  width: calc(392px - 5px);
   padding: 12px 32px;
   display: flex;
   flex-direction: column;
