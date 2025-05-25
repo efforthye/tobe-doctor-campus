@@ -9,6 +9,7 @@ import { theme } from './styles/theme';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import SignupComplete from './pages/SignupComplete';
 
 function App() {
   return (
@@ -36,6 +37,11 @@ function App() {
             <ErrorBoundary>
               <Signup />
               {/* <NotFound /> */}
+            </ErrorBoundary>
+          } />
+          <Route path="/signup-complete" element={
+            <ErrorBoundary>
+              <SignupComplete />
             </ErrorBoundary>
           } />
           
