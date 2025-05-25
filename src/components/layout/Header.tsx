@@ -104,17 +104,24 @@ const Header: React.FC = () => {
     navigate('/');
   };
   
-  // 로그인 토글 (임시)
+  // 로그인 처리 - 한 번 클릭: 로그인 페이지 이동, 더블 클릭: 임시 로그인
   const toggleLogin = () => {
-    // 더블 클릭 인식을 위한 변수
     const currentTime = new Date().getTime();
     if (loginClickTime && currentTime - loginClickTime < 300) {
-      // 더블 클릭 감지 (300ms 이내에 두 번 클릭함)
+      // 더블 클릭 감지 (300ms 이내에 두 번 클릭함) - 임시 로그인
       setMockAuth(prevState => !prevState);
       setLoginClickTime(0);
     } else {
-      // 첫 번째 클릭
+      // 첫 번째 클릭 - 300ms 후에 로그인 페이지로 이동
       setLoginClickTime(currentTime);
+      setTimeout(() => {
+        const newTime = new Date().getTime();
+        // 300ms 내에 더블 클릭이 없었다면 로그인 페이지로 이동
+        if (loginClickTime && newTime - loginClickTime >= 300) {
+          navigate('/login');
+          setLoginClickTime(0);
+        }
+      }, 300);
     }
   };
   
