@@ -474,9 +474,7 @@ const Header: React.FC = () => {
                   onClick={toggleNotification}
                   isActive={notificationOpen}
                 >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 19H15M5 11V9C5 5.134 8.134 2 12 2C15.866 2 19 5.134 19 9V11C19 12.5607 19.7375 14.0609 21 15V15C21.6724 15.5244 21.3058 16.6627 20.4854 16.6627H3.51457C2.69415 16.6627 2.32757 15.5244 3 15V15C4.2625 14.0609 5 12.5607 5 11Z" stroke="#171719" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+                  <img src="/Shape.svg" alt="Notification" width="24" height="24" />
                   {/* 알림이 있을 경우 뱃지 표시 */}
                   <NotificationBadge />
                 </NotificationButton>
@@ -493,7 +491,7 @@ const Header: React.FC = () => {
                   onClick={toggleProfileMenu}
                   isActive={profileMenuOpen}
                 >
-                  <img src="https://placehold.co/24x24" alt="Profile" />
+                  <img src="/profile.png" alt="Profile" />
                 </ProfileButton>
                 <ProfileMenu 
                   ref={profileMenuRef}
