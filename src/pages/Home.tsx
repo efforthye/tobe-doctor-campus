@@ -1,193 +1,629 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Layout from '../components/layout/Layout';
 
 const Home: React.FC = () => {
+  const [classroomPage, setClassroomPage] = useState(1);
+  const [connectPage, setConnectPage] = useState(1);
+
+  const handleClassroomPageChange = (direction: 'prev' | 'next') => {
+    if (direction === 'prev' && classroomPage > 1) {
+      setClassroomPage(classroomPage - 1);
+    } else if (direction === 'next' && classroomPage < 3) {
+      setClassroomPage(classroomPage + 1);
+    }
+  };
+
+  const handleConnectPageChange = (direction: 'prev' | 'next') => {
+    if (direction === 'prev' && connectPage > 1) {
+      setConnectPage(connectPage - 1);
+    } else if (direction === 'next' && connectPage < 3) {
+      setConnectPage(connectPage + 1);
+    }
+  };
+
   return (
     <Layout>
       <Container>
-        {/* 메인 배너 */}
+        {/* 배너 섹션 */}
         <BannerSection>
-          <BannerImage src="/images/banner-placeholder.jpg" alt="투비닥터 캠퍼스" />
-          <BannerGradient />
           <BannerContent>
-            <BannerSubtitle>젊은 의사의 학습 러닝메이트</BannerSubtitle>
-            <BannerTitle>투비닥터 캠퍼스</BannerTitle>
+            <BannerTitle>젊은 의사의 학습 러닝메이트,</BannerTitle>
+            <BannerSubtitle>투비닥터 캠퍼스</BannerSubtitle>
           </BannerContent>
         </BannerSection>
 
-        {/* 카테고리 섹션 */}
-        <Section>
-          <SectionHeader>
-            <div>
-              <SectionTitle>EXPLORE THE CAMPUS</SectionTitle>
-              <SectionSubtitle>클래스 카테고리별 페이지로 이동하는 버튼입니다</SectionSubtitle>
-            </div>
-            <SectionArrow>→</SectionArrow>
-          </SectionHeader>
-          
-          <CardContainer>
-            <ExploreCard>
-              <CardThumbnail />
-              <CardContent>
-                <CardTitle>제목</CardTitle>
-                <CardDescription>설명</CardDescription>
-              </CardContent>
-            </ExploreCard>
-            <ExploreCard>
-              <CardThumbnail />
-              <CardContent>
-                <CardTitle>제목</CardTitle>
-                <CardDescription>설명</CardDescription>
-              </CardContent>
-            </ExploreCard>
-            <ExploreCard>
-              <CardThumbnail />
-              <CardContent>
-                <CardTitle>제목</CardTitle>
-                <CardDescription>설명</CardDescription>
-              </CardContent>
-            </ExploreCard>
-            <ExploreCard>
-              <CardThumbnail />
-              <CardContent>
-                <CardTitle>제목</CardTitle>
-                <CardDescription>설명</CardDescription>
-              </CardContent>
-            </ExploreCard>
-            <ExploreCard>
-              <CardThumbnail />
-              <CardContent>
-                <CardTitle>제목</CardTitle>
-                <CardDescription>설명</CardDescription>
-              </CardContent>
-            </ExploreCard>
-          </CardContainer>
-        </Section>
+        {/* 메인 콘텐츠 컨테이너 */}
+        <MainContainer>
+          {/* EXPLORE THE CAMPUS 섹션 */}
+          <Section>
+            <SectionHeader>
+              <SectionTitleGroup>
+                <SectionTitle>EXPLORE THE CAMPUS</SectionTitle>
+                <SectionCaption>클래스 카테고리별 페이지로 이동하는 버튼입니다</SectionCaption>
+              </SectionTitleGroup>
+            </SectionHeader>
+            <CategoryGrid>
+              <CategoryCard>
+                <CategoryCardImage style={{backgroundImage: "url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=400&fit=crop&crop=center')"}} />
+                <CategoryCardOverlay>
+                  <CategoryCardTitle>내과</CategoryCardTitle>
+                </CategoryCardOverlay>
+              </CategoryCard>
+              <CategoryCard>
+                <CategoryCardImage style={{backgroundImage: "url('https://images.unsplash.com/photo-1583912086296-8c8b3660d94f?w=400&h=400&fit=crop&crop=center')"}} />
+                <CategoryCardOverlay>
+                  <CategoryCardTitle>외과</CategoryCardTitle>
+                </CategoryCardOverlay>
+              </CategoryCard>
+              <CategoryCard>
+                <CategoryCardImage style={{backgroundImage: "url('https://images.unsplash.com/photo-1609188076864-c35269136896?w=400&h=400&fit=crop&crop=center')"}} />
+                <CategoryCardOverlay>
+                  <CategoryCardTitle>소아과</CategoryCardTitle>
+                </CategoryCardOverlay>
+              </CategoryCard>
+              <CategoryCard>
+                <CategoryCardImage style={{backgroundImage: "url('https://images.unsplash.com/photo-1559757175-7d4a71724884?w=400&h=400&fit=crop&crop=center')"}} />
+                <CategoryCardOverlay>
+                  <CategoryCardTitle>산부인과</CategoryCardTitle>
+                </CategoryCardOverlay>
+              </CategoryCard>
+              <CategoryCard>
+                <CategoryCardImage style={{backgroundImage: "url('https://images.unsplash.com/photo-1576669801820-6eca57e3dc95?w=400&h=400&fit=crop&crop=center')"}} />
+                <CategoryCardOverlay>
+                  <CategoryCardTitle>정신과</CategoryCardTitle>
+                </CategoryCardOverlay>
+              </CategoryCard>
+              <CategoryCard>
+                <CategoryCardImage style={{backgroundImage: "url('https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=400&h=400&fit=crop&crop=center')"}} />
+                <CategoryCardOverlay>
+                  <CategoryCardTitle>영상의학과</CategoryCardTitle>
+                </CategoryCardOverlay>
+              </CategoryCard>
+            </CategoryGrid>
+          </Section>
 
-        {/* 강의 섹션 */}
-        <Section>
-          <SectionHeader>
-            <div>
-              <SectionTitle>VISIT THE CLASSROOM</SectionTitle>
-              <SectionSubtitle>클래스 강의별 페이지로 이동하는 버튼입니다</SectionSubtitle>
-            </div>
-            <SectionArrow>→</SectionArrow>
-          </SectionHeader>
-          
-          <ClassroomList>
-            <ClassroomCard>
-              <ClassroomTitle>강의 제목</ClassroomTitle>
-              <ClassroomDescription>설명</ClassroomDescription>
-            </ClassroomCard>
-            <ClassroomCard>
-              <ClassroomTitle>강의 제목</ClassroomTitle>
-              <ClassroomDescription>설명</ClassroomDescription>
-            </ClassroomCard>
-            <ClassroomCard>
-              <ClassroomTitle>강의 제목</ClassroomTitle>
-              <ClassroomDescription>설명</ClassroomDescription>
-            </ClassroomCard>
-          </ClassroomList>
-        </Section>
+          {/* VISIT THE CLASSROOM 섹션 */}
+          <Section>
+            <SectionHeader>
+              <SectionTitleGroup>
+                <SectionTitle>VISIT THE CLASSROOM</SectionTitle>
+                <SectionCaption>클래스 강의별 페이지로 이동하는 버튼입니다</SectionCaption>
+              </SectionTitleGroup>
+              <SectionTrailing>
+                <PaginationButtons>
+                  <PaginationBtn 
+                    onClick={() => handleClassroomPageChange('prev')}
+                    disabled={classroomPage === 1}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="15,18 9,12 15,6"></polyline>
+                    </svg>
+                  </PaginationBtn>
+                  <PaginationBtn 
+                    onClick={() => handleClassroomPageChange('next')}
+                    disabled={classroomPage === 3}
+                    className="active"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="9,18 15,12 9,6"></polyline>
+                    </svg>
+                  </PaginationBtn>
+                </PaginationButtons>
+              </SectionTrailing>
+            </SectionHeader>
+            <LectureGrid>
+              <LectureCard>
+                <LectureCardImage>
+                  <LectureCardBg style={{backgroundImage: "url('https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=600&h=400&fit=crop&crop=center')"}} />
+                  <LectureCardOverlay>
+                    <LectureCardContent>
+                      <LectureCardTitle>심전도 읽기 기초</LectureCardTitle>
+                      <LectureCardSubtitle>기본적인 심전도 판독법을 배워보세요</LectureCardSubtitle>
+                    </LectureCardContent>
+                  </LectureCardOverlay>
+                </LectureCardImage>
+              </LectureCard>
+              <LectureCard>
+                <LectureCardImage>
+                  <LectureCardBg style={{backgroundImage: "url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=400&fit=crop&crop=center')"}} />
+                  <LectureCardOverlay>
+                    <LectureCardContent>
+                      <LectureCardTitle>흉부 X-ray 판독</LectureCardTitle>
+                      <LectureCardSubtitle>흉부 영상의학의 기본기를 다져보세요</LectureCardSubtitle>
+                    </LectureCardContent>
+                  </LectureCardOverlay>
+                </LectureCardImage>
+              </LectureCard>
+              <LectureCard>
+                <LectureCardImage>
+                  <LectureCardBg style={{backgroundImage: "url('https://images.unsplash.com/photo-1583912086296-8c8b3660d94f?w=600&h=400&fit=crop&crop=center')"}} />
+                  <LectureCardOverlay>
+                    <LectureCardContent>
+                      <LectureCardTitle>응급실 처치법</LectureCardTitle>
+                      <LectureCardSubtitle>응급상황에서의 대처법을 익혀보세요</LectureCardSubtitle>
+                    </LectureCardContent>
+                  </LectureCardOverlay>
+                </LectureCardImage>
+              </LectureCard>
+            </LectureGrid>
+          </Section>
 
-        {/* 커넥트 섹션 */}
-        <Section>
-          <SectionHeader>
-            <div>
-              <SectionTitle>CONNECT TO THE WORLD</SectionTitle>
-              <SectionSubtitle>커피챗 연자별 페이지로 이동하는 버튼입니다</SectionSubtitle>
-            </div>
-            <SectionArrow>→</SectionArrow>
-          </SectionHeader>
-          
-          <CardContainer className="connect">
-            <ConnectCard>
-              <CardThumbnail />
-              <CardContent>
-                <CardTitle>제목</CardTitle>
-                <CardDescription>설명</CardDescription>
-              </CardContent>
-            </ConnectCard>
-            <ConnectCard>
-              <CardThumbnail />
-              <CardContent>
-                <CardTitle>제목</CardTitle>
-                <CardDescription>설명</CardDescription>
-              </CardContent>
-            </ConnectCard>
-            <ConnectCard>
-              <CardThumbnail />
-              <CardContent>
-                <CardTitle>제목</CardTitle>
-                <CardDescription>설명</CardDescription>
-              </CardContent>
-            </ConnectCard>
-            <ConnectCard>
-              <CardThumbnail />
-              <CardContent>
-                <CardTitle>제목</CardTitle>
-                <CardDescription>설명</CardDescription>
-              </CardContent>
-            </ConnectCard>
-          </CardContainer>
-        </Section>
+          {/* CONNECT TO THE WORLD 섹션 */}
+          <Section>
+            <SectionHeader>
+              <SectionTitleGroup>
+                <SectionTitle>CONNECT TO THE WORLD</SectionTitle>
+                <SectionCaption>커피챗 연자별 페이지로 이동하는 버튼입니다</SectionCaption>
+              </SectionTitleGroup>
+              <SectionTrailing>
+                <PaginationButtons>
+                  <PaginationBtn 
+                    onClick={() => handleConnectPageChange('prev')}
+                    disabled={connectPage === 1}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="15,18 9,12 15,6"></polyline>
+                    </svg>
+                  </PaginationBtn>
+                  <PaginationBtn 
+                    onClick={() => handleConnectPageChange('next')}
+                    disabled={connectPage === 3}
+                    className="active"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="9,18 15,12 9,6"></polyline>
+                    </svg>
+                  </PaginationBtn>
+                </PaginationButtons>
+              </SectionTrailing>
+            </SectionHeader>
+            <CoffeeChatGrid>
+              <CoffeeChatCard>
+                <CoffeeChatCardImage>
+                  <CoffeeChatCardBg style={{backgroundImage: "url('https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face')"}} />
+                  <CoffeeChatCardOverlay>
+                    <CoffeeChatCardContent>
+                      <CoffeeChatCardTitle>김의사 선생님</CoffeeChatCardTitle>
+                      <CoffeeChatCardSubtitle>내과 전문의</CoffeeChatCardSubtitle>
+                    </CoffeeChatCardContent>
+                  </CoffeeChatCardOverlay>
+                </CoffeeChatCardImage>
+              </CoffeeChatCard>
+              <CoffeeChatCard>
+                <CoffeeChatCardImage>
+                  <CoffeeChatCardBg style={{backgroundImage: "url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face')"}} />
+                  <CoffeeChatCardOverlay>
+                    <CoffeeChatCardContent>
+                      <CoffeeChatCardTitle>박의사 선생님</CoffeeChatCardTitle>
+                      <CoffeeChatCardSubtitle>외과 전문의</CoffeeChatCardSubtitle>
+                    </CoffeeChatCardContent>
+                  </CoffeeChatCardOverlay>
+                </CoffeeChatCardImage>
+              </CoffeeChatCard>
+              <CoffeeChatCard>
+                <CoffeeChatCardImage>
+                  <CoffeeChatCardBg style={{backgroundImage: "url('https://images.unsplash.com/photo-1594824475317-d7345bdd5b13?w=400&h=400&fit=crop&crop=face')"}} />
+                  <CoffeeChatCardOverlay>
+                    <CoffeeChatCardContent>
+                      <CoffeeChatCardTitle>이의사 선생님</CoffeeChatCardTitle>
+                      <CoffeeChatCardSubtitle>소아과 전문의</CoffeeChatCardSubtitle>
+                    </CoffeeChatCardContent>
+                  </CoffeeChatCardOverlay>
+                </CoffeeChatCardImage>
+              </CoffeeChatCard>
+              <CoffeeChatCard>
+                <CoffeeChatCardImage>
+                  <CoffeeChatCardBg style={{backgroundImage: "url('https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=400&fit=crop&crop=face')"}} />
+                  <CoffeeChatCardOverlay>
+                    <CoffeeChatCardContent>
+                      <CoffeeChatCardTitle>최의사 선생님</CoffeeChatCardTitle>
+                      <CoffeeChatCardSubtitle>산부인과 전문의</CoffeeChatCardSubtitle>
+                    </CoffeeChatCardContent>
+                  </CoffeeChatCardOverlay>
+                </CoffeeChatCardImage>
+              </CoffeeChatCard>
+            </CoffeeChatGrid>
+          </Section>
+        </MainContainer>
       </Container>
     </Layout>
   );
 };
 
-// 스타일 컴포넌트
+// 스타일 컴포넌트들
 const Container = styled.div`
   width: 100%;
-  padding: 36px 0 160px;
-  box-sizing: border-box;
+  margin: 0 auto;
+  margin-top: 80px;
+  min-height: 100vh;
 `;
 
+/* 배너 섹션 */
 const BannerSection = styled.section`
+  height: 480px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  width: 100%;
-  height: auto;
-  border-radius: 16px;
   overflow: hidden;
-  margin-bottom: 80px;
-`;
-
-const BannerImage = styled.img`
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  aspect-ratio: 16 / 5;
-  display: block;
+  margin: 0;
   
   @media (max-width: 768px) {
-    aspect-ratio: 16 / 9;
+    height: 400px;
   }
-`;
-
-const BannerGradient = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 50%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
 `;
 
 const BannerContent = styled.div`
-  position: absolute;
-  bottom: 60px;
-  left: 60px;
-  color: white;
+  text-align: center;
+  color: #000000;
+  z-index: 2;
+  padding: 0 20px;
+`;
+
+const BannerTitle = styled.h1`
+  font-family: 'Pretendard JP', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.358;
+  letter-spacing: -2.36%;
+  margin-bottom: 8px;
   
   @media (max-width: 768px) {
-    bottom: 30px;
-    left: 30px;
+    font-size: 24px;
   }
 `;
 
-const BannerSubtitle = styled.p`
+const BannerSubtitle = styled.h2`
+  font-family: 'Pretendard JP', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -2.82%;
+  
+  @media (max-width: 768px) {
+    font-size: 32px;
+  }
+`;
+
+/* 메인 컨테이너 */
+const MainContainer = styled.div`
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 64px 80px 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  
+  @media (max-width: 1024px) {
+    padding: 64px 40px 160px;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 40px 20px 100px;
+    gap: 48px;
+  }
+`;
+
+/* 섹션 공통 스타일 */
+const Section = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+`;
+
+const SectionHeader = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+`;
+
+const SectionTitleGroup = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const SectionTitle = styled.h2`
+  font-family: 'Pretendard JP', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.358;
+  letter-spacing: -2.36%;
+  color: #000000;
+  
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
+`;
+
+const SectionCaption = styled.p`
+  font-family: 'Pretendard JP', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 18px;
+  font-weight: 400;
+  line-height: 1.445;
+  letter-spacing: -0.02%;
+  color: rgba(55, 56, 60, 0.61);
+  
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+`;
+
+const SectionTrailing = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 38px;
+  
+  @media (max-width: 768px) {
+    align-self: flex-end;
+  }
+`;
+
+/* 페이지네이션 버튼 */
+const PaginationButtons = styled.div`
+  display: flex;
+  border: 1px solid rgba(112, 115, 124, 0.16);
+  border-radius: 10px;
+  overflow: hidden;
+`;
+
+const PaginationBtn = styled.button`
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  
+  &:first-child {
+    border-right: 1px solid rgba(112, 115, 124, 0.16);
+  }
+  
+  &:hover:not(:disabled) {
+    background-color: #f5f5f5;
+  }
+  
+  &.active {
+    background-color: #f0f0f0;
+  }
+  
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  
+  svg {
+    color: rgba(55, 56, 60, 0.61);
+  }
+`;
+
+/* 카테고리 카드 그리드 (6개, 1:1 비율) */
+const CategoryGrid = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+  
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+`;
+
+const CategoryCard = styled.div`
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(112, 115, 124, 0.16);
+`;
+
+const CategoryCardImage = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=400&fit=crop&crop=center');
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.3s ease;
+  
+  ${CategoryCard}:hover & {
+    transform: scale(1.1);
+  }
+`;
+
+const CategoryCardOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  transition: background 0.3s ease;
+  
+  ${CategoryCard}:hover & {
+    background: rgba(0, 0, 0, 0.6);
+  }
+`;
+
+const CategoryCardTitle = styled.h3`
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+`;
+
+/* 강의 카드 그리드 (3개, 3:2 비율) */
+const LectureGrid = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+`;
+
+const LectureCard = styled.div`
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(112, 115, 124, 0.08);
+`;
+
+const LectureCardImage = styled.div`
+  width: 100%;
+  aspect-ratio: 3/2;
+  position: relative;
+  overflow: hidden;
+`;
+
+const LectureCardBg = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.3s ease;
+  
+  ${LectureCard}:hover & {
+    transform: scale(1.1);
+  }
+`;
+
+const LectureCardOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 50%);
+  display: flex;
+  align-items: flex-end;
+  padding: 24px;
+`;
+
+const LectureCardContent = styled.div`
+  color: white;
+`;
+
+const LectureCardTitle = styled.h3`
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+`;
+
+const LectureCardSubtitle = styled.p`
+  font-size: 14px;
+  opacity: 0.9;
+`;
+
+/* 커피챗 카드 그리드 (4개, 1:1 비율) */
+const CoffeeChatGrid = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+`;
+
+const CoffeeChatCard = styled.div`
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(112, 115, 124, 0.08);
+`;
+
+const CoffeeChatCardImage = styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+`;
+
+const CoffeeChatCardBg = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.3s ease;
+  
+  ${CoffeeChatCard}:hover & {
+    transform: scale(1.1);
+  }
+`;
+
+const CoffeeChatCardOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 50%);
+  display: flex;
+  align-items: flex-end;
+  padding: 24px;
+`;
+
+const CoffeeChatCardContent = styled.div`
+  color: white;
+`;
+
+const CoffeeChatCardTitle = styled.h3`
+  font-size: 18px;
+  font-weight: 600;
   margin-bottom: 8px;
   
   @media (max-width: 768px) {
@@ -195,231 +631,9 @@ const BannerSubtitle = styled.p`
   }
 `;
 
-const BannerTitle = styled.h1`
-  font-size: 40px;
-  font-weight: 700;
-  margin: 0;
-  
-  @media (max-width: 768px) {
-    font-size: 28px;
-  }
-`;
-
-const Section = styled.section`
-  margin-bottom: 80px;
-  padding: 0 80px;
-  
-  @media (max-width: 1024px) {
-    padding: 0 40px;
-  }
-  
-  @media (max-width: 768px) {
-    padding: 0 20px;
-    margin-bottom: 60px;
-  }
-`;
-
-const SectionHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 24px;
-`;
-
-const SectionTitle = styled.h2`
-  font-size: 32px;
-  font-weight: 700;
-  margin: 0 0 10px 0;
-  line-height: 1.35;
-  
-  @media (max-width: 768px) {
-    font-size: 28px;
-  }
-`;
-
-const SectionSubtitle = styled.p`
-  font-size: 18px;
-  color: rgba(0, 0, 0, 0.6);
-  margin: 0;
-  line-height: 1.4;
-  
-  @media (max-width: 768px) {
-    font-size: 16px;
-  }
-`;
-
-const SectionArrow = styled.button`
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: black;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const CardContainer = styled.div`
-  display: flex;
-  gap: 24px;
-  width: 100%;
-  overflow-x: auto;
-  padding-bottom: 12px;
-  
-  /* 스크롤바 숨기기 */
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-  }
-  
-  &.connect {
-    /* 연결 섹션은 4개의 카드 */
-  }
-`;
-
-const baseCardStyles = `
-  border-radius: 12px;
-  overflow: hidden;
-  background-color: #F5F5F5;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  }
-`;
-
-// EXPLORE THE CAMPUS 카드 스타일 (5개의 카드)
-const ExploreCard = styled.div`
-  ${baseCardStyles}
-  flex: 0 0 auto;
-  width: calc((100% - 96px) / 5); /* 5개 카드, 4개의 간격(24px * 4) */
-  
-  @media (max-width: 1024px) {
-    width: calc((100% - 48px) / 3);
-  }
-  
-  @media (max-width: 768px) {
-    width: calc((100% - 24px) / 2);
-  }
-`;
-
-// CONNECT TO THE WORLD 카드 스타일 (4개의 카드)
-const ConnectCard = styled.div`
-  ${baseCardStyles}
-  flex: 0 0 auto;
-  width: calc((100% - 72px) / 4); /* 4개 카드, 3개의 간격(24px * 3) */
-  
-  @media (max-width: 1024px) {
-    width: calc((100% - 48px) / 3);
-  }
-  
-  @media (max-width: 768px) {
-    width: calc((100% - 24px) / 2);
-  }
-`;
-
-const CardThumbnail = styled.div`
-  height: 210px;
-  background-color: #E5E5E5;
-  transition: filter 0.3s ease;
-  
-  ${ExploreCard}:hover &, ${ConnectCard}:hover & {
-    filter: brightness(1.05);
-  }
-`;
-
-const CardContent = styled.div`
-  padding: 20px;
-  text-align: center;
-`;
-
-const CardTitle = styled.h3`
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0 0 8px 0;
-  color: ${({ theme }) => theme.colors.text};
-`;
-
-const CardDescription = styled.p`
-  font-size: 14px;
-  color: rgba(55, 56, 60, 0.61);
-  margin: 0;
-  line-height: 1.5;
-`;
-
-const ClassroomList = styled.div`
-  display: flex;
-  gap: 24px;
-  
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
-`;
-
-const ClassroomCard = styled.div`
-  flex: 1;
-  height: 180px;
-  background-color: ${({ theme }) => theme.colors.primary};
-  border-radius: 12px;
-  padding: 24px;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-    z-index: 1;
-  }
-  
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  }
-  
-  @media (max-width: 768px) {
-    height: 160px;
-  }
-`;
-
-const ClassroomTitle = styled.h3`
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0 0 8px 0;
-  position: relative;
-  z-index: 2;
-  
-  @media (max-width: 768px) {
-    font-size: 16px;
-  }
-`;
-
-const ClassroomDescription = styled.p`
+const CoffeeChatCardSubtitle = styled.p`
   font-size: 14px;
   opacity: 0.9;
-  margin: 0;
-  position: relative;
-  z-index: 2;
-  line-height: 1.5;
-  
-  @media (max-width: 768px) {
-    font-size: 13px;
-  }
 `;
 
 export default Home;

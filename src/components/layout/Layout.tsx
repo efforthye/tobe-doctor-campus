@@ -44,14 +44,14 @@ const Main = styled.main`
   box-sizing: border-box;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 80px;
+  padding: 0;
   
   @media (max-width: 1024px) {
-    padding: 0 40px;
+    padding: 0;
   }
   
   @media (max-width: 768px) {
-    padding: 0 20px;
+    padding: 0;
   }
 `;
 

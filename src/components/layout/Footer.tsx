@@ -121,16 +121,26 @@ const FooterContainer = styled.footer`
 
 const FooterContent = styled.div`
   width: 100%;
-  max-width: 1100px;
+  max-width: 1440px;
   padding-top: 40px;
   padding-bottom: 24px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 80px;
+  padding-right: 80px;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   gap: 32px;
   display: flex;
+  
+  @media (max-width: 1024px) {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  
+  @media (max-width: 768px) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 `;
 
 const MainSection = styled.div`
