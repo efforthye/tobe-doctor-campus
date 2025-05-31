@@ -235,20 +235,20 @@ const Home: React.FC = () => {
 const Container = styled.div`
   width: 100%;
   margin: 0 auto;
-  margin-top: 80px;
   min-height: 100vh;
 `;
 
 /* 배너 섹션 */
 const BannerSection = styled.section`
   height: 480px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: url('/images/image.jpg') center/cover;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
-  margin: 0;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
   
   @media (max-width: 768px) {
     height: 400px;
@@ -256,10 +256,19 @@ const BannerSection = styled.section`
 `;
 
 const BannerContent = styled.div`
-  text-align: center;
+  max-width: 1440px;
+  width: 100%;
+  padding: 0 80px;
   color: #000000;
   z-index: 2;
-  padding: 0 20px;
+  
+  @media (max-width: 1024px) {
+    padding: 0 40px;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 0 20px;
+  }
 `;
 
 const BannerTitle = styled.h1`
