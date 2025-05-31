@@ -3,186 +3,412 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Footer: React.FC = () => {
-  const currentYear = new Date().getFullYear();
-
   return (
     <FooterContainer>
       <FooterContent>
         <MainSection>
-          <LogoSection>
-            <Logo>
-              <img src="/logo.svg" alt="TOBE DOCTOR CAMPUS" />
-            </Logo>
-            <CompanyInfo>
-              <p>
-                인증사업자번호: 제2022-인증01호 (주)투비닥터캠퍼스는 통신판매중개자이며, 통신판매의 당사자가 아닙니다.
-                상품, 상품정보, 거래에 관한 의무와 책임은 판매자에게 있습니다.
-              </p>
-              <p>
-                사업자번호: 123-45-67890 | 대표: 홍길동 | 개인정보책임자: 김영희 | 주소: 서울특별시 영등포구 여의도동 12-3 | 이메일: contact@thedoctorcampus.com
-              </p>
-            </CompanyInfo>
-          </LogoSection>
-          <SocialSection>
-            <SocialLink href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M16.8 3.6H7.2C5.2353 3.6 3.6 5.2353 3.6 7.2V16.8C3.6 18.7647 5.2353 20.4 7.2 20.4H16.8C18.7647 20.4 20.4 18.7647 20.4 16.8V7.2C20.4 5.2353 18.7647 3.6 16.8 3.6Z" stroke="currentColor" strokeWidth="1.5"/>
-                <path d="M17.4 8.4C18.0627 8.4 18.6 7.86274 18.6 7.2C18.6 6.53726 18.0627 6 17.4 6C16.7373 6 16.2 6.53726 16.2 7.2C16.2 7.86274 16.7373 8.4 17.4 8.4Z" fill="currentColor"/>
-              </svg>
-            </SocialLink>
-            <SocialLink href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18 2H15C13.6739 2 12.4021 2.52678 11.4645 3.46447C10.5268 4.40215 10 5.67392 10 7V10H7V14H10V22H14V14H17L18 10H14V7C14 6.73478 14.1054 6.48043 14.2929 6.29289C14.4804 6.10536 14.7348 6 15 6H18V2Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </SocialLink>
-            <SocialLink href="https://youtube.com" target="_blank" rel="noopener noreferrer">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M22.5401 6.42C22.4213 5.94541 22.1794 5.51057 21.8387 5.15941C21.4981 4.80824 21.0708 4.55318 20.6001 4.42C18.8801 4 12.0001 4 12.0001 4C12.0001 4 5.12008 4 3.40008 4.46C2.92933 4.59318 2.50255 4.84824 2.16142 5.19941C1.82029 5.55057 1.57838 5.98541 1.46008 6.46C1.14524 8.20556 0.991368 9.97631 1.00008 11.75C0.988741 13.537 1.14263 15.3213 1.46008 17.08C1.59098 17.5398 1.83833 17.9581 2.17815 18.2945C2.51798 18.6308 2.93882 18.8738 3.40008 19C5.12008 19.46 12.0001 19.46 12.0001 19.46C12.0001 19.46 18.8801 19.46 20.6001 19C21.0708 18.8668 21.4981 18.6118 21.8387 18.2606C22.1794 17.9094 22.4213 17.4746 22.5401 17C22.8524 15.2676 23.0063 13.5103 23.0001 11.75C23.0114 9.96295 22.8574 8.1787 22.5401 6.42Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M9.75 15.02L15.5 11.75L9.75 8.48001V15.02Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </SocialLink>
-            <SocialLink href="https://blog.naver.com" target="_blank" rel="noopener noreferrer">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20 8H10C8.89543 8 8 8.89543 8 10V20C8 21.1046 8.89543 22 10 22H20C21.1046 22 22 21.1046 22 20V10C22 8.89543 21.1046 8 20 8Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M4 16C2.9 16 2 15.1 2 14V4C2 2.9 2.9 2 4 2H14C15.1 2 16 2.9 16 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </SocialLink>
-          </SocialSection>
+          <FooterSection>
+            <FooterTop>
+              <LogoContainer>
+                <Logo>
+                  <img 
+                    src={`${process.env.PUBLIC_URL}/logo.svg`}
+                    alt="TOBE DOCTOR CAMPUS" 
+                    onError={(e) => {
+                      console.error('Logo failed to load');
+                      const target = e.currentTarget;
+                      target.style.display = 'none';
+                      const logoDiv = target.parentElement;
+                      if (logoDiv) {
+                        logoDiv.innerHTML = '<div style="color: #448181; font-weight: 600; font-size: 16px; white-space: nowrap;">TOBE DOCTOR CAMPUS</div>';
+                      }
+                    }}
+                  />
+                </Logo>
+              </LogoContainer>
+              <FooterLinks>
+                <FooterLinkText>공지사항</FooterLinkText>
+                <FooterLinkText>이용약관</FooterLinkText>
+                <FooterLinkText>개인정보 처리방침</FooterLinkText>
+              </FooterLinks>
+            </FooterTop>
+            <FooterText>
+              <FooterDescription>
+                투비닥터 캠퍼스는 대한민국의학한림원과 정보통신산업진흥원의 지원을 받아 구축된 의료 교육 플랫폼입니다. (한림원 / NIPA 문구)
+              </FooterDescription>
+              <FooterDescription>
+                Wanted Design System CC BY 4.0 (디자인 시스템 저작자표시 문구)
+              </FooterDescription>
+            </FooterText>
+          </FooterSection>
+          <FooterDivider />
+          <FooterSection>
+            <FooterTobedoctor>
+              <FooterBrand>투비닥터</FooterBrand>
+              <FooterSocial>
+                {/* 투비닥터 아이콘 - 1.svg */}
+                <FooterSocialIcon href="https://tobedoctor.com" target="_blank" rel="noopener noreferrer">
+                  <img src={`${process.env.PUBLIC_URL}/images/footer/1.svg`} alt="투비닥터" width="24" height="24" />
+                </FooterSocialIcon>
+                {/* 인스타그램 아이콘 - 2.svg */}
+                <FooterSocialIcon href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                  <img src={`${process.env.PUBLIC_URL}/images/footer/2.svg`} alt="Instagram" width="24" height="24" />
+                </FooterSocialIcon>
+                {/* 유튜브 아이콘 - 3.svg */}
+                <FooterSocialIcon href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+                  <img src={`${process.env.PUBLIC_URL}/images/footer/3.svg`} alt="YouTube" width="24" height="24" />
+                </FooterSocialIcon>
+                {/* 카카오 아이콘 - 4.svg */}
+                <FooterSocialIcon href="https://pf.kakao.com" target="_blank" rel="noopener noreferrer">
+                  <img src={`${process.env.PUBLIC_URL}/images/footer/4.svg`} alt="Kakao" width="24" height="24" />
+                </FooterSocialIcon>
+                {/* 뉴스/블로그 아이콘 - 5.svg */}
+                <FooterSocialIcon href="https://blog.naver.com" target="_blank" rel="noopener noreferrer">
+                  <img src={`${process.env.PUBLIC_URL}/images/footer/5.svg`} alt="News" width="24" height="24" />
+                </FooterSocialIcon>
+              </FooterSocial>
+            </FooterTobedoctor>
+            <FooterInfo>
+              <FooterDetails>
+                <FooterDetailRow>
+                  <FooterDetailText>대표 : 김경훈</FooterDetailText>
+                  <FooterDetailDivider>
+                    <FooterDetailDividerLine>
+                      <FooterDetailDividerInner />
+                    </FooterDetailDividerLine>
+                  </FooterDetailDivider>
+                  <FooterDetailText>고유번호 : 117-82-81966</FooterDetailText>
+                </FooterDetailRow>
+                <FooterDetailRow>
+                  <FooterDetailText>주소 : 서울특별시 강동구 천호대로161길 7, 2동 706호</FooterDetailText>
+                  <FooterDetailDivider>
+                    <FooterDetailDividerLine>
+                      <FooterDetailDividerInner />
+                    </FooterDetailDividerLine>
+                  </FooterDetailDivider>
+                  <FooterDetailText>전화번호 : 010-9533-3731</FooterDetailText>
+                  <FooterDetailDivider>
+                    <FooterDetailDividerLine>
+                      <FooterDetailDividerInner />
+                    </FooterDetailDividerLine>
+                  </FooterDetailDivider>
+                  <FooterDetailText>제휴·문의 : tobedoc2020@gmail.com</FooterDetailText>
+                </FooterDetailRow>
+              </FooterDetails>
+            </FooterInfo>
+          </FooterSection>
         </MainSection>
-
-        <BottomSection>
-          <Copyright>© {currentYear} TOBE DOCTOR CAMPUS All Rights Reserved.</Copyright>
-          <Links>
-            <StyledLink to="/privacy">개인정보처리방침</StyledLink>
-            <StyledLink to="/terms">이용약관</StyledLink>
-            <StyledLink to="/sitemap">사이트맵</StyledLink>
-            <StyledLink to="/partnership">제휴문의 안내</StyledLink>
-          </Links>
-        </BottomSection>
+        <FooterBottom>
+          <FooterCopyright>
+            <FooterCopyrightText>© 2025 TO BE DOCTOR All Rights Reserved</FooterCopyrightText>
+          </FooterCopyright>
+        </FooterBottom>
       </FooterContent>
     </FooterContainer>
   );
 };
 
 const FooterContainer = styled.footer`
-  background-color: #F4F4F5;
+  background-color: white;
   width: 100%;
-  border-top: 1px solid rgba(112, 115, 124, 0.16);
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  border-top: 1px solid rgba(112, 115, 124, 0.08);
 `;
 
 const FooterContent = styled.div`
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 60px 80px 40px;
-  
-  @media (max-width: 1024px) {
-    padding: 50px 40px 30px;
-  }
-  
-  @media (max-width: 768px) {
-    padding: 40px 20px 20px;
-  }
+  width: 100%;
+  max-width: 1100px;
+  padding-top: 40px;
+  padding-bottom: 24px;
+  padding-left: 20px;
+  padding-right: 20px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 32px;
+  display: flex;
 `;
 
 const MainSection = styled.div`
-  display: flex;
+  align-self: stretch;
   flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
   gap: 32px;
-  margin-bottom: 48px;
+  display: flex;
+`;
+
+const FooterSection = styled.div`
+  align-self: stretch;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 20px;
+  display: flex;
+`;
+
+const FooterTop = styled.div`
+  align-self: stretch;
+  justify-content: space-between;
+  align-items: center;
+  display: inline-flex;
   
-  @media (min-width: 768px) {
-    flex-direction: row;
-    justify-content: space-between;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
   }
 `;
 
-const LogoSection = styled.div`
-  display: flex;
+const LogoContainer = styled.div`
   flex-direction: column;
-  gap: 20px;
+  justify-content: flex-start;
+  align-items: center;
+  display: inline-flex;
 `;
 
 const Logo = styled.div`
+  height: 32px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  
   img {
     height: 28px;
     width: auto;
     display: block;
   }
+  
+  /* 로고가 안 보이는 경우를 대비한 스타일 */
+  min-height: 28px;
+  min-width: 134px;
 `;
 
-const CompanyInfo = styled.div`
-  font-size: 13px;
-  color: rgba(55, 56, 60, 0.61);
-  line-height: 1.6;
-  max-width: 760px;
+const FooterLinks = styled.div`
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 32px;
+  display: flex;
   
-  p {
-    margin: 0 0 12px 0;
+  @media (max-width: 768px) {
+    gap: 16px;
+    flex-wrap: wrap;
   }
 `;
 
-const SocialSection = styled.div`
-  display: flex;
-  gap: 12px;
-`;
-
-const SocialLink = styled.a`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
+const FooterLink = styled(Link)`
   color: rgba(55, 56, 60, 0.61);
-  transition: color 0.2s;
-  
-  &:hover {
-    color: ${({ theme }) => theme.colors.primary};
-  }
-`;
-
-const BottomSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  border-top: 1px solid rgba(112, 115, 124, 0.08);
-  padding-top: 24px;
-  
-  @media (min-width: 768px) {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-`;
-
-const Copyright = styled.p`
   font-size: 13px;
-  color: rgba(55, 56, 60, 0.61);
-  margin: 0;
-`;
-
-const Links = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-`;
-
-const StyledLink = styled(Link)`
-  font-size: 13px;
-  color: rgba(55, 56, 60, 0.61);
+  font-family: 'Pretendard JP', sans-serif;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: 0.25px;
+  word-wrap: break-word;
   text-decoration: none;
-  position: relative;
-  
-  &:not(:last-child)::after {
-    content: '·';
-    position: absolute;
-    right: -10px;
-    color: rgba(112, 115, 124, 0.35);
-  }
+  transition: color 0.2s ease;
+  cursor: pointer;
   
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
+    color: #448181;
   }
+`;
+
+const FooterLinkText = styled.span`
+  color: rgba(55, 56, 60, 0.61);
+  font-size: 13px;
+  font-family: 'Pretendard JP', sans-serif;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: 0.25px;
+  word-wrap: break-word;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: #448181;
+  }
+`;
+
+const FooterText = styled.div`
+  align-self: stretch;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 8px;
+  display: flex;
+`;
+
+const FooterDescription = styled.div`
+  color: rgba(55, 56, 60, 0.61);
+  font-size: 13px;
+  font-family: 'Pretendard JP', sans-serif;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: 0.25px;
+  word-wrap: break-word;
+`;
+
+const FooterDivider = styled.div`
+  align-self: stretch;
+  height: 1px;
+  background: rgba(112, 115, 124, 0.08);
+`;
+
+const FooterTobedoctor = styled.div`
+  align-self: stretch;
+  justify-content: space-between;
+  align-items: center;
+  display: inline-flex;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+`;
+
+const FooterBrand = styled.div`
+  color: rgba(55, 56, 60, 0.61);
+  font-size: 18px;
+  font-family: 'Pretendard JP', sans-serif;
+  font-weight: 600;
+  line-height: 26.01px;
+  word-wrap: break-word;
+`;
+
+const FooterSocial = styled.div`
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 16px;
+  display: flex;
+`;
+
+const FooterSocialIcon = styled.a`
+  height: 24px;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  display: inline-flex;
+  
+  img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  /* 호버 시 배경 효과 */
+  &:after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 1000px;
+    background-color: #171719;
+    opacity: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    transition: opacity 0.2s ease;
+  }
+  
+  &:hover:after {
+    opacity: 0.04;
+  }
+`;
+
+const FooterInfo = styled.div`
+  align-self: stretch;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 28px;
+  display: flex;
+`;
+
+const FooterDetails = styled.div`
+  align-self: stretch;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 8px;
+  display: flex;
+`;
+
+const FooterDetailRow = styled.div`
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 8px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+`;
+
+const FooterDetailText = styled.div`
+  color: rgba(55, 56, 60, 0.61);
+  font-size: 13px;
+  font-family: 'Pretendard JP', sans-serif;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: 0.25px;
+  word-wrap: break-word;
+`;
+
+const FooterDetailDivider = styled.div`
+  width: 1px;
+  height: 18px;
+  position: relative;
+`;
+
+const FooterDetailDividerLine = styled.div`
+  width: 1px;
+  height: 10.80px;
+  left: 0px;
+  top: 3.60px;
+  position: absolute;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  display: inline-flex;
+`;
+
+const FooterDetailDividerInner = styled.div`
+  width: 1px;
+  flex: 1 1 0;
+  background: rgba(112, 115, 124, 0.22);
+`;
+
+const FooterBottom = styled.div`
+  align-self: stretch;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 20px;
+  display: flex;
+`;
+
+const FooterCopyright = styled.div`
+  align-self: stretch;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+  display: inline-flex;
+`;
+
+const FooterCopyrightText = styled.div`
+  color: rgba(55, 56, 60, 0.61);
+  font-size: 13px;
+  font-family: 'Pretendard JP', sans-serif;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: 0.25px;
+  word-wrap: break-word;
 `;
 
 export default Footer;

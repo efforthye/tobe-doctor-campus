@@ -20,9 +20,9 @@ function App() {
           {/* 홈 */}
           <Route path="/" element={
             <ErrorBoundary>
-              {/* <Home /> */}
+              <Home />
               {/* <Empty /> */}
-              <NotFound />
+              {/* <NotFound /> */}
             </ErrorBoundary>
           } />
           

@@ -106,6 +106,7 @@ const NotificationContent = styled.div`
   align-self: stretch;
   padding-top: 20px;
   padding-bottom: 20px;
+  padding-right: 8px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -138,7 +139,7 @@ const NotificationContent = styled.div`
 `;
 
 const NotificationItem = styled.div`
-  width: calc(392px - 5px);
+  width: calc(392px - 8px);
   padding: 12px 32px;
   display: flex;
   flex-direction: column;
@@ -203,7 +204,7 @@ const Separator = styled.div`
 `;
 
 const EmptyNotification = styled.div`
-  width: calc(392px - 5px);
+  width: calc(392px - 8px);
   padding: 12px 32px;
   display: flex;
   flex-direction: column;

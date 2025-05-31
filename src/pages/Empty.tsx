@@ -4,7 +4,7 @@ import Layout from '../components/layout/Layout';
 
 const Empty: React.FC = () => {
   return (
-    <Layout hideFooter={true}>
+    <Layout>
       <EmptyContainer>
         {/* 의도적으로 비워 둠 */}
       </EmptyContainer>
