@@ -217,23 +217,26 @@ const Home: React.FC = () => {
               </SectionTitleGroup>
               <SectionTrailing>
                 <PaginationButtons>
-                  <PaginationBtn 
-                    onClick={() => handleClassroomPageChange('prev')}
-                    disabled={classroomPage === 1}
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="15,18 9,12 15,6"></polyline>
-                    </svg>
-                  </PaginationBtn>
-                  <PaginationBtn 
-                    onClick={() => handleClassroomPageChange('next')}
-                    disabled={classroomPage === 3}
-                    className="active"
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="9,18 15,12 9,6"></polyline>
-                    </svg>
-                  </PaginationBtn>
+                  <PaginationContainer>
+                    <PaginationContent>
+                      <PaginationBtn 
+                        onClick={() => handleClassroomPageChange('prev')}
+                        disabled={classroomPage === 1}
+                      >
+                        <PaginationIcon isActive={classroomPage > 1}>
+                          <img src="/images/home/left.svg" alt="Previous" />
+                        </PaginationIcon>
+                      </PaginationBtn>
+                      <PaginationBtn 
+                        onClick={() => handleClassroomPageChange('next')}
+                        disabled={classroomPage === 3}
+                      >
+                        <PaginationIcon isRight isActive={classroomPage < 3}>
+                          <img src="/images/home/left.svg" alt="Next" />
+                        </PaginationIcon>
+                      </PaginationBtn>
+                    </PaginationContent>
+                  </PaginationContainer>
                 </PaginationButtons>
               </SectionTrailing>
             </SectionHeader>
@@ -263,23 +266,26 @@ const Home: React.FC = () => {
               </SectionTitleGroup>
               <SectionTrailing>
                 <PaginationButtons>
-                  <PaginationBtn 
-                    onClick={() => handleConnectPageChange('prev')}
-                    disabled={connectPage === 1}
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="15,18 9,12 15,6"></polyline>
-                    </svg>
-                  </PaginationBtn>
-                  <PaginationBtn 
-                    onClick={() => handleConnectPageChange('next')}
-                    disabled={connectPage === 3}
-                    className="active"
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="9,18 15,12 9,6"></polyline>
-                    </svg>
-                  </PaginationBtn>
+                  <PaginationContainer>
+                    <PaginationContent>
+                      <PaginationBtn 
+                        onClick={() => handleConnectPageChange('prev')}
+                        disabled={connectPage === 1}
+                      >
+                        <PaginationIcon isActive={connectPage > 1}>
+                          <img src="/images/home/left.svg" alt="Previous" />
+                        </PaginationIcon>
+                      </PaginationBtn>
+                      <PaginationBtn 
+                        onClick={() => handleConnectPageChange('next')}
+                        disabled={connectPage === 3}
+                      >
+                        <PaginationIcon isRight isActive={connectPage < 3}>
+                          <img src="/images/home/left.svg" alt="Next" />
+                        </PaginationIcon>
+                      </PaginationBtn>
+                    </PaginationContent>
+                  </PaginationContainer>
                 </PaginationButtons>
               </SectionTrailing>
             </SectionHeader>
@@ -457,42 +463,82 @@ const SectionTrailing = styled.div`
 
 /* 페이지네이션 버튼 */
 const PaginationButtons = styled.div`
-  display: flex;
-  border: 1px solid rgba(112, 115, 124, 0.16);
-  border-radius: 10px;
-  overflow: hidden;
+  height: 38px;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+  display: inline-flex;
 `;
 
-const PaginationBtn = styled.button`
-  width: 40px;
-  height: 40px;
-  border: none;
-  background: white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
+const PaginationContainer = styled.div`
+  position: relative;
+  border-radius: 10px;
+  outline: 1px rgba(112, 115, 124, 0.16) solid;
+  outline-offset: -1px;
   justify-content: center;
-  transition: background-color 0.2s;
-  
-  &:first-child {
-    border-right: 1px solid rgba(112, 115, 124, 0.16);
-  }
-  
-  &:hover:not(:disabled) {
-    background-color: #f5f5f5;
-  }
-  
-  &.active {
-    background-color: #f0f0f0;
-  }
+  align-items: center;
+  display: flex;
+`;
+
+const PaginationContent = styled.div`
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+`;
+
+const PaginationBtn = styled.button<{ disabled?: boolean }>`
+  padding: 7px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
   
   &:disabled {
-    opacity: 0.3;
     cursor: not-allowed;
   }
   
-  svg {
-    color: rgba(55, 56, 60, 0.61);
+  &:hover:not(:disabled) {
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(23, 23, 25, 0.04);
+      border-radius: 6px;
+    }
+  }
+  
+  &:first-child {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+  }
+  
+  &:last-child {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+`;
+
+const PaginationIcon = styled.div<{ isRight?: boolean; isActive?: boolean }>`
+  height: 18px;
+  width: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: ${props => props.isRight ? 'rotate(180deg)' : 'none'};
+  
+  img {
+    width: 18px;
+    height: 18px;
+    filter: ${props => props.isActive ? 'opacity(1)' : 'opacity(0.5)'};
+    transition: filter 0.2s ease;
   }
 `;
 
