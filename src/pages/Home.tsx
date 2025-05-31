@@ -6,6 +6,131 @@ const Home: React.FC = () => {
   const [classroomPage, setClassroomPage] = useState(1);
   const [connectPage, setConnectPage] = useState(1);
 
+  // 강의 더미 데이터 (3페이지)
+  const classroomData = {
+    1: [
+      {
+        title: "심전도 읽기 기초",
+        subtitle: "기본적인 심전도 판독법을 배워보세요",
+        image: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=600&h=400&fit=crop&crop=center"
+      },
+      {
+        title: "흉부 X-ray 판독",
+        subtitle: "흉부 영상의학의 기본기를 다져보세요",
+        image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=400&fit=crop&crop=center"
+      },
+      {
+        title: "응급실 처치법",
+        subtitle: "응급상황에서의 대처법을 익혀보세요",
+        image: "https://images.unsplash.com/photo-1583912086296-8c8b3660d94f?w=600&h=400&fit=crop&crop=center"
+      }
+    ],
+    2: [
+      {
+        title: "혈액검사 해석",
+        subtitle: "혈액검사 결과를 정확히 해석하는 방법",
+        image: "https://images.unsplash.com/photo-1576669801820-6eca57e3dc95?w=600&h=400&fit=crop&crop=center"
+      },
+      {
+        title: "MRI 영상 판독",
+        subtitle: "자기공명영상의 기본 판독 원리",
+        image: "https://images.unsplash.com/photo-1559757175-7d4a71724884?w=600&h=400&fit=crop&crop=center"
+      },
+      {
+        title: "외상환자 처치",
+        subtitle: "외상환자의 체계적 접근법",
+        image: "https://images.unsplash.com/photo-1609188076864-c35269136896?w=600&h=400&fit=crop&crop=center"
+      }
+    ],
+    3: [
+      {
+        title: "임상병리학 기초",
+        subtitle: "진단검사의학의 핵심 원리",
+        image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=600&h=400&fit=crop&crop=center"
+      },
+      {
+        title: "초음파 검사법",
+        subtitle: "초음파를 이용한 진단 기법",
+        image: "https://images.unsplash.com/photo-1594824475317-d7345bdd5b13?w=600&h=400&fit=crop&crop=center"
+      },
+      {
+        title: "중환자 관리",
+        subtitle: "중환자실에서의 환자 관리법",
+        image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&h=400&fit=crop&crop=center"
+      }
+    ]
+  };
+
+  // 커피챗 더미 데이터 (3페이지)
+  const connectData = {
+    1: [
+      {
+        title: "김의사 선생님",
+        subtitle: "내과 전문의",
+        image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face"
+      },
+      {
+        title: "박의사 선생님",
+        subtitle: "외과 전문의",
+        image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face"
+      },
+      {
+        title: "이의사 선생님",
+        subtitle: "소아과 전문의",
+        image: "https://images.unsplash.com/photo-1594824475317-d7345bdd5b13?w=400&h=400&fit=crop&crop=face"
+      },
+      {
+        title: "최의사 선생님",
+        subtitle: "산부인과 전문의",
+        image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=400&fit=crop&crop=face"
+      }
+    ],
+    2: [
+      {
+        title: "정교수 선생님",
+        subtitle: "정신과 전문의",
+        image: "https://images.unsplash.com/photo-1576669801820-6eca57e3dc95?w=400&h=400&fit=crop&crop=face"
+      },
+      {
+        title: "강의사 선생님",
+        subtitle: "영상의학과 전문의",
+        image: "https://images.unsplash.com/photo-1559757175-7d4a71724884?w=400&h=400&fit=crop&crop=face"
+      },
+      {
+        title: "조원장 선생님",
+        subtitle: "마취과 전문의",
+        image: "https://images.unsplash.com/photo-1609188076864-c35269136896?w=400&h=400&fit=crop&crop=face"
+      },
+      {
+        title: "한교수 선생님",
+        subtitle: "병리과 전문의",
+        image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=400&fit=crop&crop=face"
+      }
+    ],
+    3: [
+      {
+        title: "윤의사 선생님",
+        subtitle: "응급의학과 전문의",
+        image: "https://images.unsplash.com/photo-1583912086296-8c8b3660d94f?w=400&h=400&fit=crop&crop=face"
+      },
+      {
+        title: "서교수 선생님",
+        subtitle: "재활의학과 전문의",
+        image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face"
+      },
+      {
+        title: "송원장 선생님",
+        subtitle: "가정의학과 전문의",
+        image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face"
+      },
+      {
+        title: "홍의사 선생님",
+        subtitle: "신경과 전문의",
+        image: "https://images.unsplash.com/photo-1594824475317-d7345bdd5b13?w=400&h=400&fit=crop&crop=face"
+      }
+    ]
+  };
+
   const handleClassroomPageChange = (direction: 'prev' | 'next') => {
     if (direction === 'prev' && classroomPage > 1) {
       setClassroomPage(classroomPage - 1);
@@ -113,39 +238,19 @@ const Home: React.FC = () => {
               </SectionTrailing>
             </SectionHeader>
             <LectureGrid>
-              <LectureCard>
-                <LectureCardImage>
-                  <LectureCardBg style={{backgroundImage: "url('https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=600&h=400&fit=crop&crop=center')"}} />
-                  <LectureCardOverlay>
-                    <LectureCardContent>
-                      <LectureCardTitle>심전도 읽기 기초</LectureCardTitle>
-                      <LectureCardSubtitle>기본적인 심전도 판독법을 배워보세요</LectureCardSubtitle>
-                    </LectureCardContent>
-                  </LectureCardOverlay>
-                </LectureCardImage>
-              </LectureCard>
-              <LectureCard>
-                <LectureCardImage>
-                  <LectureCardBg style={{backgroundImage: "url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=400&fit=crop&crop=center')"}} />
-                  <LectureCardOverlay>
-                    <LectureCardContent>
-                      <LectureCardTitle>흉부 X-ray 판독</LectureCardTitle>
-                      <LectureCardSubtitle>흉부 영상의학의 기본기를 다져보세요</LectureCardSubtitle>
-                    </LectureCardContent>
-                  </LectureCardOverlay>
-                </LectureCardImage>
-              </LectureCard>
-              <LectureCard>
-                <LectureCardImage>
-                  <LectureCardBg style={{backgroundImage: "url('https://images.unsplash.com/photo-1583912086296-8c8b3660d94f?w=600&h=400&fit=crop&crop=center')"}} />
-                  <LectureCardOverlay>
-                    <LectureCardContent>
-                      <LectureCardTitle>응급실 처치법</LectureCardTitle>
-                      <LectureCardSubtitle>응급상황에서의 대처법을 익혀보세요</LectureCardSubtitle>
-                    </LectureCardContent>
-                  </LectureCardOverlay>
-                </LectureCardImage>
-              </LectureCard>
+              {classroomData[classroomPage as keyof typeof classroomData].map((lecture, index) => (
+                <LectureCard key={index}>
+                  <LectureCardImage>
+                    <LectureCardBg style={{backgroundImage: `url('${lecture.image}')`}} />
+                    <LectureCardOverlay>
+                      <LectureCardContent>
+                        <LectureCardTitle>{lecture.title}</LectureCardTitle>
+                        <LectureCardSubtitle>{lecture.subtitle}</LectureCardSubtitle>
+                      </LectureCardContent>
+                    </LectureCardOverlay>
+                  </LectureCardImage>
+                </LectureCard>
+              ))}
             </LectureGrid>
           </Section>
 
@@ -179,50 +284,19 @@ const Home: React.FC = () => {
               </SectionTrailing>
             </SectionHeader>
             <CoffeeChatGrid>
-              <CoffeeChatCard>
-                <CoffeeChatCardImage>
-                  <CoffeeChatCardBg style={{backgroundImage: "url('https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face')"}} />
-                  <CoffeeChatCardOverlay>
-                    <CoffeeChatCardContent>
-                      <CoffeeChatCardTitle>김의사 선생님</CoffeeChatCardTitle>
-                      <CoffeeChatCardSubtitle>내과 전문의</CoffeeChatCardSubtitle>
-                    </CoffeeChatCardContent>
-                  </CoffeeChatCardOverlay>
-                </CoffeeChatCardImage>
-              </CoffeeChatCard>
-              <CoffeeChatCard>
-                <CoffeeChatCardImage>
-                  <CoffeeChatCardBg style={{backgroundImage: "url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face')"}} />
-                  <CoffeeChatCardOverlay>
-                    <CoffeeChatCardContent>
-                      <CoffeeChatCardTitle>박의사 선생님</CoffeeChatCardTitle>
-                      <CoffeeChatCardSubtitle>외과 전문의</CoffeeChatCardSubtitle>
-                    </CoffeeChatCardContent>
-                  </CoffeeChatCardOverlay>
-                </CoffeeChatCardImage>
-              </CoffeeChatCard>
-              <CoffeeChatCard>
-                <CoffeeChatCardImage>
-                  <CoffeeChatCardBg style={{backgroundImage: "url('https://images.unsplash.com/photo-1594824475317-d7345bdd5b13?w=400&h=400&fit=crop&crop=face')"}} />
-                  <CoffeeChatCardOverlay>
-                    <CoffeeChatCardContent>
-                      <CoffeeChatCardTitle>이의사 선생님</CoffeeChatCardTitle>
-                      <CoffeeChatCardSubtitle>소아과 전문의</CoffeeChatCardSubtitle>
-                    </CoffeeChatCardContent>
-                  </CoffeeChatCardOverlay>
-                </CoffeeChatCardImage>
-              </CoffeeChatCard>
-              <CoffeeChatCard>
-                <CoffeeChatCardImage>
-                  <CoffeeChatCardBg style={{backgroundImage: "url('https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=400&fit=crop&crop=face')"}} />
-                  <CoffeeChatCardOverlay>
-                    <CoffeeChatCardContent>
-                      <CoffeeChatCardTitle>최의사 선생님</CoffeeChatCardTitle>
-                      <CoffeeChatCardSubtitle>산부인과 전문의</CoffeeChatCardSubtitle>
-                    </CoffeeChatCardContent>
-                  </CoffeeChatCardOverlay>
-                </CoffeeChatCardImage>
-              </CoffeeChatCard>
+              {connectData[connectPage as keyof typeof connectData].map((person, index) => (
+                <CoffeeChatCard key={index}>
+                  <CoffeeChatCardImage>
+                    <CoffeeChatCardBg style={{backgroundImage: `url('${person.image}')`}} />
+                    <CoffeeChatCardOverlay>
+                      <CoffeeChatCardContent>
+                        <CoffeeChatCardTitle>{person.title}</CoffeeChatCardTitle>
+                        <CoffeeChatCardSubtitle>{person.subtitle}</CoffeeChatCardSubtitle>
+                      </CoffeeChatCardContent>
+                    </CoffeeChatCardOverlay>
+                  </CoffeeChatCardImage>
+                </CoffeeChatCard>
+              ))}
             </CoffeeChatGrid>
           </Section>
         </MainContainer>

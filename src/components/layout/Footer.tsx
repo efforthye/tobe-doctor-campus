@@ -46,25 +46,25 @@ const Footer: React.FC = () => {
             <FooterTobedoctor>
               <FooterBrand>투비닥터</FooterBrand>
               <FooterSocial>
-                {/* 투비닥터 아이콘 - 1.svg */}
-                <FooterSocialIcon href="https://tobedoctor.com" target="_blank" rel="noopener noreferrer">
-                  <img src={`${process.env.PUBLIC_URL}/images/footer/1.svg`} alt="투비닥터" width="24" height="24" />
-                </FooterSocialIcon>
-                {/* 인스타그램 아이콘 - 2.svg */}
-                <FooterSocialIcon href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-                  <img src={`${process.env.PUBLIC_URL}/images/footer/2.svg`} alt="Instagram" width="24" height="24" />
-                </FooterSocialIcon>
-                {/* 유튜브 아이콘 - 3.svg */}
-                <FooterSocialIcon href="https://youtube.com" target="_blank" rel="noopener noreferrer">
-                  <img src={`${process.env.PUBLIC_URL}/images/footer/3.svg`} alt="YouTube" width="24" height="24" />
+                {/* 뉴스/블로그 아이콘 - 5.svg */}
+                <FooterSocialIcon href="https://blog.naver.com" target="_blank" rel="noopener noreferrer">
+                  <img src={`${process.env.PUBLIC_URL}/images/footer/5.svg`} alt="News" width="24" height="24" />
                 </FooterSocialIcon>
                 {/* 카카오 아이콘 - 4.svg */}
                 <FooterSocialIcon href="https://pf.kakao.com" target="_blank" rel="noopener noreferrer">
                   <img src={`${process.env.PUBLIC_URL}/images/footer/4.svg`} alt="Kakao" width="24" height="24" />
                 </FooterSocialIcon>
-                {/* 뉴스/블로그 아이콘 - 5.svg */}
-                <FooterSocialIcon href="https://blog.naver.com" target="_blank" rel="noopener noreferrer">
-                  <img src={`${process.env.PUBLIC_URL}/images/footer/5.svg`} alt="News" width="24" height="24" />
+                {/* 유튜브 아이콘 - 3.svg */}
+                <FooterSocialIcon href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+                  <img src={`${process.env.PUBLIC_URL}/images/footer/3.svg`} alt="YouTube" width="24" height="24" />
+                </FooterSocialIcon>
+                {/* 인스타그램 아이콘 - 2.svg */}
+                <FooterSocialIcon href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                  <img src={`${process.env.PUBLIC_URL}/images/footer/2.svg`} alt="Instagram" width="24" height="24" />
+                </FooterSocialIcon>
+                {/* 투비닥터 아이콘 - 1.svg */}
+                <FooterSocialIcon href="https://tobedoctor.com" target="_blank" rel="noopener noreferrer">
+                  <img src={`${process.env.PUBLIC_URL}/images/footer/1.svg`} alt="투비닥터" width="24" height="24" />
                 </FooterSocialIcon>
               </FooterSocial>
             </FooterTobedoctor>
