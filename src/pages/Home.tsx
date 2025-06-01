@@ -537,7 +537,7 @@ const PaginationIcon = styled.div<{ isRight?: boolean; isActive?: boolean }>`
   img {
     width: 18px;
     height: 18px;
-    filter: ${props => props.isActive ? 'opacity(1)' : 'opacity(0.5)'};
+    filter: ${props => props.isActive ? 'brightness(0) saturate(100%) invert(0%)' : 'opacity(0.35)'};
     transition: filter 0.2s ease;
   }
 `;
