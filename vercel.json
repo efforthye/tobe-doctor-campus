@@ -24,6 +24,10 @@
       "dest": "/favicon.ico"
     },
     {
+      "src": "/favicon.svg", 
+      "dest": "/favicon.svg"
+    },
+    {
       "src": "/logo.svg",
       "dest": "/logo.svg"
     },
