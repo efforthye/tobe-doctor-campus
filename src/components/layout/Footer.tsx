@@ -48,23 +48,23 @@ const Footer: React.FC = () => {
               <FooterSocial>
                 {/* 뉴스/블로그 아이콘 - 5.svg */}
                 <FooterSocialIcon href="https://blog.naver.com" target="_blank" rel="noopener noreferrer">
-                  <img src={`${process.env.PUBLIC_URL}/images/5.svg`} alt="News" width="24" height="24" />
+                  <img src="/images/5.svg" alt="News" width="24" height="24" />
                 </FooterSocialIcon>
                 {/* 카카오 아이콘 - 4.svg */}
                 <FooterSocialIcon href="https://pf.kakao.com" target="_blank" rel="noopener noreferrer">
-                  <img src={`${process.env.PUBLIC_URL}/images/4.svg`} alt="Kakao" width="24" height="24" />
+                  <img src="/images/4.svg" alt="Kakao" width="24" height="24" />
                 </FooterSocialIcon>
                 {/* 유튜브 아이콘 - 3.svg */}
                 <FooterSocialIcon href="https://youtube.com" target="_blank" rel="noopener noreferrer">
-                  <img src={`${process.env.PUBLIC_URL}/images/3.svg`} alt="YouTube" width="24" height="24" />
+                  <img src="/images/3.svg" alt="YouTube" width="24" height="24" />
                 </FooterSocialIcon>
                 {/* 인스타그램 아이콘 - 2.svg */}
                 <FooterSocialIcon href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-                  <img src={`${process.env.PUBLIC_URL}/images/2.svg`} alt="Instagram" width="24" height="24" />
+                  <img src="/images/2.svg" alt="Instagram" width="24" height="24" />
                 </FooterSocialIcon>
                 {/* 투비닥터 아이콘 - 1.svg */}
                 <FooterSocialIcon href="https://tobedoctor.com" target="_blank" rel="noopener noreferrer">
-                  <img src={`${process.env.PUBLIC_URL}/images/1.svg`} alt="투비닥터" width="24" height="24" />
+                  <img src="/images/1.svg" alt="투비닥터" width="24" height="24" />
                 </FooterSocialIcon>
               </FooterSocial>
             </FooterTobedoctor>
@@ -208,23 +208,6 @@ const FooterLinks = styled.div`
   @media (max-width: 768px) {
     gap: 16px;
     flex-wrap: wrap;
-  }
-`;
-
-const FooterLink = styled(Link)`
-  color: rgba(55, 56, 60, 0.61);
-  font-size: 13px;
-  font-family: 'Pretendard JP', sans-serif;
-  font-weight: 500;
-  line-height: 18px;
-  letter-spacing: 0.25px;
-  word-wrap: break-word;
-  text-decoration: none;
-  transition: color 0.2s ease;
-  cursor: pointer;
-  
-  &:hover {
-    color: #448181;
   }
 `;
 

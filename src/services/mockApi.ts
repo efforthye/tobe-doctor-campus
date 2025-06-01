@@ -1,5 +1,4 @@
 // mockApi.ts - API 호출을 모의합니다
-import axios from 'axios';
 
 // 사용자 데이터 인터페이스
 interface User {
