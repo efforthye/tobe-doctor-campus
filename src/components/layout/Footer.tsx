@@ -47,7 +47,7 @@ const Footer: React.FC = () => {
               <FooterBrand>투비닥터</FooterBrand>
               <FooterSocial>
                 {/* 뉴스/블로그 아이콘 - 5.svg */}
-                <FooterSocialIcon href="https://blog.naver.com" target="_blank" rel="noopener noreferrer">
+                <FooterSocialIcon href="https://tobedoctor.net" target="_blank" rel="noopener noreferrer">
                   <img src="/images/5.svg" alt="News" width="24" height="24" />
                 </FooterSocialIcon>
                 {/* 카카오 아이콘 - 4.svg */}
