@@ -224,7 +224,7 @@ const Home: React.FC = () => {
                         disabled={classroomPage === 1}
                       >
                         <PaginationIcon isActive={classroomPage > 1}>
-                          <img src="/images/home/left.svg" alt="Previous" />
+                          <img src="/images/left.svg" alt="Previous" />
                         </PaginationIcon>
                       </PaginationBtn>
                       <PaginationBtn 
@@ -232,7 +232,7 @@ const Home: React.FC = () => {
                         disabled={classroomPage === 3}
                       >
                         <PaginationIcon isRight isActive={classroomPage < 3}>
-                          <img src="/images/home/left.svg" alt="Next" />
+                          <img src="/images/left.svg" alt="Next" />
                         </PaginationIcon>
                       </PaginationBtn>
                     </PaginationContent>
@@ -273,7 +273,7 @@ const Home: React.FC = () => {
                         disabled={connectPage === 1}
                       >
                         <PaginationIcon isActive={connectPage > 1}>
-                          <img src="/images/home/left.svg" alt="Previous" />
+                          <img src="/images/left.svg" alt="Previous" />
                         </PaginationIcon>
                       </PaginationBtn>
                       <PaginationBtn 
@@ -281,7 +281,7 @@ const Home: React.FC = () => {
                         disabled={connectPage === 3}
                       >
                         <PaginationIcon isRight isActive={connectPage < 3}>
-                          <img src="/images/home/left.svg" alt="Next" />
+                          <img src="/images/left.svg" alt="Next" />
                         </PaginationIcon>
                       </PaginationBtn>
                     </PaginationContent>

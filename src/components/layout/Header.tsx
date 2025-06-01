@@ -474,7 +474,7 @@ const Header: React.FC = () => {
                   onClick={toggleNotification}
                   isActive={notificationOpen}
                 >
-                  <img src="/images/header/alarm.svg" alt="Notification" width="24" height="24" />
+                  <img src="/images/alarm.svg" alt="Notification" width="24" height="24" />
                   {/* 알림이 있을 경우 뱃지 표시 */}
                   <NotificationBadge />
                 </NotificationButton>
@@ -491,7 +491,7 @@ const Header: React.FC = () => {
                   onClick={toggleProfileMenu}
                   isActive={profileMenuOpen}
                 >
-                  <img src="/images/header/profile.png" alt="Profile" />
+                  <img src="/images/profile.png" alt="Profile" />
                 </ProfileButton>
                 <ProfileMenu 
                   ref={profileMenuRef}
