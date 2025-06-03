@@ -614,7 +614,7 @@ const CategoryCardImage = styled.div`
   transition: transform 0.3s ease;
   
   ${CategoryCard}:hover & {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 `;
 
@@ -685,7 +685,7 @@ const LectureCardBg = styled.div`
   transition: transform 0.3s ease;
   
   ${LectureCard}:hover & {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 `;
 
@@ -764,7 +764,7 @@ const CoffeeChatCardBg = styled.div`
   transition: transform 0.3s ease;
   
   ${CoffeeChatCard}:hover & {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 `;
 
