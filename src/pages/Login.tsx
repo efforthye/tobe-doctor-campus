@@ -22,6 +22,7 @@ const Login: React.FC = () => {
   const [formErrors, setFormErrors] = useState<Partial<LoginFormValues>>({});
   const [showPassword, setShowPassword] = useState(false); // 기본값: 비밀번호 가림
   const [keepLoggedIn, setKeepLoggedIn] = useState(false); // 로그인 유지 상태
+  const [loginError, setLoginError] = useState(''); // 로그인 에러 메시지
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -51,6 +52,11 @@ const Login: React.FC = () => {
         [name]: '',
       });
     }
+    
+    // 입력 시 로그인 에러 제거
+    if (loginError) {
+      setLoginError('');
+    }
   };
 
   const validateForm = (): boolean => {
@@ -78,6 +84,15 @@ const Login: React.FC = () => {
     e.preventDefault();
 
     if (validateForm()) {
+      // 로그인 에러 초기화
+      setLoginError('');
+      
+      // 임시 로그인 실패 시뮬레이션 (테스트용)
+      if (formValues.email !== 'efforthye@gmail.com' || formValues.password !== '1234') {
+        setLoginError('이메일 또는 비밀번호가 올바르지 않습니다.');
+        return;
+      }
+      
       dispatch(login({ email: formValues.email, password: formValues.password }));
     }
   };
@@ -99,8 +114,6 @@ const Login: React.FC = () => {
         </SloganSection>
         
         <FormContainer>
-          {error && <ErrorMessage>{error}</ErrorMessage>}
-          
           <form onSubmit={handleSubmit}>
             {/* 이메일 입력 */}
             <FormGroup hasBottomMargin>
@@ -147,6 +160,13 @@ const Login: React.FC = () => {
                 로그인 유지
               </CheckboxLabel>
             </KeepLoggedInWrapper>
+            
+            {/* 로그인 에러 메시지 */}
+            {loginError && (
+              <LoginErrorMessage>
+                {loginError}
+              </LoginErrorMessage>
+            )}
             
             {/* 로그인 버튼 */}
             <LoginButton 
@@ -207,16 +227,6 @@ const FormContainer = styled.div`
   max-width: 480px;
   display: flex;
   flex-direction: column;
-  gap: 36px;
-`;
-
-const ErrorMessage = styled.div`
-  background-color: rgba(255, 82, 82, 0.1);
-  color: #ff5252;
-  padding: 12px;
-  border-radius: 12px;
-  margin-bottom: 16px;
-  font-size: 14px;
 `;
 
 const FormGroup = styled.div<{ hasBottomMargin?: boolean }>`
@@ -254,7 +264,7 @@ const EmailInput = styled.input`
   }
   
   &:focus {
-    border-color: rgba(112, 115, 124, 0.16); /* 포커스 시에도 기본 회색 유지 */
+    border-color: rgba(112, 115, 124, 0.16);
   }
 `;
 
@@ -267,7 +277,7 @@ const PasswordInputWrapper = styled.div`
 const PasswordInput = styled.input`
   width: 100%;
   padding: 12px;
-  padding-right: 44px; /* 아이콘 공간 확보 (22px 아이콘 + 12px 여백 + 10px 추가 여백) */
+  padding-right: 44px;
   border: 1px solid rgba(112, 115, 124, 0.16);
   border-radius: 12px;
   font-size: 16px;
@@ -285,7 +295,7 @@ const PasswordInput = styled.input`
   }
   
   &:focus {
-    border-color: rgba(112, 115, 124, 0.16); /* 포커스 시에도 기본 회색 유지 */
+    border-color: rgba(112, 115, 124, 0.16);
   }
 `;
 
@@ -324,14 +334,14 @@ const KeepLoggedInWrapper = styled.div`
   gap: 10px;
   display: inline-flex;
   margin-top: 8px;
-  margin-bottom: 0; /* 하단 마진 완전 제거 */
+  margin-bottom: 0;
   flex-shrink: 0;
-  position: relative; /* 위치 고정 */
+  position: relative;
 `;
 
 const CheckboxWrapper = styled.div`
-  width: 20px; /* 고정 너비 */
-  height: 20px; /* 고정 높이 */
+  width: 20px;
+  height: 20px;
   padding: 2px;
   position: relative;
   flex-direction: column;
@@ -341,15 +351,6 @@ const CheckboxWrapper = styled.div`
   cursor: pointer;
   flex-shrink: 0;
   box-sizing: border-box;
-`;
-
-const CheckboxInput = styled.input`
-  position: absolute;
-  opacity: 0;
-  width: 16px;
-  height: 16px;
-  margin: 0;
-  cursor: pointer;
 `;
 
 const CheckboxCustom = styled.div<{ checked: boolean }>`
@@ -365,7 +366,7 @@ const CheckboxCustom = styled.div<{ checked: boolean }>`
   align-items: center;
   flex-shrink: 0;
   box-sizing: border-box;
-  contain: layout style paint; /* 레이아웃 격리 */
+  contain: layout style paint;
   
   ${props => props.checked && `
     border-color: #448181;
@@ -375,7 +376,7 @@ const CheckboxCustom = styled.div<{ checked: boolean }>`
     width: 14px;
     height: 14px;
     flex-shrink: 0;
-    transition: none; /* 모든 transition 제거 */
+    transition: none;
   }
 `;
 
@@ -390,7 +391,21 @@ const CheckboxLabel = styled.div`
   word-wrap: break-word;
   cursor: pointer;
   user-select: none;
-  align-self: flex-start; /* 텍스트 위치 고정 */
+  align-self: flex-start;
+`;
+
+// 로그인 에러 메시지
+const LoginErrorMessage = styled.div`
+  align-self: stretch;
+  color: #FF4242;
+  font-size: 14px;
+  font-family: 'Pretendard JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  line-height: 20.01px;
+  letter-spacing: 0.20px;
+  word-wrap: break-word;
+  margin-top: 36px;
+  margin-bottom: 0;
 `;
 
 const InputHelp = styled.p<{ error?: boolean }>`
@@ -411,15 +426,15 @@ const LoginButton = styled.button`
   line-height: 1.5em;
   cursor: pointer;
   padding: 12px 28px;
-  margin-top: 44px; /* 고정 마진 (8px + 36px) */
+  margin-top: 44px;
   margin-bottom: 36px;
   min-height: 48px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative; /* 위치 고정 */
-  flex-shrink: 0; /* 크기 고정 */
+  position: relative;
+  flex-shrink: 0;
   
   &:disabled {
     background-color: #F4F4F5;
