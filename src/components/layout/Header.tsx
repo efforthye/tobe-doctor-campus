@@ -281,7 +281,7 @@ const Header: React.FC = () => {
               >
                 COFFEE CHAT
               </NavLink>
-              {activeDropdown === 'coffee-chat' && (
+              {/* {activeDropdown === 'coffee-chat' && (
                 <DropdownMenu>
                   <DropdownItem 
                     isHovered={hoveredItem === 'coffee-1'}
@@ -330,7 +330,7 @@ const Header: React.FC = () => {
                     >커피챗 전체 보기</DropdownLink>
                   </DropdownItem>
                 </DropdownMenu>
-              )}
+              )} */}
             </NavItem>
             <NavItem 
               active={isActive('/archive')}
@@ -343,7 +343,7 @@ const Header: React.FC = () => {
               >
                 ARCHIVE
               </NavLink>
-              {activeDropdown === 'archive' && (
+              {/* {activeDropdown === 'archive' && (
                 <DropdownMenu>
                   <DropdownItem 
                     isHovered={hoveredItem === 'archive-1'}
@@ -392,7 +392,7 @@ const Header: React.FC = () => {
                     >아카이브 전체 보기</DropdownLink>
                   </DropdownItem>
                 </DropdownMenu>
-              )}
+              )} */}
             </NavItem>
             <NavItem 
               active={isActive('/community')}
@@ -405,7 +405,7 @@ const Header: React.FC = () => {
               >
                 COMMUNITY
               </NavLink>
-              {activeDropdown === 'community' && (
+              {/* {activeDropdown === 'community' && (
                 <DropdownMenu>
                   <DropdownItem 
                     isHovered={hoveredItem === 'community-1'}
@@ -454,7 +454,7 @@ const Header: React.FC = () => {
                     >커뮤니티 전체 보기</DropdownLink>
                   </DropdownItem>
                 </DropdownMenu>
-              )}
+              )} */}
             </NavItem>
             <MobileCloseButton onClick={toggleMobileMenu}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
