@@ -7,6 +7,7 @@ import { RootState } from '../store';
 import Layout from '../components/layout/Layout';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 import { ReactComponent as PasswordEyeIcon } from '../assets/password_eye.svg';
+import { ReactComponent as LoginCheckIcon } from '../assets/login-check.svg';
 
 interface LoginFormValues {
   email: string;
@@ -20,6 +21,7 @@ const Login: React.FC = () => {
   });
   const [formErrors, setFormErrors] = useState<Partial<LoginFormValues>>({});
   const [showPassword, setShowPassword] = useState(false); // 기본값: 비밀번호 가림
+  const [keepLoggedIn, setKeepLoggedIn] = useState(false); // 로그인 유지 상태
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -84,6 +86,10 @@ const Login: React.FC = () => {
     setShowPassword(!showPassword);
   };
 
+  const toggleKeepLoggedIn = () => {
+    setKeepLoggedIn(!keepLoggedIn);
+  };
+
   return (
     <Layout>
       <MainContainer>
@@ -128,6 +134,19 @@ const Login: React.FC = () => {
               </PasswordInputWrapper>
               {formErrors.password && <InputHelp error>{formErrors.password}</InputHelp>}
             </FormGroup>
+            
+            {/* 로그인 유지 체크박스 */}
+            <KeepLoggedInWrapper>
+              <CheckboxWrapper onClick={toggleKeepLoggedIn}>
+                {/* 실제 input 제거 - DOM 변화 방지 */}
+                <CheckboxCustom checked={keepLoggedIn}>
+                  <LoginCheckIcon style={{opacity: keepLoggedIn ? 1 : 0}} />
+                </CheckboxCustom>
+              </CheckboxWrapper>
+              <CheckboxLabel onClick={toggleKeepLoggedIn}>
+                로그인 유지
+              </CheckboxLabel>
+            </KeepLoggedInWrapper>
             
             {/* 로그인 버튼 */}
             <LoginButton 
@@ -296,6 +315,84 @@ const EyeIconWrapper = styled.div`
   }
 `;
 
+// 로그인 유지 체크박스 스타일
+const KeepLoggedInWrapper = styled.div`
+  width: 335px;
+  height: 20px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 10px;
+  display: inline-flex;
+  margin-top: 8px;
+  margin-bottom: 0; /* 하단 마진 완전 제거 */
+  flex-shrink: 0;
+  position: relative; /* 위치 고정 */
+`;
+
+const CheckboxWrapper = styled.div`
+  width: 20px; /* 고정 너비 */
+  height: 20px; /* 고정 높이 */
+  padding: 2px;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  display: inline-flex;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-sizing: border-box;
+`;
+
+const CheckboxInput = styled.input`
+  position: absolute;
+  opacity: 0;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  cursor: pointer;
+`;
+
+const CheckboxCustom = styled.div<{ checked: boolean }>`
+  width: 16px;
+  height: 16px;
+  border-radius: 5px;
+  border: 1.5px solid rgba(112, 115, 124, 0.22);
+  background-color: ${props => props.checked ? '#448181' : 'transparent'};
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  contain: layout style paint; /* 레이아웃 격리 */
+  
+  ${props => props.checked && `
+    border-color: #448181;
+  `}
+  
+  svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    transition: none; /* 모든 transition 제거 */
+  }
+`;
+
+const CheckboxLabel = styled.div`
+  flex: 1 1 0;
+  color: #171719;
+  font-size: 14px;
+  font-family: 'Pretendard JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  line-height: 20.01px;
+  letter-spacing: 0.20px;
+  word-wrap: break-word;
+  cursor: pointer;
+  user-select: none;
+  align-self: flex-start; /* 텍스트 위치 고정 */
+`;
+
 const InputHelp = styled.p<{ error?: boolean }>`
   font-size: 12px;
   line-height: 1.334em;
@@ -314,13 +411,15 @@ const LoginButton = styled.button`
   line-height: 1.5em;
   cursor: pointer;
   padding: 12px 28px;
-  margin-top: 36px;
+  margin-top: 44px; /* 고정 마진 (8px + 36px) */
   margin-bottom: 36px;
-  min-height: 48px; /* 인퓋과 동일한 높이 */
+  min-height: 48px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative; /* 위치 고정 */
+  flex-shrink: 0; /* 크기 고정 */
   
   &:disabled {
     background-color: #F4F4F5;
