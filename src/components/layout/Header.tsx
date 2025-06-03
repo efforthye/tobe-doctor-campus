@@ -584,7 +584,7 @@ const HeaderContent = styled.div`
 const LeftSection = styled.div`
   display: flex;
   align-items: center;
-  gap: 64px;
+  gap: 84px;
   
   @media (max-width: 768px) {
     gap: 32px;
@@ -613,7 +613,7 @@ const Logo = styled.div`
 
 const Navigation = styled.nav`
   display: flex;
-  gap: 36px;
+  gap: 40px;
   
   @media (max-width: 768px) {
     display: none;
@@ -788,7 +788,7 @@ const DropdownLink = styled(Link)<{ isHovered?: boolean; hasHoveredItem?: boolea
 const RightSection = styled.div`
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
 `;
 
 const NotificationButtonWrapper = styled.div`
@@ -928,8 +928,8 @@ const LoginButton = styled.button`
   color: ${({ theme }) => theme.colors.primary};
   background: none;
   border: 1px solid rgba(112, 115, 124, 0.25);
-  border-radius: 4px;
-  padding: 8px 16px;
+  border-radius: 8px;
+  padding: 7px 14px;
   cursor: pointer;
   transition: all 0.2s;
   
@@ -948,8 +948,8 @@ const SignupButton = styled.button`
   color: white;
   background: ${({ theme }) => theme.colors.primary};
   border: none;
-  border-radius: 4px;
-  padding: 8px 16px;
+  border-radius: 8px;
+  padding: 7px 14px;
   cursor: pointer;
   transition: all 0.2s;
   
