@@ -9,6 +9,10 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import SignupComplete from './pages/SignupComplete';
+import ForgotPassword from './pages/ForgotPassword';
+import ForgotPasswordVerify from './pages/ForgotPasswordVerify';
+import ForgotPasswordReset from './pages/ForgotPasswordReset';
+import ForgotPasswordComplete from './pages/ForgotPasswordComplete';
 
 function App() {
   return (
@@ -41,6 +45,26 @@ function App() {
           <Route path="/signup-complete" element={
             <ErrorBoundary>
               <SignupComplete />
+            </ErrorBoundary>
+          } />
+          <Route path="/forgot-password" element={
+            <ErrorBoundary>
+              <ForgotPassword />
+            </ErrorBoundary>
+          } />
+          <Route path="/forgot-password/verify" element={
+            <ErrorBoundary>
+              <ForgotPasswordVerify />
+            </ErrorBoundary>
+          } />
+          <Route path="/forgot-password/reset" element={
+            <ErrorBoundary>
+              <ForgotPasswordReset />
+            </ErrorBoundary>
+          } />
+          <Route path="/forgot-password/complete" element={
+            <ErrorBoundary>
+              <ForgotPasswordComplete />
             </ErrorBoundary>
           } />
           
