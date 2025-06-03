@@ -67,6 +67,16 @@ const Header: React.FC = () => {
     }, 100); // 100ms 딜레이
   };
 
+  // 헤더 전체에서 마우스가 떠날 때 즉시 모든 상태 리셋
+  const handleHeaderMouseLeave = () => {
+    if (dropdownTimeoutRef.current) {
+      clearTimeout(dropdownTimeoutRef.current);
+      dropdownTimeoutRef.current = null;
+    }
+    setActiveDropdown(null);
+    setHoveredItem(null);
+  };
+
   const handleItemMouseEnter = (item: string) => {
     // 이전 타이머가 있으면 취소
     if (dropdownTimeoutRef.current) {
@@ -77,8 +87,8 @@ const Header: React.FC = () => {
   };
 
   const handleItemMouseLeave = () => {
-    // 피그마 디자인에 맞게 호버 상태 유지
-    // setHoveredItem(null);
+    // 드롭다운 아이템에서 마우스가 떠나면 호버 상태 리셋
+    setHoveredItem(null);
   };
   
   // 알림 메뉴 열기/닫기
@@ -156,7 +166,7 @@ const Header: React.FC = () => {
   }, [notificationOpen, profileMenuOpen]);
 
   return (
-    <HeaderContainer scrolled={isScrolled}>
+    <HeaderContainer scrolled={isScrolled} onMouseLeave={handleHeaderMouseLeave}>
       <HeaderContent>
         <LeftSection>
           <Logo onClick={() => navigate('/')}>
@@ -197,6 +207,7 @@ const Header: React.FC = () => {
                       to="/classes/all"
                       isHovered={hoveredItem === 'classes-1'}
                       hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'classes-all'}
                     >메뉴 하나</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -208,6 +219,7 @@ const Header: React.FC = () => {
                       to="/classes/new"
                       isHovered={hoveredItem === 'classes-2'}
                       hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'classes-all'}
                     >메뉴 둘</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -219,6 +231,7 @@ const Header: React.FC = () => {
                       to="/classes/popular"
                       isHovered={hoveredItem === 'classes-3'}
                       hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'classes-all'}
                     >메뉴 셋</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -230,6 +243,7 @@ const Header: React.FC = () => {
                       to="/classes/popular"
                       isHovered={hoveredItem === 'classes-4'}
                       hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'classes-all'}
                     >메뉴 넷</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -241,6 +255,7 @@ const Header: React.FC = () => {
                       to="/classes/popular"
                       isHovered={hoveredItem === 'classes-5'}
                       hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'classes-all'}
                     >메뉴 다섯</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -252,6 +267,7 @@ const Header: React.FC = () => {
                       to="/classes/popular"
                       isHovered={hoveredItem === 'classes-6'}
                       hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'classes-all'}
                     >메뉴 여섯</DropdownLink>
                   </DropdownItem>
                   <DropdownSeparator />
@@ -264,6 +280,7 @@ const Header: React.FC = () => {
                       to="/classes"
                       isHovered={hoveredItem === 'classes-all'}
                       hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'classes-all'}
                       isSpecial={true}
                     >클래스 전체 보기</DropdownLink>
                   </DropdownItem>
@@ -281,7 +298,7 @@ const Header: React.FC = () => {
               >
                 COFFEE CHAT
               </NavLink>
-              {/* {activeDropdown === 'coffee-chat' && (
+              {activeDropdown === 'coffee-chat' && (
                 <DropdownMenu>
                   <DropdownItem 
                     isHovered={hoveredItem === 'coffee-1'}
@@ -292,6 +309,7 @@ const Header: React.FC = () => {
                       to="/coffee-chat/all"
                       isHovered={hoveredItem === 'coffee-1'}
                       hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'coffee-all'}
                     >메뉴 하나</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -303,6 +321,7 @@ const Header: React.FC = () => {
                       to="/coffee-chat/new"
                       isHovered={hoveredItem === 'coffee-2'}
                       hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'coffee-all'}
                     >메뉴 둘</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -314,6 +333,7 @@ const Header: React.FC = () => {
                       to="/coffee-chat/popular"
                       isHovered={hoveredItem === 'coffee-3'}
                       hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'coffee-all'}
                     >메뉴 셋</DropdownLink>
                   </DropdownItem>
                   <DropdownSeparator />
@@ -326,11 +346,12 @@ const Header: React.FC = () => {
                       to="/coffee-chat"
                       isHovered={hoveredItem === 'coffee-all'}
                       hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'coffee-all'}
                       isSpecial={true}
                     >커피챗 전체 보기</DropdownLink>
                   </DropdownItem>
                 </DropdownMenu>
-              )} */}
+              )}
             </NavItem>
             <NavItem 
               active={isActive('/archive')}
@@ -343,7 +364,7 @@ const Header: React.FC = () => {
               >
                 ARCHIVE
               </NavLink>
-              {/* {activeDropdown === 'archive' && (
+              {activeDropdown === 'archive' && (
                 <DropdownMenu>
                   <DropdownItem 
                     isHovered={hoveredItem === 'archive-1'}
@@ -354,6 +375,7 @@ const Header: React.FC = () => {
                       to="/archive/articles"
                       isHovered={hoveredItem === 'archive-1'}
                       hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'archive-all'}
                     >메뉴 하나</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -365,6 +387,7 @@ const Header: React.FC = () => {
                       to="/archive/videos"
                       isHovered={hoveredItem === 'archive-2'}
                       hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'archive-all'}
                     >메뉴 둘</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -376,6 +399,7 @@ const Header: React.FC = () => {
                       to="/archive/podcasts"
                       isHovered={hoveredItem === 'archive-3'}
                       hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'archive-all'}
                     >메뉴 셋</DropdownLink>
                   </DropdownItem>
                   <DropdownSeparator />
@@ -388,11 +412,12 @@ const Header: React.FC = () => {
                       to="/archive"
                       isHovered={hoveredItem === 'archive-all'}
                       hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'archive-all'}
                       isSpecial={true}
                     >아카이브 전체 보기</DropdownLink>
                   </DropdownItem>
                 </DropdownMenu>
-              )} */}
+              )}
             </NavItem>
             <NavItem 
               active={isActive('/community')}
@@ -405,7 +430,7 @@ const Header: React.FC = () => {
               >
                 COMMUNITY
               </NavLink>
-              {/* {activeDropdown === 'community' && (
+              {activeDropdown === 'community' && (
                 <DropdownMenu>
                   <DropdownItem 
                     isHovered={hoveredItem === 'community-1'}
@@ -416,6 +441,7 @@ const Header: React.FC = () => {
                       to="/community/events"
                       isHovered={hoveredItem === 'community-1'}
                       hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'community-all'}
                     >메뉴 하나</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -427,6 +453,7 @@ const Header: React.FC = () => {
                       to="/community/mentoring"
                       isHovered={hoveredItem === 'community-2'}
                       hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'community-all'}
                     >메뉴 둘</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
@@ -438,6 +465,7 @@ const Header: React.FC = () => {
                       to="/community/forum"
                       isHovered={hoveredItem === 'community-3'}
                       hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'community-all'}
                     >메뉴 셋</DropdownLink>
                   </DropdownItem>
                   <DropdownSeparator />
@@ -450,11 +478,12 @@ const Header: React.FC = () => {
                       to="/community"
                       isHovered={hoveredItem === 'community-all'}
                       hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'community-all'}
                       isSpecial={true}
                     >커뮤니티 전체 보기</DropdownLink>
                   </DropdownItem>
                 </DropdownMenu>
-              )} */}
+              )}
             </NavItem>
             <MobileCloseButton onClick={toggleMobileMenu}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -623,7 +652,6 @@ const NavItem = styled.div<{ active: boolean }>`
 
 const NavLink = styled(Link)<{ $isActive?: boolean; $hasActiveDropdown?: boolean }>`
   /* 기본 상태에서는 검정색 */
-  /* 호버 효과를 빠르게 반영하도록 transition 값 조정 */
   color: var(--Label-Normal, #171719);
   text-decoration: none;
   transition: color 0.1s ease;
@@ -635,15 +663,16 @@ const NavLink = styled(Link)<{ $isActive?: boolean; $hasActiveDropdown?: boolean
   text-align: center;
   text-transform: uppercase;
   
-  /* 드롭다운이 활성화되면 호버되지 않은 항목은 회색으로 변경 */
+  /* 드롭다운이 활성화되고 다른 메뉴가 호버된 경우에만 회색으로 변경 */
   ${({ $isActive, $hasActiveDropdown }) => 
     $hasActiveDropdown && !$isActive && css`
       color: var(--Label-Assistive, rgba(55, 56, 60, 0.28));
     `
   }
   
+  /* 호버 시에는 항상 검정색 */
   &:hover {
-    color: var(--Label-Normal, #171719);
+    color: var(--Label-Normal, #171719) !important;
   }
 `;
 
@@ -722,7 +751,7 @@ const DropdownSeparator = styled.div`
   }
 `;
 
-const DropdownLink = styled(Link)<{ isHovered?: boolean; hasHoveredItem?: boolean; isSpecial?: boolean }>`
+const DropdownLink = styled(Link)<{ isHovered?: boolean; hasHoveredItem?: boolean; isSpecial?: boolean; hoveredItemIsSpecial?: boolean }>`
   flex: 1 1 0;
   /* 기본 상태는 검정색 */
   color: var(--Label-Normal, #171719);
@@ -733,7 +762,6 @@ const DropdownLink = styled(Link)<{ isHovered?: boolean; hasHoveredItem?: boolea
   line-height: 22.01px;
   letter-spacing: 0.14px;
   display: block;
-  /* 호버 효과를 빠르게 반영하도록 transition 값 조정 */
   transition: color 0.1s ease;
   word-wrap: break-word;
   
@@ -744,12 +772,17 @@ const DropdownLink = styled(Link)<{ isHovered?: boolean; hasHoveredItem?: boolea
     `
   }
   
-  /* 다른 항목이 호버되었을 때 호버되지 않은 항목은 회색으로 표시 */
-  ${({ isHovered, hasHoveredItem, isSpecial }) => 
-    hasHoveredItem && !isHovered && !isSpecial && css`
-      color: var(--Label-Assistive, rgba(55, 56, 60, 0.28));
-    `
-  }
+  /* 호버 로직:
+   * 1. 일반 항목이 호버된 경우: 호버되지 않은 일반 항목들은 회색
+   * 2. 특수 항목(전체보기)이 호버된 경우: 모든 일반 항목들은 검정색 유지
+   */
+  ${({ isHovered, hasHoveredItem, isSpecial, hoveredItemIsSpecial }) => {
+    if (hasHoveredItem && !isHovered && !isSpecial && !hoveredItemIsSpecial) {
+      return css`
+        color: var(--Label-Assistive, rgba(55, 56, 60, 0.28));
+      `;
+    }
+  }}
 `;
 
 const RightSection = styled.div`
