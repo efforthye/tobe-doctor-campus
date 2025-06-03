@@ -20,7 +20,7 @@ const Header: React.FC = () => {
   const [mockAuth, setMockAuth] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-  const [loginClickTime, setLoginClickTime] = useState(0);
+  const [clickTimeout, setClickTimeout] = useState<NodeJS.Timeout | null>(null);
   
   // 알림 및 프로필 메뉴 참조
   const notificationRef = useRef<HTMLDivElement>(null);
@@ -116,22 +116,18 @@ const Header: React.FC = () => {
   
   // 로그인 처리 - 한 번 클릭: 로그인 페이지 이동, 더블 클릭: 임시 로그인
   const toggleLogin = () => {
-    const currentTime = new Date().getTime();
-    if (loginClickTime && currentTime - loginClickTime < 300) {
-      // 더블 클릭 감지 (300ms 이내에 두 번 클릭함) - 임시 로그인
+    if (clickTimeout) {
+      // 더블 클릭 감지 - 임시 로그인/로그아웃
+      clearTimeout(clickTimeout);
+      setClickTimeout(null);
       setMockAuth(prevState => !prevState);
-      setLoginClickTime(0);
     } else {
-      // 첫 번째 클릭 - 300ms 후에 로그인 페이지로 이동
-      setLoginClickTime(currentTime);
-      setTimeout(() => {
-        const newTime = new Date().getTime();
-        // 300ms 내에 더블 클릭이 없었다면 로그인 페이지로 이동
-        if (loginClickTime && newTime - loginClickTime >= 300) {
-          navigate('/login');
-          setLoginClickTime(0);
-        }
-      }, 300);
+      // 첫 번째 클릭 - 250ms 후에 로그인 페이지로 이동
+      const timeout = setTimeout(() => {
+        navigate('/login');
+        setClickTimeout(null);
+      }, 250);
+      setClickTimeout(timeout);
     }
   };
   
@@ -164,6 +160,15 @@ const Header: React.FC = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [notificationOpen, profileMenuOpen]);
+
+  // 컴포넌트 언마운트 시 타이머 정리
+  useEffect(() => {
+    return () => {
+      if (clickTimeout) {
+        clearTimeout(clickTimeout);
+      }
+    };
+  }, [clickTimeout]);
 
   return (
     <HeaderContainer scrolled={isScrolled} onMouseLeave={handleHeaderMouseLeave}>
