@@ -240,21 +240,29 @@ const Home: React.FC = () => {
                 </PaginationButtons>
               </SectionTrailing>
             </SectionHeader>
-            <LectureGrid>
-              {classroomData[classroomPage as keyof typeof classroomData].map((lecture, index) => (
-                <LectureCard key={index}>
-                  <LectureCardImage>
-                    <LectureCardBg style={{backgroundImage: `url('${lecture.image}')`}} />
-                    <LectureCardOverlay>
-                      <LectureCardContent>
-                        <LectureCardTitle>{lecture.title}</LectureCardTitle>
-                        <LectureCardSubtitle>{lecture.subtitle}</LectureCardSubtitle>
-                      </LectureCardContent>
-                    </LectureCardOverlay>
-                  </LectureCardImage>
-                </LectureCard>
-              ))}
-            </LectureGrid>
+            <SlideContainer>
+              <SlideWrapper style={{ transform: `translateX(-${(classroomPage - 1) * (100/3)}%)` }}>
+                {Object.entries(classroomData).map(([pageNum, lectures]) => (
+                  <SlidePage key={pageNum}>
+                    <LectureGrid>
+                      {lectures.map((lecture, index) => (
+                        <LectureCard key={`${pageNum}-${index}`}>
+                          <LectureCardImage>
+                            <LectureCardBg style={{backgroundImage: `url('${lecture.image}')`}} />
+                            <LectureCardOverlay>
+                              <LectureCardContent>
+                                <LectureCardTitle>{lecture.title}</LectureCardTitle>
+                                <LectureCardSubtitle>{lecture.subtitle}</LectureCardSubtitle>
+                              </LectureCardContent>
+                            </LectureCardOverlay>
+                          </LectureCardImage>
+                        </LectureCard>
+                      ))}
+                    </LectureGrid>
+                  </SlidePage>
+                ))}
+              </SlideWrapper>
+            </SlideContainer>
           </Section>
 
           {/* CONNECT TO THE WORLD 섹션 */}
@@ -289,21 +297,29 @@ const Home: React.FC = () => {
                 </PaginationButtons>
               </SectionTrailing>
             </SectionHeader>
-            <CoffeeChatGrid>
-              {connectData[connectPage as keyof typeof connectData].map((person, index) => (
-                <CoffeeChatCard key={index}>
-                  <CoffeeChatCardImage>
-                    <CoffeeChatCardBg style={{backgroundImage: `url('${person.image}')`}} />
-                    <CoffeeChatCardOverlay>
-                      <CoffeeChatCardContent>
-                        <CoffeeChatCardTitle>{person.title}</CoffeeChatCardTitle>
-                        <CoffeeChatCardSubtitle>{person.subtitle}</CoffeeChatCardSubtitle>
-                      </CoffeeChatCardContent>
-                    </CoffeeChatCardOverlay>
-                  </CoffeeChatCardImage>
-                </CoffeeChatCard>
-              ))}
-            </CoffeeChatGrid>
+            <SlideContainer>
+              <SlideWrapper style={{ transform: `translateX(-${(connectPage - 1) * (100/3)}%)` }}>
+                {Object.entries(connectData).map(([pageNum, people]) => (
+                  <SlidePage key={pageNum}>
+                    <CoffeeChatGrid>
+                      {people.map((person, index) => (
+                        <CoffeeChatCard key={`${pageNum}-${index}`}>
+                          <CoffeeChatCardImage>
+                            <CoffeeChatCardBg style={{backgroundImage: `url('${person.image}')`}} />
+                            <CoffeeChatCardOverlay>
+                              <CoffeeChatCardContent>
+                                <CoffeeChatCardTitle>{person.title}</CoffeeChatCardTitle>
+                                <CoffeeChatCardSubtitle>{person.subtitle}</CoffeeChatCardSubtitle>
+                              </CoffeeChatCardContent>
+                            </CoffeeChatCardOverlay>
+                          </CoffeeChatCardImage>
+                        </CoffeeChatCard>
+                      ))}
+                    </CoffeeChatGrid>
+                  </SlidePage>
+                ))}
+              </SlideWrapper>
+            </SlideContainer>
           </Section>
         </MainContainer>
       </Container>
@@ -540,6 +556,24 @@ const PaginationIcon = styled.div<{ isRight?: boolean; isActive?: boolean }>`
     filter: ${props => props.isActive ? 'brightness(0) saturate(100%) invert(0%)' : 'opacity(0.35)'};
     transition: filter 0.2s ease;
   }
+`;
+
+/* 슬라이드 애니메이션 컴포넌트 */
+const SlideContainer = styled.div`
+  width: 100%;
+  overflow: hidden;
+`;
+
+const SlideWrapper = styled.div`
+  display: flex;
+  width: 300%; /* 3페이지 * 100% */
+  transition: transform 0.6s ease;
+  will-change: transform;
+`;
+
+const SlidePage = styled.div`
+  width: calc(100% / 3); /* 전체 너비의 1/3 */
+  flex-shrink: 0;
 `;
 
 /* 카테고리 카드 그리드 (6개, 1:1 비율) */
