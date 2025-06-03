@@ -91,7 +91,7 @@ const Login: React.FC = () => {
           
           <form onSubmit={handleSubmit}>
             {/* 이메일 입력 */}
-            <FormGroup>
+            <FormGroup hasBottomMargin>
               <FormLabel>이메일</FormLabel>
               <EmailInput
                 type="email"
@@ -128,8 +128,8 @@ const Login: React.FC = () => {
             
             {/* 링크 버튼들 */}
             <LinkButtonsRow>
-              <LinkButton to="/forgot-password">비밀번호 찾기</LinkButton>
               <LinkButton to="/signup">회원가입</LinkButton>
+              <LinkButton to="/forgot-password">비밀번호 찾기</LinkButton>
             </LinkButtonsRow>
           </form>
         </FormContainer>
@@ -189,12 +189,12 @@ const ErrorMessage = styled.div`
   font-size: 14px;
 `;
 
-const FormGroup = styled.div`
+const FormGroup = styled.div<{ hasBottomMargin?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 8px;
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: ${props => props.hasBottomMargin ? '36px' : '0'};
 `;
 
 const FormLabel = styled.label`
@@ -241,6 +241,7 @@ const LoginButton = styled.button`
   font-size: 16px;
   cursor: pointer;
   padding: 12px 28px;
+  margin-top: 36px;
   margin-bottom: 36px;
   
   &:disabled {
@@ -257,13 +258,10 @@ const LinkButtonsRow = styled.div`
 `;
 
 const LinkButton = styled(Link)`
-  color: rgba(55, 56, 60, 0.61);
+  color: #448181;
   text-decoration: none;
   font-size: 14px;
-  
-  &:hover {
-    color: #448181;
-  }
+  font-weight: 600;
 `;
 
 export default Login;

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Layout from '../components/layout/Layout';
+import { ReactComponent as NegativeIcon } from '../assets/negative.svg';
 
 interface ForgotPasswordFormValues {
   email: string;
@@ -14,23 +15,37 @@ const ForgotPassword: React.FC = () => {
   const [formErrors, setFormErrors] = useState<Partial<ForgotPasswordFormValues>>({});
   const [loading, setLoading] = useState(false);
   const [accountError, setAccountError] = useState('');
+  const [hasStartedTyping, setHasStartedTyping] = useState(false);
 
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    
+    // 처음 타이핑 시작 플래그 설정
+    if (!hasStartedTyping) {
+      setHasStartedTyping(true);
+    }
+    
     setFormValues({
       ...formValues,
       [name]: value,
     });
     
-    // 입력 시 에러 제거
-    if (formErrors[name as keyof ForgotPasswordFormValues]) {
-      setFormErrors({
-        ...formErrors,
-        [name]: '',
-      });
+    // 실시간 유효성 검사 (타이핑 시작 후부터)
+    if (hasStartedTyping || value.length > 0) {
+      const errors: Partial<ForgotPasswordFormValues> = {};
+      
+      if (!value) {
+        errors.email = '이메일을 입력해주세요';
+      } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
+        errors.email = '올바른 이메일을 입력해주세요.';
+      }
+      
+      setFormErrors(errors);
     }
+    
+    // 계정 오류 제거
     if (accountError) {
       setAccountError('');
     }
@@ -43,8 +58,8 @@ const ForgotPassword: React.FC = () => {
     if (!formValues.email) {
       errors.email = '이메일을 입력해주세요';
       isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
-      errors.email = '유효한 이메일 주소를 입력해주세요';
+    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formValues.email)) {
+      errors.email = '올바른 이메일을 입력해주세요.';
       isValid = false;
     }
 
@@ -64,8 +79,8 @@ const ForgotPassword: React.FC = () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // 임시로 특정 이메일에 대해 계정 없음 에러 시뮬레이션
-      if (formValues.email === 'notfound@example.com') {
-        setAccountError('등록되지 않은 이메일입니다. 회원가입을 진행해주세요.');
+      if (formValues.email !== 'efforthye@gmail.com') {
+        setAccountError('존재하지 않는 계정입니다.');
         setLoading(false);
         return;
       }
@@ -91,29 +106,35 @@ const ForgotPassword: React.FC = () => {
         </SloganSection>
         
         <FormContainer>
-          {accountError && <ErrorMessage>{accountError}</ErrorMessage>}
-          
           <form onSubmit={handleSubmit}>
             {/* 이메일 입력 */}
             <FormGroup>
               <FormLabel>이메일</FormLabel>
-              <EmailInput
-                type="email"
-                name="email"
-                placeholder="이메일을 입력해주세요."
-                value={formValues.email}
-                onChange={handleChange}
-                className={formErrors.email ? 'error' : ''}
-                autoComplete="email"
-              />
+              <EmailInputWrapper>
+                <EmailInput
+                  type="email"
+                  name="email"
+                  placeholder="이메일을 입력해주세요."
+                  value={formValues.email}
+                  onChange={handleChange}
+                  hasError={!!(formErrors.email || accountError)}
+                  autoComplete="email"
+                />
+                {(formErrors.email || accountError) && (
+                  <ErrorIconWrapper>
+                    <NegativeIcon width={22} height={22} />
+                  </ErrorIconWrapper>
+                )}
+              </EmailInputWrapper>
               {formErrors.email && <InputHelp error>{formErrors.email}</InputHelp>}
+              {accountError && <InputHelp error>{accountError}</InputHelp>}
             </FormGroup>
             
             {/* 다음 버튼 */}
             <NextButton 
               type="submit" 
-              disabled={loading || !formValues.email || !/\S+@\S+\.\S+/.test(formValues.email)}
-              data-disable={loading || !formValues.email || !/\S+@\S+\.\S+/.test(formValues.email) ? "True" : "False"}
+              disabled={loading || !formValues.email || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formValues.email) || !!(formErrors.email)}
+              data-disable={loading || !formValues.email || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formValues.email) || !!(formErrors.email) ? "True" : "False"}
               data-icon-only="False"
               data-leading-icon="false"
               data-loading={loading ? "true" : "false"}
@@ -139,11 +160,12 @@ const ForgotPassword: React.FC = () => {
   );
 };
 
-// 로그인 페이지와 동일한 스타일 컴포넌트
+// 스타일 컴포넌트들
 const MainContainer = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 64px;
   max-width: 1440px;
   margin: 0 auto;
   padding: 128px 20px 160px;
@@ -161,8 +183,7 @@ const SloganText = styled.p`
   line-height: 1.4;
   letter-spacing: -1.2%;
   color: #171719;
-  margin-top: 64px;
-  margin-bottom: 64px;
+  margin-top: 8px;
 `;
 
 const SloganTitle = styled.h1`
@@ -179,16 +200,6 @@ const FormContainer = styled.div`
   max-width: 480px;
   display: flex;
   flex-direction: column;
-  gap: 36px;
-`;
-
-const ErrorMessage = styled.div`
-  background-color: rgba(255, 82, 82, 0.1);
-  color: #ff5252;
-  padding: 12px;
-  border-radius: 12px;
-  margin-bottom: 16px;
-  font-size: 14px;
 `;
 
 const FormGroup = styled.div`
@@ -206,29 +217,47 @@ const FormLabel = styled.label`
   color: rgba(46, 47, 51, 0.88);
 `;
 
-const EmailInput = styled.input`
+const EmailInputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+const EmailInput = styled.input<{ hasError: boolean }>`
   width: 100%;
   padding: 12px;
-  border: 1px solid rgba(112, 115, 124, 0.16);
+  padding-right: ${props => props.hasError ? '48px' : '12px'};
+  border: 1px solid ${props => props.hasError ? '#FF4242' : 'rgba(112, 115, 124, 0.16)'};
   border-radius: 12px;
   font-size: 16px;
   line-height: 1.5em;
   outline: none;
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
   
   &::placeholder {
     color: rgba(55, 56, 60, 0.28);
   }
   
-  &.error {
-    border-color: #ff5252;
+  &:focus {
+    border-color: ${props => props.hasError ? '#FF4242' : '#448181'};
   }
+`;
+
+const ErrorIconWrapper = styled.div`
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 `;
 
 const InputHelp = styled.p<{ error?: boolean }>`
   font-size: 12px;
   line-height: 1.334em;
-  color: ${props => props.error ? '#ff5252' : 'rgba(55, 56, 60, 0.61)'};
+  color: ${props => props.error ? '#FF4242' : 'rgba(55, 56, 60, 0.61)'};
   margin-top: 4px;
 `;
 
@@ -256,7 +285,7 @@ const NextButton = styled.button`
   box-sizing: border-box;
   
   /* Large size 버튼의 기본 스타일 */
-  min-height: 48px; /* 12px + 24px + 12px */
+  min-height: 48px;
   
   &:disabled {
     background-color: #F4F4F5;
