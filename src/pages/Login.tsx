@@ -6,6 +6,7 @@ import { login, resetAuthError } from '../store/slices/authSlice';
 import { RootState } from '../store';
 import Layout from '../components/layout/Layout';
 import { useAppDispatch } from '../hooks/useAppDispatch';
+import { ReactComponent as PasswordEyeIcon } from '../assets/password_eye.svg';
 
 interface LoginFormValues {
   email: string;
@@ -18,6 +19,7 @@ const Login: React.FC = () => {
     password: '',
   });
   const [formErrors, setFormErrors] = useState<Partial<LoginFormValues>>({});
+  const [showPassword, setShowPassword] = useState(false); // 기본값: 비밀번호 가림
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -78,6 +80,10 @@ const Login: React.FC = () => {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <Layout>
       <MainContainer>
@@ -107,14 +113,19 @@ const Login: React.FC = () => {
             {/* 비밀번호 입력 */}
             <FormGroup>
               <FormLabel>비밀번호</FormLabel>
-              <EmailInput
-                type="password"
-                name="password"
-                placeholder="비밀번호를 입력해주세요."
-                value={formValues.password}
-                onChange={handleChange}
-                className={formErrors.password ? 'error' : ''}
-              />
+              <PasswordInputWrapper>
+                <PasswordInput
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="비밀번호를 입력해주세요."
+                  value={formValues.password}
+                  onChange={handleChange}
+                  className={formErrors.password ? 'error' : ''}
+                />
+                <EyeIconWrapper onClick={togglePasswordVisibility}>
+                  <PasswordEyeIcon width={22} height={22} />
+                </EyeIconWrapper>
+              </PasswordInputWrapper>
               {formErrors.password && <InputHelp error>{formErrors.password}</InputHelp>}
             </FormGroup>
             
@@ -204,12 +215,12 @@ const FormLabel = styled.label`
   color: rgba(46, 47, 51, 0.88);
 `;
 
-// 이메일과 비밀번호 입력 컴포넌트를 동일한 스타일로 변경
+// 이메일 입력 컴포넌트
 const EmailInput = styled.input`
   width: 100%;
   padding: 12px;
   border: 1px solid rgba(112, 115, 124, 0.16);
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 16px;
   line-height: 1.5em;
   outline: none;
@@ -221,6 +232,67 @@ const EmailInput = styled.input`
   
   &.error {
     border-color: #ff5252;
+  }
+  
+  &:focus {
+    border-color: rgba(112, 115, 124, 0.16); /* 포커스 시에도 기본 회색 유지 */
+  }
+`;
+
+// 비밀번호 입력 관련 컴포넌트들
+const PasswordInputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+const PasswordInput = styled.input`
+  width: 100%;
+  padding: 12px;
+  padding-right: 44px; /* 아이콘 공간 확보 (22px 아이콘 + 12px 여백 + 10px 추가 여백) */
+  border: 1px solid rgba(112, 115, 124, 0.16);
+  border-radius: 12px;
+  font-size: 16px;
+  line-height: 1.5em;
+  outline: none;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
+  
+  &::placeholder {
+    color: rgba(55, 56, 60, 0.28);
+  }
+  
+  &.error {
+    border-color: #ff5252;
+  }
+  
+  &:focus {
+    border-color: rgba(112, 115, 124, 0.16); /* 포커스 시에도 기본 회색 유지 */
+  }
+`;
+
+const EyeIconWrapper = styled.div`
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  transition: opacity 0.2s ease;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+  
+  &:active {
+    opacity: 0.6;
+  }
+  
+  svg {
+    pointer-events: none;
   }
 `;
 
@@ -239,15 +311,29 @@ const LoginButton = styled.button`
   border-radius: 12px;
   font-weight: 600;
   font-size: 16px;
+  line-height: 1.5em;
   cursor: pointer;
   padding: 12px 28px;
   margin-top: 36px;
   margin-bottom: 36px;
+  min-height: 48px; /* 인퓋과 동일한 높이 */
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   
   &:disabled {
     background-color: #F4F4F5;
     color: rgba(55, 56, 60, 0.28);
     cursor: not-allowed;
+  }
+  
+  &:hover:not(:disabled) {
+    background-color: #3a6f6f;
+  }
+  
+  &:active:not(:disabled) {
+    background-color: #2d5a5a;
   }
 `;
 
