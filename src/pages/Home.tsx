@@ -1,10 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import Layout from '../components/layout/Layout';
 
 const Home: React.FC = () => {
   const [classroomPage, setClassroomPage] = useState(1);
   const [connectPage, setConnectPage] = useState(1);
+  
+  // 드래그 상태 관리 - 각 섹션별로 분리
+  const [classroomDrag, setClassroomDrag] = useState({
+    isDragging: false,
+    startX: 0,
+    currentX: 0,
+    offset: 0
+  });
+  
+  const [connectDrag, setConnectDrag] = useState({
+    isDragging: false,
+    startX: 0,
+    currentX: 0,
+    offset: 0
+  });
+  
+  // 컨테이너 참조
+  const classroomRef = useRef<HTMLDivElement>(null);
+  const connectRef = useRef<HTMLDivElement>(null);
 
   // 강의 더미 데이터 (3페이지)
   const classroomData = {
@@ -147,6 +166,84 @@ const Home: React.FC = () => {
     }
   };
 
+  // 드래그 핸들러들 - 각 섹션별로 분리
+  const handleDragStart = useCallback((e: React.MouseEvent | React.TouchEvent, section: 'classroom' | 'connect') => {
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    
+    if (section === 'classroom') {
+      setClassroomDrag({
+        isDragging: true,
+        startX: clientX,
+        currentX: clientX,
+        offset: 0
+      });
+    } else {
+      setConnectDrag({
+        isDragging: true,
+        startX: clientX,
+        currentX: clientX,
+        offset: 0
+      });
+    }
+  }, []);
+
+  const handleDragMove = useCallback((e: React.MouseEvent | React.TouchEvent, section: 'classroom' | 'connect') => {
+    e.preventDefault();
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    
+    if (section === 'classroom' && classroomDrag.isDragging) {
+      const offset = clientX - classroomDrag.startX;
+      setClassroomDrag(prev => ({
+        ...prev,
+        currentX: clientX,
+        offset: offset
+      }));
+    } else if (section === 'connect' && connectDrag.isDragging) {
+      const offset = clientX - connectDrag.startX;
+      setConnectDrag(prev => ({
+        ...prev,
+        currentX: clientX,
+        offset: offset
+      }));
+    }
+  }, [classroomDrag.isDragging, classroomDrag.startX, connectDrag.isDragging, connectDrag.startX]);
+
+  const handleDragEnd = useCallback((section: 'classroom' | 'connect') => {
+    if (section === 'classroom' && classroomDrag.isDragging) {
+      const dragDistance = classroomDrag.currentX - classroomDrag.startX;
+      const threshold = 100;
+      
+      if (dragDistance > threshold && classroomPage > 1) {
+        setClassroomPage(classroomPage - 1);
+      } else if (dragDistance < -threshold && classroomPage < 3) {
+        setClassroomPage(classroomPage + 1);
+      }
+      
+      setClassroomDrag({
+        isDragging: false,
+        startX: 0,
+        currentX: 0,
+        offset: 0
+      });
+    } else if (section === 'connect' && connectDrag.isDragging) {
+      const dragDistance = connectDrag.currentX - connectDrag.startX;
+      const threshold = 100;
+      
+      if (dragDistance > threshold && connectPage > 1) {
+        setConnectPage(connectPage - 1);
+      } else if (dragDistance < -threshold && connectPage < 3) {
+        setConnectPage(connectPage + 1);
+      }
+      
+      setConnectDrag({
+        isDragging: false,
+        startX: 0,
+        currentX: 0,
+        offset: 0
+      });
+    }
+  }, [classroomDrag, connectDrag, classroomPage, connectPage]);
+
   return (
     <Layout>
       <Container>
@@ -240,8 +337,19 @@ const Home: React.FC = () => {
                 </PaginationButtons>
               </SectionTrailing>
             </SectionHeader>
-            <SlideContainer>
-              <SlideWrapper style={{ transform: `translateX(-${(classroomPage - 1) * (100/3)}%)` }}>
+            <SlideContainer
+              ref={classroomRef}
+              onMouseDown={(e) => handleDragStart(e, 'classroom')}
+              onMouseMove={(e) => handleDragMove(e, 'classroom')}
+              onTouchStart={(e) => handleDragStart(e, 'classroom')}
+              onTouchMove={(e) => handleDragMove(e, 'classroom')}
+              onMouseUp={() => handleDragEnd('classroom')}
+              onTouchEnd={() => handleDragEnd('classroom')}
+            >
+              <SlideWrapper style={{ 
+                transform: `translateX(calc(-${(classroomPage - 1) * (100/3)}% + ${classroomDrag.isDragging ? classroomDrag.offset : 0}px))`,
+                transition: classroomDrag.isDragging ? 'none' : 'transform 0.6s ease'
+              }}>
                 {Object.entries(classroomData).map(([pageNum, lectures]) => (
                   <SlidePage key={pageNum}>
                     <LectureGrid>
@@ -297,8 +405,19 @@ const Home: React.FC = () => {
                 </PaginationButtons>
               </SectionTrailing>
             </SectionHeader>
-            <SlideContainer>
-              <SlideWrapper style={{ transform: `translateX(-${(connectPage - 1) * (100/3)}%)` }}>
+            <SlideContainer
+              ref={connectRef}
+              onMouseDown={(e) => handleDragStart(e, 'connect')}
+              onMouseMove={(e) => handleDragMove(e, 'connect')}
+              onTouchStart={(e) => handleDragStart(e, 'connect')}
+              onTouchMove={(e) => handleDragMove(e, 'connect')}
+              onMouseUp={() => handleDragEnd('connect')}
+              onTouchEnd={() => handleDragEnd('connect')}
+            >
+              <SlideWrapper style={{ 
+                transform: `translateX(calc(-${(connectPage - 1) * (100/3)}% + ${connectDrag.isDragging ? connectDrag.offset : 0}px))`,
+                transition: connectDrag.isDragging ? 'none' : 'transform 0.6s ease'
+              }}>
                 {Object.entries(connectData).map(([pageNum, people]) => (
                   <SlidePage key={pageNum}>
                     <CoffeeChatGrid>
@@ -562,6 +681,12 @@ const PaginationIcon = styled.div<{ isRight?: boolean; isActive?: boolean }>`
 const SlideContainer = styled.div`
   width: 100%;
   overflow: hidden;
+  cursor: grab;
+  user-select: none;
+  
+  &:active {
+    cursor: grabbing;
+  }
 `;
 
 const SlideWrapper = styled.div`
