@@ -13,6 +13,9 @@ import ForgotPassword from './pages/forgot-password';
 import ForgotPasswordVerify from './pages/forgot-password/verify';
 import ForgotPasswordReset from './pages/forgot-password/reset';
 import ForgotPasswordComplete from './pages/forgot-password/complete';
+import TermsOfService from './pages/terms/TermsOfService';
+import PrivacyPolicy from './pages/terms/PrivacyPolicy';
+import MarketingConsent from './pages/terms/MarketingConsent';
 
 function App() {
   return (
@@ -65,6 +68,23 @@ function App() {
           <Route path="/forgot-password/complete" element={
             <ErrorBoundary>
               <ForgotPasswordComplete />
+            </ErrorBoundary>
+          } />
+          
+          {/* 약관 */}
+          <Route path="/terms-of-service" element={
+            <ErrorBoundary>
+              <TermsOfService />
+            </ErrorBoundary>
+          } />
+          <Route path="/privacy-policy" element={
+            <ErrorBoundary>
+              <PrivacyPolicy />
+            </ErrorBoundary>
+          } />
+          <Route path="/marketing-consent" element={
+            <ErrorBoundary>
+              <MarketingConsent />
             </ErrorBoundary>
           } />
           

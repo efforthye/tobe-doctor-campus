@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Layout from '../components/layout/Layout';
 import PhoneVerification from '../components/PhoneVerification';
@@ -67,6 +67,7 @@ const DEPARTMENTS = [
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formValues, setFormValues] = useState<SignupFormValues>({
     email: '',
     name: '',
@@ -116,6 +117,73 @@ const Signup: React.FC = () => {
     confirmPassword: '',
     phoneVerification: ''
   });
+
+  // 약관 페이지에서 돌아왔을 때 또는 페이지 로드 시 폼 상태 복원
+  useEffect(() => {
+    // 먼저 React Router state에서 확인
+    if (location.state?.formData) {
+      const { 
+        formValues: savedFormValues, 
+        agreements: savedAgreements, 
+        dropdownStates: savedDropdownStates,
+        isEmailVerified: savedIsEmailVerified,
+        isPhoneVerified: savedIsPhoneVerified,
+        isImageUploaded: savedIsImageUploaded,
+        uploadedFileName: savedUploadedFileName,
+        validationErrors: savedValidationErrors,
+        validationSuccess: savedValidationSuccess
+      } = location.state.formData;
+      
+      if (savedFormValues) setFormValues(savedFormValues);
+      if (savedAgreements) setAgreements(savedAgreements);
+      if (savedDropdownStates) setDropdownStates(savedDropdownStates);
+      if (savedIsEmailVerified !== undefined) setIsEmailVerified(savedIsEmailVerified);
+      if (savedIsPhoneVerified !== undefined) setIsPhoneVerified(savedIsPhoneVerified);
+      if (savedIsImageUploaded !== undefined) setIsImageUploaded(savedIsImageUploaded);
+      if (savedUploadedFileName) setUploadedFileName(savedUploadedFileName);
+      if (savedValidationErrors) setValidationErrors(savedValidationErrors);
+      if (savedValidationSuccess) setValidationSuccess(savedValidationSuccess);
+      
+      // 복원 후 localStorage 삭제
+      localStorage.removeItem('signupFormData');
+    } 
+    // React Router state가 없으면 localStorage에서 확인
+    else {
+      const savedData = localStorage.getItem('signupFormData');
+      if (savedData) {
+        try {
+          const formData = JSON.parse(savedData);
+          const { 
+            formValues: savedFormValues, 
+            agreements: savedAgreements, 
+            dropdownStates: savedDropdownStates,
+            isEmailVerified: savedIsEmailVerified,
+            isPhoneVerified: savedIsPhoneVerified,
+            isImageUploaded: savedIsImageUploaded,
+            uploadedFileName: savedUploadedFileName,
+            validationErrors: savedValidationErrors,
+            validationSuccess: savedValidationSuccess
+          } = formData;
+          
+          if (savedFormValues) setFormValues(savedFormValues);
+          if (savedAgreements) setAgreements(savedAgreements);
+          if (savedDropdownStates) setDropdownStates(savedDropdownStates);
+          if (savedIsEmailVerified !== undefined) setIsEmailVerified(savedIsEmailVerified);
+          if (savedIsPhoneVerified !== undefined) setIsPhoneVerified(savedIsPhoneVerified);
+          if (savedIsImageUploaded !== undefined) setIsImageUploaded(savedIsImageUploaded);
+          if (savedUploadedFileName) setUploadedFileName(savedUploadedFileName);
+          if (savedValidationErrors) setValidationErrors(savedValidationErrors);
+          if (savedValidationSuccess) setValidationSuccess(savedValidationSuccess);
+          
+          // 복원 후 localStorage 삭제
+          localStorage.removeItem('signupFormData');
+        } catch (error) {
+          console.error('폼 데이터 복원 중 오류:', error);
+          localStorage.removeItem('signupFormData');
+        }
+      }
+    }
+  }, [location.state]);
 
   // 이메일 유효성 검사 함수
   const validateEmail = (email: string): boolean => {
@@ -289,8 +357,40 @@ const Signup: React.FC = () => {
     setAgreements(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
+  const handleTermsClick = (type: 'terms' | 'privacy' | 'marketing') => {
+    const urls = {
+      terms: '/terms-of-service',
+      privacy: '/privacy-policy',
+      marketing: '/marketing-consent'
+    };
+    
+    // localStorage에 폼 데이터 저장
+    const formData = {
+      formValues,
+      agreements,
+      dropdownStates,
+      isEmailVerified,
+      isPhoneVerified,
+      isImageUploaded,
+      uploadedFileName,
+      validationErrors,
+      validationSuccess
+    };
+    
+    localStorage.setItem('signupFormData', JSON.stringify(formData));
+    
+    navigate(urls[type], { 
+      state: { 
+        returnTo: '/signup',
+        formData
+      }
+    });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // 회원가입 완료 시 localStorage 정리
+    localStorage.removeItem('signupFormData');
     navigate('/signup-complete');
   };
 
@@ -638,7 +738,7 @@ const Signup: React.FC = () => {
                   onChange={() => handleAgreementChange('terms')}
                 />
                 <CheckboxLabel htmlFor="check-terms">[필수] 투비닥터 캠퍼스 이용약관 동의</CheckboxLabel>
-                <ChevronRight>
+                <ChevronRight onClick={() => handleTermsClick('terms')}>
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
@@ -653,7 +753,7 @@ const Signup: React.FC = () => {
                   onChange={() => handleAgreementChange('privacy')}
                 />
                 <CheckboxLabel htmlFor="check-privacy">[필수] 투비닥터 캠퍼스 개인정보 수집 및 이용 동의</CheckboxLabel>
-                <ChevronRight>
+                <ChevronRight onClick={() => handleTermsClick('privacy')}>
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
@@ -668,7 +768,7 @@ const Signup: React.FC = () => {
                   onChange={() => handleAgreementChange('marketing')}
                 />
                 <CheckboxLabel htmlFor="check-marketing">[선택] 마케팅 목적의 개인정보 수집 및 이용 동의</CheckboxLabel>
-                <ChevronRight>
+                <ChevronRight onClick={() => handleTermsClick('marketing')}>
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
