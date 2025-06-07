@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Layout from '../components/layout/Layout';
-import { ReactComponent as NegativeIcon } from '../assets/negative.svg';
+import Layout from '../../components/layout/Layout';
+import { ReactComponent as NegativeIcon } from '../../assets/negative.svg';
 
 interface ForgotPasswordFormValues {
   email: string;
@@ -78,12 +78,12 @@ const ForgotPassword: React.FC = () => {
       // API 호출 시뮬레이션
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // 임시로 특정 이메일에 대해 계정 없음 에러 시뮬레이션
-      if (formValues.email !== 'efforthye@gmail.com') {
-        setAccountError('존재하지 않는 계정입니다.');
-        setLoading(false);
-        return;
-      }
+      // TODO: 실제 API 호출로 대체
+      // if (response.error) {
+      //   setAccountError('존재하지 않는 계정입니다.');
+      //   setLoading(false);
+      //   return;
+      // }
       
       // 성공 시 인증번호 입력 페이지로 이동
       navigate('/forgot-password/verify', { 
@@ -134,25 +134,14 @@ const ForgotPassword: React.FC = () => {
             <NextButton 
               type="submit" 
               disabled={loading || !formValues.email || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formValues.email) || !!(formErrors.email)}
-              data-disable={loading || !formValues.email || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formValues.email) || !!(formErrors.email) ? "True" : "False"}
-              data-icon-only="False"
-              data-leading-icon="false"
-              data-loading={loading ? "true" : "false"}
-              data-size="Large"
-              data-trailing-icon="false"
-              data-variant="Primary"
             >
-              <ButtonInner>
-                <ButtonContent>
-                  {loading ? '처리 중...' : '다음'}
-                </ButtonContent>
-              </ButtonInner>
+              {loading ? '처리 중...' : '다음'}
             </NextButton>
             
             {/* 링크 버튼들 */}
-            <LinkButtonsRow>
+            {/* <LinkButtonsRow>
               <LinkButton to="/login">로그인으로 돌아가기</LinkButton>
-            </LinkButtonsRow>
+            </LinkButtonsRow> */}
           </form>
         </FormContainer>
       </MainContainer>
@@ -165,39 +154,42 @@ const MainContainer = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 64px;
-  max-width: 1440px;
+  /* gap: 48px; */
+  max-width: 480px;
   margin: 0 auto;
-  padding: 128px 20px 160px;
+  padding: 128px 20px 80px;
+  min-height: 100vh;
 `;
 
 const SloganSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 `;
 
 const SloganText = styled.p`
+  font-family: 'Pretendard JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 20px;
   font-weight: 400;
   line-height: 1.4;
-  letter-spacing: -1.2%;
+  letter-spacing: -0.24px;
   color: #171719;
-  margin-top: 8px;
+  margin: 64px 0 64px 0;
 `;
 
 const SloganTitle = styled.h1`
+  font-family: 'Pretendard JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 40px;
   font-weight: 700;
   line-height: 1.3;
-  letter-spacing: -2.82%;
+  letter-spacing: -1.13px;
   color: #171719;
-  margin-top: 0;
+  margin: 0;
 `;
 
 const FormContainer = styled.div`
   width: 100%;
-  max-width: 480px;
   display: flex;
   flex-direction: column;
 `;
@@ -211,9 +203,11 @@ const FormGroup = styled.div`
 `;
 
 const FormLabel = styled.label`
+  font-family: 'Pretendard JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 600;
   font-size: 14px;
-  line-height: 1.429em;
+  line-height: 1.43;
+  letter-spacing: 0.08px;
   color: rgba(46, 47, 51, 0.88);
 `;
 
@@ -224,15 +218,18 @@ const EmailInputWrapper = styled.div`
 
 const EmailInput = styled.input<{ hasError: boolean }>`
   width: 100%;
-  padding: 12px;
-  padding-right: ${props => props.hasError ? '48px' : '12px'};
+  padding: 12px 16px;
+  padding-right: ${props => props.hasError ? '48px' : '16px'};
   border: 1px solid ${props => props.hasError ? '#FF4242' : 'rgba(112, 115, 124, 0.16)'};
   border-radius: 12px;
+  font-family: 'Pretendard JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 16px;
-  line-height: 1.5em;
+  font-weight: 400;
+  line-height: 1.5;
   outline: none;
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.03);
   box-sizing: border-box;
+  transition: border-color 0.2s;
   
   &::placeholder {
     color: rgba(55, 56, 60, 0.28);
@@ -255,10 +252,13 @@ const ErrorIconWrapper = styled.div`
 `;
 
 const InputHelp = styled.p<{ error?: boolean }>`
+  font-family: 'Pretendard JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 12px;
-  line-height: 1.334em;
+  font-weight: 400;
+  line-height: 1.33;
+  letter-spacing: 0.06px;
   color: ${props => props.error ? '#FF4242' : 'rgba(55, 56, 60, 0.61)'};
-  margin-top: 4px;
+  margin: 0;
 `;
 
 const NextButton = styled.button`
@@ -267,25 +267,19 @@ const NextButton = styled.button`
   color: #FFFFFF;
   border: none;
   border-radius: 12px;
+  font-family: 'Pretendard JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 600;
   font-size: 16px;
-  font-family: 'Pretendard JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  line-height: 24px;
+  line-height: 1.5;
   letter-spacing: 0.09px;
   cursor: pointer;
   padding: 12px 28px;
-  margin-bottom: 36px;
+  margin-bottom: 24px;
   display: inline-flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  align-self: stretch;
-  overflow: hidden;
-  word-wrap: break-word;
-  box-sizing: border-box;
-  
-  /* Large size 버튼의 기본 스타일 */
   min-height: 48px;
+  transition: all 0.2s;
   
   &:disabled {
     background-color: #F4F4F5;
@@ -302,36 +296,19 @@ const NextButton = styled.button`
   }
 `;
 
-const ButtonInner = styled.div`
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-`;
-
-const ButtonContent = styled.div`
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  display: inline-flex;
-  color: inherit;
-  font-size: inherit;
-  font-family: inherit;
-  font-weight: inherit;
-  line-height: inherit;
-  letter-spacing: inherit;
-  word-wrap: break-word;
-`;
-
 const LinkButtonsRow = styled.div`
   display: flex;
   justify-content: center;
 `;
 
 const LinkButton = styled(Link)`
+  font-family: 'Pretendard JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: rgba(55, 56, 60, 0.61);
   text-decoration: none;
   font-size: 14px;
+  font-weight: 400;
+  line-height: 1.43;
+  transition: color 0.2s;
   
   &:hover {
     color: #448181;

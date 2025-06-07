@@ -9,10 +9,10 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import SignupComplete from './pages/SignupComplete';
-import ForgotPassword from './pages/ForgotPassword';
-import ForgotPasswordVerify from './pages/ForgotPasswordVerify';
-import ForgotPasswordReset from './pages/ForgotPasswordReset';
-import ForgotPasswordComplete from './pages/ForgotPasswordComplete';
+import ForgotPassword from './pages/forgot-password';
+import ForgotPasswordVerify from './pages/forgot-password/verify';
+import ForgotPasswordReset from './pages/forgot-password/reset';
+import ForgotPasswordComplete from './pages/forgot-password/complete';
 
 function App() {
   return (
