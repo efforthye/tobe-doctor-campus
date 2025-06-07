@@ -29,7 +29,7 @@ const PrivacyPolicy: React.FC = () => {
           ← 돌아가기
         </BackButton>
         <SloganSection>
-          <SloganTitle>개인정보 수집 및 이용 동의</SloganTitle>
+          <SloganTitle>개인정보 수집 · 이용 동의</SloganTitle>
         </SloganSection>
         
         <ContentContainer>
@@ -192,7 +192,7 @@ const BackButton = styled.button`
   margin-bottom: 24px;
   
   &:hover {
-    opacity: 0.8;
+    /* opacity: 0.8; */
   }
 `;
 

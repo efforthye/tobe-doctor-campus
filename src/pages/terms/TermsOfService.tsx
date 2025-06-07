@@ -146,7 +146,7 @@ const BackButton = styled.button`
   margin-bottom: 24px;
   
   &:hover {
-    opacity: 0.8;
+    /* opacity: 0.8; */
   }
 `;
 
