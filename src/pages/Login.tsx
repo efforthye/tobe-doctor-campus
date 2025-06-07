@@ -34,9 +34,14 @@ const Login: React.FC = () => {
       navigate('/');
     }
     
+    // Redux 에러가 있으면 로그인 에러로 설정
+    if (error) {
+      setLoginError(error);
+    }
+    
     // 컴포넌트 마운트 시 에러 초기화
     dispatch(resetAuthError());
-  }, [isAuthenticated, navigate, dispatch]);
+  }, [isAuthenticated, navigate, dispatch, error]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

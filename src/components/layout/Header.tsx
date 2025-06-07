@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import NotificationMenu from './NotificationMenu';
 import ProfileMenu from './ProfileMenu';
@@ -9,7 +9,6 @@ import ProfileMenu from './ProfileMenu';
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

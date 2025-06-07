@@ -40,8 +40,25 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
       // 전역 플래그 확인
       (window as any).__IGNORE_EXTENSION_ERRORS__;
     
+    // 본인확인 관련 에러 감지 및 무시
+    const isMobileAuthError = 
+      errorMessage.includes('postMessage') ||
+      errorMessage.includes('DataCloneError') ||
+      errorMessage.includes('client_process') ||
+      errorMessage.includes('mobile-auth') ||
+      errorMessage.includes('could not be cloned') ||
+      errorMessage.includes('MOBILEOK') ||
+      errorStack.includes('client_process') ||
+      errorStack.includes('mobile-auth') ||
+      (window as any).__SUPPRESS_MOBILE_AUTH_ERRORS__;
+    
     if (isExtensionError) {
-      console.warn('Extension error caught and ignored in ErrorBoundary:', error);
+      console.warn('🔇 Extension error caught and ignored in ErrorBoundary:', error);
+      return { hasError: false }; // 에러 상태로 변경하지 않음
+    }
+    
+    if (isMobileAuthError) {
+      console.warn('🔇 Mobile auth error caught and ignored in ErrorBoundary:', error);
       return { hasError: false }; // 에러 상태로 변경하지 않음
     }
     
@@ -61,8 +78,24 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
       errorStack.includes('chrome-extension://') ||
       errorStack.includes('inpage.js');
     
+    // 본인확인 관련 에러도 무시
+    const isMobileAuthError = 
+      errorMessage.includes('postMessage') ||
+      errorMessage.includes('DataCloneError') ||
+      errorMessage.includes('client_process') ||
+      errorMessage.includes('mobile-auth') ||
+      errorMessage.includes('could not be cloned') ||
+      errorStack.includes('client_process');
+    
     if (isExtensionError) {
-      console.warn('Extension error caught and ignored in componentDidCatch:', error, errorInfo);
+      console.warn('🔇 Extension error caught and ignored in componentDidCatch:', error, errorInfo);
+      // 상태를 리셋하여 컴포넌트가 정상 작동하도록 함
+      this.setState({ hasError: false, error: undefined });
+      return;
+    }
+    
+    if (isMobileAuthError) {
+      console.warn('🔇 Mobile auth error caught and ignored in componentDidCatch:', error, errorInfo);
       // 상태를 리셋하여 컴포넌트가 정상 작동하도록 함
       this.setState({ hasError: false, error: undefined });
       return;

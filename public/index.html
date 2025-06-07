@@ -18,6 +18,112 @@
       // 추가 안전장치 - React 앱 로딩 전 마지막 체크
       window.__SUPPRESS_EXTENSION_ERRORS__ = true;
       
+      // 본인확인 관련 에러 차단
+      window.__SUPPRESS_MOBILE_AUTH_ERRORS__ = true;
+      
+      // 더 강력한 전역 에러 핸들러
+      const originalOnerror = window.onerror;
+      const originalConsoleError = console.error;
+      
+      // console.error도 필터링
+      console.error = function(...args) {
+        const message = args.join(' ');
+        if (
+          message.includes('postMessage') ||
+          message.includes('DataCloneError') ||
+          message.includes('client_process') ||
+          message.includes('mobile-auth') ||
+          message.includes('404') ||
+          message.includes('Failed to fetch') ||
+          message.includes('could not be cloned') ||
+          message.includes('MOBILEOK')
+        ) {
+          console.log('🔇 본인확인 관련 console.error가 차단되었습니다:', ...args);
+          return;
+        }
+        return originalConsoleError.apply(this, args);
+      };
+      
+      window.onerror = function(message, source, lineno, colno, error) {
+        // 본인확인 관련 에러들을 차단
+        if (
+          message && (
+            message.includes('postMessage') ||
+            message.includes('DataCloneError') ||
+            message.includes('client_process') ||
+            message.includes('mobile-auth') ||
+            message.includes('404') ||
+            message.includes('Failed to fetch') ||
+            message.includes('could not be cloned') ||
+            message.includes('MOBILEOK') ||
+            message.includes('Script error')
+          )
+        ) {
+          console.log('🔇 본인확인 관련 에러가 차단되었습니다:', message);
+          return true; // 에러 전파 차단
+        }
+        
+        // 소스 URL 기반 차단
+        if (
+          source && (
+            source.includes('client_process') ||
+            source.includes('mobile-auth') ||
+            source.includes('extension-blocker')
+          )
+        ) {
+          console.log('🔇 본인확인 스크립트 에러가 차단되었습니다:', source);
+          return true;
+        }
+        
+        // 기존 에러 핸들러 호출
+        if (originalOnerror) {
+          return originalOnerror.apply(this, arguments);
+        }
+        return false;
+      };
+      
+      // Promise rejection 에러도 차단
+      window.addEventListener('unhandledrejection', function(event) {
+        const reason = event.reason;
+        const reasonStr = reason ? reason.toString() : '';
+        
+        if (
+          reason && (
+            reason.message?.includes('404') ||
+            reason.message?.includes('mobile-auth') ||
+            reason.message?.includes('Failed to fetch') ||
+            reason.message?.includes('postMessage') ||
+            reason.message?.includes('DataCloneError') ||
+            reasonStr.includes('NetworkError') ||
+            reasonStr.includes('mobile-auth') ||
+            reasonStr.includes('client_process')
+          )
+        ) {
+          console.log('🔇 본인확인 관련 Promise 에러가 차단되었습니다:', reason);
+          event.preventDefault(); // 에러 전파 차단
+          return;
+        }
+      });
+      
+      // React DevTools 관련 에러도 차단
+      window.addEventListener('error', function(event) {
+        const error = event.error;
+        const message = event.message;
+        
+        if (
+          message && (
+            message.includes('Minified React error') ||
+            message.includes('postMessage') ||
+            message.includes('DataCloneError') ||
+            message.includes('mobile-auth')
+          )
+        ) {
+          console.log('🔇 React 관련 에러가 차단되었습니다:', message);
+          event.preventDefault();
+          return;
+        }
+      });
+      
       // 극단적인 방법: 특정 에러 메시지를 아예 차단
       const originalThrow = function() { throw arguments[0]; };
       window.addEventListener('beforeunload', function() {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Layout from '../components/layout/Layout';
+import PhoneVerification from '../components/PhoneVerification';
 
 interface SignupFormValues {
   email: string;
@@ -28,6 +29,20 @@ interface ValidationSuccess {
   password: string;
   confirmPassword: string;
   phoneVerification: string;
+}
+
+// 본인확인 결과 타입
+interface VerificationResult {
+  success: boolean;
+  message: string;
+  userData?: {
+    name: string;
+    phone: string;
+    birthday: string;
+    gender: string;
+    ci: string;
+    di: string;
+  };
 }
 
 // 의대생 대학교 목록
@@ -235,8 +250,23 @@ const Signup: React.FC = () => {
     }
   };
 
-  const handlePhoneVerification = () => {
-    setIsPhoneVerified(true);
+  // 휴대폰 본인확인 완료 처리
+  const handlePhoneVerificationComplete = (result: VerificationResult) => {
+    console.log('휴대폰 인증 결과:', result);
+    
+    if (result.success) {
+      setIsPhoneVerified(true);
+      
+      // 인증된 이름으로 자동 입력 (선택사항)
+      if (result.userData?.name && !formValues.name) {
+        setFormValues(prev => ({ ...prev, name: result.userData!.name }));
+      }
+    } else {
+      setIsPhoneVerified(false);
+      
+      // 에러 메시지는 PhoneVerification 컴포넌트에서 처리
+      console.error('휴대폰 인증 실패:', result.message);
+    }
   };
 
   const handleImageUpload = () => {
@@ -421,17 +451,10 @@ const Signup: React.FC = () => {
             <FormGroup>
               <SectionTitle>휴대폰 본인인증</SectionTitle>
               <SectionDescription>본인 명의의 휴대폰으로 실명 인증을 하실 수 있습니다.</SectionDescription>
-              <ActionButton 
-                type="button"
-                onClick={handlePhoneVerification}
+              <PhoneVerification 
+                onVerificationComplete={handlePhoneVerificationComplete}
                 disabled={isPhoneVerified}
-                className={isPhoneVerified ? 'disabled' : ''}
-              >
-                {isPhoneVerified ? '인증 완료' : '휴대폰 인증'}
-              </ActionButton>
-              {validationSuccess.phoneVerification && (
-                <SuccessMessage>{validationSuccess.phoneVerification}</SuccessMessage>
-              )}
+              />
             </FormGroup>
 
             {/* 비밀번호 */}
