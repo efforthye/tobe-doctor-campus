@@ -709,35 +709,20 @@ const Signup: React.FC = () => {
             {/* 약관 동의 */}
             <CheckboxGroup>
               <CheckboxWrapper>
-                <CheckboxInput
-                  type="checkbox"
-                  id="check-all"
-                  checked={agreements.all}
-                  onChange={handleAllAgreementChange}
-                />
-                <CheckboxLabel htmlFor="check-all" className="bold">전체 동의</CheckboxLabel>
+                <CheckboxCustom checked={agreements.all} onClick={handleAllAgreementChange} />
+                <CheckboxLabel className="bold" onClick={handleAllAgreementChange}>전체 동의</CheckboxLabel>
               </CheckboxWrapper>
               
               <Divider />
               
               <CheckboxWrapper>
-                <CheckboxInput
-                  type="checkbox"
-                  id="check-age"
-                  checked={agreements.age}
-                  onChange={() => handleAgreementChange('age')}
-                />
-                <CheckboxLabel htmlFor="check-age">[필수] 만 14세 이상입니다.</CheckboxLabel>
+                <CheckboxCustom checked={agreements.age} onClick={() => handleAgreementChange('age')} />
+                <CheckboxLabel onClick={() => handleAgreementChange('age')}>[필수] 만 14세 이상입니다.</CheckboxLabel>
               </CheckboxWrapper>
               
               <CheckboxWrapper>
-                <CheckboxInput
-                  type="checkbox"
-                  id="check-terms"
-                  checked={agreements.terms}
-                  onChange={() => handleAgreementChange('terms')}
-                />
-                <CheckboxLabel htmlFor="check-terms">[필수] 투비닥터 캠퍼스 이용약관 동의</CheckboxLabel>
+                <CheckboxCustom checked={agreements.terms} onClick={() => handleAgreementChange('terms')} />
+                <CheckboxLabel onClick={() => handleAgreementChange('terms')}>[필수] 투비닥터 캠퍼스 이용약관 동의</CheckboxLabel>
                 <ChevronRight onClick={() => handleTermsClick('terms')}>
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -746,13 +731,8 @@ const Signup: React.FC = () => {
               </CheckboxWrapper>
               
               <CheckboxWrapper>
-                <CheckboxInput
-                  type="checkbox"
-                  id="check-privacy"
-                  checked={agreements.privacy}
-                  onChange={() => handleAgreementChange('privacy')}
-                />
-                <CheckboxLabel htmlFor="check-privacy">[필수] 투비닥터 캠퍼스 개인정보 수집 및 이용 동의</CheckboxLabel>
+                <CheckboxCustom checked={agreements.privacy} onClick={() => handleAgreementChange('privacy')} />
+                <CheckboxLabel onClick={() => handleAgreementChange('privacy')}>[필수] 투비닥터 캠퍼스 개인정보 수집 및 이용 동의</CheckboxLabel>
                 <ChevronRight onClick={() => handleTermsClick('privacy')}>
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -761,13 +741,8 @@ const Signup: React.FC = () => {
               </CheckboxWrapper>
               
               <CheckboxWrapper>
-                <CheckboxInput
-                  type="checkbox"
-                  id="check-marketing"
-                  checked={agreements.marketing}
-                  onChange={() => handleAgreementChange('marketing')}
-                />
-                <CheckboxLabel htmlFor="check-marketing">[선택] 마케팅 목적의 개인정보 수집 및 이용 동의</CheckboxLabel>
+                <CheckboxCustom checked={agreements.marketing} onClick={() => handleAgreementChange('marketing')} />
+                <CheckboxLabel onClick={() => handleAgreementChange('marketing')}>[선택] 마케팅 목적의 개인정보 수집 및 이용 동의</CheckboxLabel>
                 <ChevronRight onClick={() => handleTermsClick('marketing')}>
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -1201,7 +1176,40 @@ const CheckboxWrapper = styled.div`
 `;
 
 const CheckboxInput = styled.input`
+  display: none;
+`;
+
+const CheckboxCustom = styled.div<{ checked: boolean }>`
+  width: 16px;
+  height: 16px;
+  border-radius: 5px;
+  border: 1.5px solid rgba(112, 115, 124, 0.22);
+  background-color: ${props => props.checked ? '#448181' : 'transparent'};
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
   cursor: pointer;
+  
+  ${props => props.checked && `
+    border-color: #448181;
+  `}
+  
+  /* 체크 표시 */
+  &::after {
+    content: '';
+    display: ${props => props.checked ? 'block' : 'none'};
+    width: 4px;
+    height: 8px;
+    border: 2px solid white;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+    margin-top: -2px;
+  }
 `;
 
 const CheckboxLabel = styled.label`
@@ -1209,6 +1217,7 @@ const CheckboxLabel = styled.label`
   line-height: 1.467em;
   color: rgba(46, 47, 51, 0.88);
   flex: 1;
+  cursor: pointer;
   
   &.bold {
     font-weight: 600;
