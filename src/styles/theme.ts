@@ -59,7 +59,7 @@ export const theme: DefaultTheme = {
     mobile: '480px',
     tablet: '768px',
     desktop: '1024px',
-    largeDesktop: '1440px', // 피그마 디자인의 최대 너비
+    largeDesktop: '1260px', // 컨텐츠 영역 1100px + 패딩 160px
   },
   shadows: {
     small: '0 1px 2px rgba(0, 0, 0, 0.03)', // 피그마 디자인의 작은 그림자
@@ -134,7 +134,7 @@ declare module 'styled-components' {
       mobile: string;
       tablet: string;
       desktop: string;
-      largeDesktop: string;
+      largeDesktop: string; // 1260px로 변경됨 (컨텐츠 영역 1100px)
     };
     shadows: {
       small: string;

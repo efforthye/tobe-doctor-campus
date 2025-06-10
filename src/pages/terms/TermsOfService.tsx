@@ -121,7 +121,7 @@ const TermsOfService: React.FC = () => {
 
 // 스타일 컴포넌트들
 const MainContainer = styled.main`
-  max-width: 1440px;
+  max-width: 1260px;
   margin: 0 auto;
   padding: 64px 80px;
   min-height: 100vh;

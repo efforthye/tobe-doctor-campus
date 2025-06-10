@@ -776,7 +776,7 @@ const MainContainer = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 1440px;
+  max-width: 1260px;
   margin: 0 auto;
   padding: 128px 20px 160px;
   

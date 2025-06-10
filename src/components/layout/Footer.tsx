@@ -120,7 +120,7 @@ const FooterContainer = styled.footer`
 
 const FooterContent = styled.div`
   width: 100%;
-  max-width: 1440px;
+  max-width: 1260px;
   padding-top: 40px;
   padding-bottom: 24px;
   padding-left: 80px;
