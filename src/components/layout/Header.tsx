@@ -939,6 +939,7 @@ const LoginButton = styled.button`
   
   &:hover {
     background: rgba(112, 115, 124, 0.05);
+    cursor: pointer;
   }
   
   @media (max-width: 768px) {
@@ -959,6 +960,7 @@ const SignupButton = styled.button`
   
   &:hover {
     background: ${({ theme }) => theme.colors.primaryDark};
+    cursor: pointer;
   }
   
   @media (max-width: 768px) {
