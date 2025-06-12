@@ -471,18 +471,18 @@ const BannerSection = styled.section`
 `;
 
 const BannerContent = styled.div`
-  max-width: 1360px;
+  max-width: ${({ theme }) => theme.layout.containerWidth};
   width: 100%;
-  padding: 0 80px;
+  padding: 0 ${({ theme }) => theme.layout.containerPadding};
   color: #000000;
   z-index: 2;
   
   @media (max-width: 1024px) {
-    padding: 0 40px;
+    padding: 0 ${({ theme }) => theme.layout.containerPaddingTablet};
   }
   
   @media (max-width: 768px) {
-    padding: 0 20px;
+    padding: 0 ${({ theme }) => theme.layout.containerPaddingMobile};
   }
 `;
 
@@ -513,19 +513,19 @@ const BannerSubtitle = styled.h2`
 
 /* 메인 컨테이너 */
 const MainContainer = styled.div`
-  max-width: 1360px;
+  max-width: ${({ theme }) => theme.layout.containerWidth};
   margin: 0 auto;
-  padding: 64px 80px 160px;
+  padding: 64px ${({ theme }) => theme.layout.containerPadding} 160px;
   display: flex;
   flex-direction: column;
   gap: 64px;
   
   @media (max-width: 1024px) {
-    padding: 64px 40px 160px;
+    padding: 64px ${({ theme }) => theme.layout.containerPaddingTablet} 160px;
   }
   
   @media (max-width: 768px) {
-    padding: 40px 20px 100px;
+    padding: 40px ${({ theme }) => theme.layout.containerPaddingMobile} 100px;
     gap: 48px;
   }
 `;

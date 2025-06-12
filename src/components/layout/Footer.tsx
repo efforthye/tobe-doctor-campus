@@ -120,11 +120,11 @@ const FooterContainer = styled.footer`
 
 const FooterContent = styled.div`
   width: 100%;
-  max-width: 1360px;
+  max-width: ${({ theme }) => theme.layout.containerWidth};
   padding-top: 40px;
   padding-bottom: 24px;
-  padding-left: 80px;
-  padding-right: 80px;
+  padding-left: ${({ theme }) => theme.layout.containerPadding};
+  padding-right: ${({ theme }) => theme.layout.containerPadding};
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
@@ -132,13 +132,13 @@ const FooterContent = styled.div`
   display: flex;
   
   @media (max-width: 1024px) {
-    padding-left: 40px;
-    padding-right: 40px;
+    padding-left: ${({ theme }) => theme.layout.containerPaddingTablet};
+    padding-right: ${({ theme }) => theme.layout.containerPaddingTablet};
   }
   
   @media (max-width: 768px) {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: ${({ theme }) => theme.layout.containerPaddingMobile};
+    padding-right: ${({ theme }) => theme.layout.containerPaddingMobile};
   }
 `;
 

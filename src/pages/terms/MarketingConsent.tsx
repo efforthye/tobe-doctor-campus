@@ -159,7 +159,7 @@ const MarketingConsent: React.FC = () => {
 
 // 스타일 컴포넌트들
 const MainContainer = styled.main`
-  max-width: 1360px;
+  max-width: ${({ theme }) => theme.layout.containerWidth};
   margin: 0 auto;
   padding: 64px 80px;
   min-height: 100vh;
