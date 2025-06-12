@@ -776,9 +776,9 @@ const MainContainer = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 1440px;
+  max-width: ${({ theme }) => theme.layout.containerWidth};
   margin: 0 auto;
-  padding: 128px 20px 160px;
+  padding: 128px ${({ theme }) => theme.layout.containerPaddingMobile} 160px;
   
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     padding: 100px 16px 120px;

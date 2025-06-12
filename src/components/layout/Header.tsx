@@ -570,18 +570,18 @@ const HeaderContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1440px;
+  max-width: ${({ theme }) => theme.layout.containerWidth};
   margin: 0 auto;
-  padding: 0 80px;
+  padding: 0 ${({ theme }) => theme.layout.containerPadding};
   height: 80px;
   box-sizing: border-box;
   
   @media (max-width: 1024px) {
-    padding: 0 40px;
+    padding: 0 ${({ theme }) => theme.layout.containerPaddingTablet};
   }
   
   @media (max-width: 768px) {
-    padding: 0 20px;
+    padding: 0 ${({ theme }) => theme.layout.containerPaddingMobile};
   }
 `;
 
@@ -939,6 +939,7 @@ const LoginButton = styled.button`
   
   &:hover {
     background: rgba(112, 115, 124, 0.05);
+    cursor: pointer;
   }
   
   @media (max-width: 768px) {
@@ -959,6 +960,7 @@ const SignupButton = styled.button`
   
   &:hover {
     background: ${({ theme }) => theme.colors.primaryDark};
+    cursor: pointer;
   }
   
   @media (max-width: 768px) {

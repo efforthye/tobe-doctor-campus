@@ -199,9 +199,9 @@ const MainContainer = styled.main`
   flex-direction: column;
   align-items: center;
   gap: 64px;
-  max-width: 1440px;
+  max-width: ${({ theme }) => theme.layout.containerWidth};
   margin: 0 auto;
-  padding: 128px 20px 160px;
+  padding: 128px ${({ theme }) => theme.layout.containerPaddingMobile} 160px;
 `;
 
 const SloganSection = styled.div`

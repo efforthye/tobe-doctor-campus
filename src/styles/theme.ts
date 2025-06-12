@@ -5,6 +5,13 @@ export const theme: DefaultTheme = {
     body: "'Pretendard JP', sans-serif",
     heading: "'Pretendard JP', sans-serif",
   },
+  layout: {
+    contentWidth: '1200px', // 실제 콘텐츠 영역 너비
+    containerWidth: '1360px', // 전체 컨테이너 너비 (contentWidth + padding*2)
+    containerPadding: '80px', // 데스크톱 좌우 패딩
+    containerPaddingTablet: '40px', // 태블릿 좌우 패딩
+    containerPaddingMobile: '20px', // 모바일 좌우 패딩
+  },
   colors: {
     primary: '#448181', // 피그마 디자인의 주요 색상
     primaryLight: '#5AA3A3',
@@ -59,7 +66,7 @@ export const theme: DefaultTheme = {
     mobile: '480px',
     tablet: '768px',
     desktop: '1024px',
-    largeDesktop: '1440px', // 피그마 디자인의 최대 너비
+    largeDesktop: '1360px', // containerWidth와 동일
   },
   shadows: {
     small: '0 1px 2px rgba(0, 0, 0, 0.03)', // 피그마 디자인의 작은 그림자
@@ -79,6 +86,13 @@ declare module 'styled-components' {
     fonts: {
       body: string;
       heading: string;
+    };
+    layout: {
+      contentWidth: string;
+      containerWidth: string;
+      containerPadding: string;
+      containerPaddingTablet: string;
+      containerPaddingMobile: string;
     };
     colors: {
       primary: string;
@@ -134,7 +148,7 @@ declare module 'styled-components' {
       mobile: string;
       tablet: string;
       desktop: string;
-      largeDesktop: string;
+      largeDesktop: string; // containerWidth와 동일
     };
     shadows: {
       small: string;
