@@ -471,7 +471,7 @@ const BannerSection = styled.section`
 `;
 
 const BannerContent = styled.div`
-  max-width: 1260px;
+  max-width: 1360px;
   width: 100%;
   padding: 0 80px;
   color: #000000;
@@ -513,7 +513,7 @@ const BannerSubtitle = styled.h2`
 
 /* 메인 컨테이너 */
 const MainContainer = styled.div`
-  max-width: 1260px;
+  max-width: 1360px;
   margin: 0 auto;
   padding: 64px 80px 160px;
   display: flex;

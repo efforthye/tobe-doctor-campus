@@ -42,7 +42,7 @@ const Main = styled.main`
   flex: 1;
   width: 100%;
   box-sizing: border-box;
-  max-width: 1260px;
+  max-width: 1360px;
   margin: 0 auto;
   padding: 0;
   

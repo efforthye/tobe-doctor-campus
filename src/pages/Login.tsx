@@ -199,7 +199,7 @@ const MainContainer = styled.main`
   flex-direction: column;
   align-items: center;
   gap: 64px;
-  max-width: 1260px;
+  max-width: 1360px;
   margin: 0 auto;
   padding: 128px 20px 160px;
 `;

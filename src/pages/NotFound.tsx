@@ -47,7 +47,7 @@ const Container = styled.div`
   padding: 128px 20px 160px;
   gap: 64px;
   width: 100%;
-  max-width: 1100px;
+  max-width: 1200px;
 `;
 
 const TextWrapper = styled.div`

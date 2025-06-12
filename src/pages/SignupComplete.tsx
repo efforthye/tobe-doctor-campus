@@ -36,7 +36,7 @@ const Container = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 1260px;
+  max-width: 1360px;
   margin: 0 auto;
   padding: 128px 20px 160px;
   gap: 64px;
