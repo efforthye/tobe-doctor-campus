@@ -8,6 +8,7 @@ const ClassIndex: React.FC = () => {
   const [section1Page, setSection1Page] = useState(1);
   const [section2Page, setSection2Page] = useState(1);
   const [section3Page, setSection3Page] = useState(1);
+  const [searchValue, setSearchValue] = useState('');
 
   // 드래그 상태 관리 - 각 섹션별로 분리
   const [bannerDrag, setBannerDrag] = useState({
@@ -155,6 +156,22 @@ const ClassIndex: React.FC = () => {
     setIsTransitioning(true);
     setBannerPage(pageNumber);
   };
+
+  // 검색 핸들러
+  const handleSearchSubmit = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      e.stopPropagation();
+      const searchTerm = (e.target as HTMLInputElement).value.trim();
+      if (searchTerm) {
+        alert(`${searchTerm} 검색`);
+      }
+    }
+  }, []);
+
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  }, []);
 
   // 현재 실제 페이지 번호 계산
   const getCurrentPage = () => {
@@ -490,6 +507,9 @@ const ClassIndex: React.FC = () => {
                 <SearchInput 
                   type="text" 
                   placeholder="검색어를 입력해 주세요. (이부분 추후 문구작성 필요)"
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  onKeyUp={handleSearchSubmit}
                 />
               </SearchBox>
             </SearchContainer>
@@ -982,7 +1002,7 @@ const SearchInput = styled.input`
   border: none;
   outline: none;
   background: transparent;
-  color: var(--Label-Assistive, rgba(55, 56, 60, 0.28));
+  color: var(--Label-Normal, #171719);
   font-size: 16px;
   font-family: 'Pretendard JP', sans-serif;
   font-weight: 400;
