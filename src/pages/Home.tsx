@@ -820,7 +820,7 @@ const LectureCardOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 50%); // 72px, 50 -> 33.33
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 72px); // 72px, 50 -> 33.33
   display: flex;
   align-items: flex-end;
   padding: 24px;
@@ -906,7 +906,7 @@ const CoffeeChatCardOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 50%); // 72px, 50 -> 33.33
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 72px); // 72px, 50 -> 33.33
   display: flex;
   align-items: flex-end;
   padding: 24px;
