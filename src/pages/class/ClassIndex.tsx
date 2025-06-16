@@ -326,6 +326,99 @@ const ClassIndex: React.FC = () => {
     }
   }, [bannerDrag, section1Drag, section2Drag, section3Drag, bannerPage, section1Page, section2Page, section3Page]);
 
+  // 전역 마우스 이벤트 핸들러
+  useEffect(() => {
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      if (bannerDrag.isDragging) {
+        const offset = e.clientX - bannerDrag.startX;
+        setBannerDrag(prev => ({
+          ...prev,
+          currentX: e.clientX,
+          offset: offset
+        }));
+      } else if (section1Drag.isDragging) {
+        const offset = e.clientX - section1Drag.startX;
+        setSection1Drag(prev => ({
+          ...prev,
+          currentX: e.clientX,
+          offset: offset
+        }));
+      } else if (section2Drag.isDragging) {
+        const offset = e.clientX - section2Drag.startX;
+        setSection2Drag(prev => ({
+          ...prev,
+          currentX: e.clientX,
+          offset: offset
+        }));
+      } else if (section3Drag.isDragging) {
+        const offset = e.clientX - section3Drag.startX;
+        setSection3Drag(prev => ({
+          ...prev,
+          currentX: e.clientX,
+          offset: offset
+        }));
+      }
+    };
+
+    const handleGlobalTouchMove = (e: TouchEvent) => {
+      if (bannerDrag.isDragging) {
+        const offset = e.touches[0].clientX - bannerDrag.startX;
+        setBannerDrag(prev => ({
+          ...prev,
+          currentX: e.touches[0].clientX,
+          offset: offset
+        }));
+      } else if (section1Drag.isDragging) {
+        const offset = e.touches[0].clientX - section1Drag.startX;
+        setSection1Drag(prev => ({
+          ...prev,
+          currentX: e.touches[0].clientX,
+          offset: offset
+        }));
+      } else if (section2Drag.isDragging) {
+        const offset = e.touches[0].clientX - section2Drag.startX;
+        setSection2Drag(prev => ({
+          ...prev,
+          currentX: e.touches[0].clientX,
+          offset: offset
+        }));
+      } else if (section3Drag.isDragging) {
+        const offset = e.touches[0].clientX - section3Drag.startX;
+        setSection3Drag(prev => ({
+          ...prev,
+          currentX: e.touches[0].clientX,
+          offset: offset
+        }));
+      }
+    };
+
+    const handleGlobalMouseUp = () => {
+      if (bannerDrag.isDragging) {
+        handleDragEnd('banner');
+      } else if (section1Drag.isDragging) {
+        handleDragEnd('section1');
+      } else if (section2Drag.isDragging) {
+        handleDragEnd('section2');
+      } else if (section3Drag.isDragging) {
+        handleDragEnd('section3');
+      }
+    };
+
+    if (bannerDrag.isDragging || section1Drag.isDragging || section2Drag.isDragging || section3Drag.isDragging) {
+      document.addEventListener('mousemove', handleGlobalMouseMove);
+      document.addEventListener('mouseup', handleGlobalMouseUp);
+      document.addEventListener('touchmove', handleGlobalTouchMove);
+      document.addEventListener('touchend', handleGlobalMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleGlobalMouseMove);
+      document.removeEventListener('mouseup', handleGlobalMouseUp);
+      document.removeEventListener('touchmove', handleGlobalTouchMove);
+      document.removeEventListener('touchend', handleGlobalMouseUp);
+    };
+  }, [bannerDrag, section1Drag, section2Drag, section3Drag, handleDragEnd]);
+
   return (
     <Layout>
       <Container>
@@ -335,11 +428,7 @@ const ClassIndex: React.FC = () => {
           <BannerSection>
             <BannerSlideWrapper 
               onMouseDown={(e) => handleDragStart(e, 'banner')}
-              onMouseMove={(e) => handleDragMove(e, 'banner')}
               onTouchStart={(e) => handleDragStart(e, 'banner')}
-              onTouchMove={(e) => handleDragMove(e, 'banner')}
-              onMouseUp={() => handleDragEnd('banner')}
-              onTouchEnd={() => handleDragEnd('banner')}
               style={{ 
                 transform: `translateX(calc(-${(bannerPage) * (100/(totalBanners + 2))}% + ${bannerDrag.isDragging ? bannerDrag.offset : 0}px))`,
                 transition: bannerDrag.isDragging || !isTransitioning ? 'none' : 'transform 0.6s ease',
@@ -352,22 +441,23 @@ const ClassIndex: React.FC = () => {
                     <BannerImageWrapper>
                       <BannerImage src={banner.image} alt={banner.alt} />
                     </BannerImageWrapper>
-                    {/* 페이지네이션 닷을 각 배너 내부에 배치 */}
-                    <BannerPaginationContainer>
-                      <PaginationDots>
-                        {bannerData.map((_, dotIndex) => (
-                          <Dot 
-                            key={dotIndex}
-                            active={dotIndex + 1 === getCurrentPage()}
-                            onClick={() => handleBannerDotClick(dotIndex + 1)}
-                          />
-                        ))}
-                      </PaginationDots>
-                    </BannerPaginationContainer>
                   </BannerContainer>
                 </BannerSlide>
               ))}
             </BannerSlideWrapper>
+            
+            {/* 페이지네이션 닷을 배너 섹션에 고정 */}
+            <BannerPaginationContainer>
+              <PaginationDots>
+                {bannerData.map((_, dotIndex) => (
+                  <Dot 
+                    key={dotIndex}
+                    active={dotIndex + 1 === getCurrentPage()}
+                    onClick={() => handleBannerDotClick(dotIndex + 1)}
+                  />
+                ))}
+              </PaginationDots>
+            </BannerPaginationContainer>
           </BannerSection>
 
           {/* 카테고리 아이콘들과 검색바 */}
@@ -454,11 +544,7 @@ const ClassIndex: React.FC = () => {
             <SlideContainer
               ref={section1Ref}
               onMouseDown={(e) => handleDragStart(e, 'section1')}
-              onMouseMove={(e) => handleDragMove(e, 'section1')}
               onTouchStart={(e) => handleDragStart(e, 'section1')}
-              onTouchMove={(e) => handleDragMove(e, 'section1')}
-              onMouseUp={() => handleDragEnd('section1')}
-              onTouchEnd={() => handleDragEnd('section1')}
             >
               <SlideWrapper style={{ 
                 transform: `translateX(calc(-${(section1Page - 1) * (100/3)}% + ${section1Drag.isDragging ? section1Drag.offset : 0}px))`,
@@ -535,11 +621,7 @@ const ClassIndex: React.FC = () => {
             <SlideContainer
               ref={section2Ref}
               onMouseDown={(e) => handleDragStart(e, 'section2')}
-              onMouseMove={(e) => handleDragMove(e, 'section2')}
               onTouchStart={(e) => handleDragStart(e, 'section2')}
-              onTouchMove={(e) => handleDragMove(e, 'section2')}
-              onMouseUp={() => handleDragEnd('section2')}
-              onTouchEnd={() => handleDragEnd('section2')}
             >
               <SlideWrapper style={{ 
                 transform: `translateX(calc(-${(section2Page - 1) * (100/3)}% + ${section2Drag.isDragging ? section2Drag.offset : 0}px))`,
@@ -616,11 +698,7 @@ const ClassIndex: React.FC = () => {
             <SlideContainer
               ref={section3Ref}
               onMouseDown={(e) => handleDragStart(e, 'section3')}
-              onMouseMove={(e) => handleDragMove(e, 'section3')}
               onTouchStart={(e) => handleDragStart(e, 'section3')}
-              onTouchMove={(e) => handleDragMove(e, 'section3')}
-              onMouseUp={() => handleDragEnd('section3')}
-              onTouchEnd={() => handleDragEnd('section3')}
             >
               <SlideWrapper style={{ 
                 transform: `translateX(calc(-${(section3Page - 1) * (100/3)}% + ${section3Drag.isDragging ? section3Drag.offset : 0}px))`,
@@ -685,6 +763,7 @@ const BannerSection = styled.section`
   width: 100%;
   margin-bottom: 0;
   overflow: hidden;
+  border-radius: 12px;
   
   @media (max-width: 768px) {
     margin-bottom: 0;
@@ -698,6 +777,7 @@ const BannerSlideWrapper = styled.div`
   overflow: hidden;
   cursor: grab;
   user-select: none;
+  border-radius: 12px;
   
   &:active {
     cursor: grabbing;
@@ -742,6 +822,10 @@ const BannerImage = styled.img`
   position: absolute;
   left: 0px;
   top: 0px;
+  user-select: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
 `;
 
 const BannerPaginationContainer = styled.div`
@@ -1121,6 +1205,10 @@ const ClassImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  user-select: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
 `;
 
 const ClassInfo = styled.div`
