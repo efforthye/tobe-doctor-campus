@@ -45,7 +45,7 @@ const ClassCategory: React.FC = () => {
           {/* 사이드바 */}
           <Sidebar>
             <SidebarContent>
-              <SidebarItem>전체보기</SidebarItem>
+              <SidebarItem active>전체보기</SidebarItem>
               <SidebarItem>카테고리</SidebarItem>
               <SidebarItem>카테고리</SidebarItem>
               <SidebarItem>카테고리</SidebarItem>
@@ -154,17 +154,17 @@ const Container = styled.div`
 const MainContainer = styled.div`
   max-width: ${({ theme }) => theme.layout.containerWidth};
   margin: 0 auto;
-  padding: 24px ${({ theme }) => theme.layout.containerPadding} 128px;
+  padding: 64px ${({ theme }) => theme.layout.containerPadding} 128px;
   display: flex;
   gap: 32px;
   
   @media (max-width: 1024px) {
-    padding: 24px ${({ theme }) => theme.layout.containerPaddingTablet} 128px;
+    padding: 64px ${({ theme }) => theme.layout.containerPaddingTablet} 128px;
     gap: 24px;
   }
   
   @media (max-width: 768px) {
-    padding: 24px ${({ theme }) => theme.layout.containerPaddingMobile} 100px;
+    padding: 64px ${({ theme }) => theme.layout.containerPaddingMobile} 100px;
     flex-direction: column;
     gap: 16px;
   }
@@ -192,11 +192,11 @@ const SidebarContent = styled.div`
   }
 `;
 
-const SidebarItem = styled.div`
+const SidebarItem = styled.div<{ active?: boolean }>`
   padding: 12px 16px;
   border-radius: 12px;
   background: transparent;
-  color: rgba(55, 56, 60, 0.61);
+  color: ${props => props.active ? '#171719' : 'rgba(55, 56, 60, 0.61)'};
   font-size: 16px;
   font-family: 'Pretendard JP', sans-serif;
   font-weight: 500;
@@ -208,14 +208,35 @@ const SidebarItem = styled.div`
   align-items: center;
   justify-content: space-between;
   
+  &::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    background-image: ${props => props.active 
+      ? `url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12L10 8L6 4' stroke='%23171719' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`
+      : `url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12L10 8L6 4' stroke='rgba(55, 56, 60, 0.61)' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`
+    };
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: background-image 0.2s ease;
+  }
+  
   &:hover {
     color: #171719;
+    
+    &::after {
+      background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12L10 8L6 4' stroke='%23171719' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
   }
   
   @media (max-width: 768px) {
     flex: 0 0 auto;
     padding: 8px 12px;
     font-size: 14px;
+    
+    &::after {
+      display: none;
+    }
   }
 `;
 

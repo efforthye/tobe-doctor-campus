@@ -762,17 +762,17 @@ const Container = styled.div`
 const MainContainer = styled.div`
   max-width: ${({ theme }) => theme.layout.containerWidth};
   margin: 0 auto;
-  padding: 24px ${({ theme }) => theme.layout.containerPadding} 128px;
+  padding: 64px ${({ theme }) => theme.layout.containerPadding} 128px;
   display: flex;
   flex-direction: column;
   gap: 64px; /* gap 다시 추가 */
   
   @media (max-width: 1024px) {
-    padding: 24px ${({ theme }) => theme.layout.containerPaddingTablet} 128px;
+    padding: 64px ${({ theme }) => theme.layout.containerPaddingTablet} 128px;
   }
   
   @media (max-width: 768px) {
-    padding: 24px ${({ theme }) => theme.layout.containerPaddingMobile} 100px;
+    padding: 64px ${({ theme }) => theme.layout.containerPaddingMobile} 100px;
     gap: 48px;
   }
 `;

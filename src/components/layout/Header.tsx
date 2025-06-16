@@ -212,7 +212,7 @@ const Header: React.FC = () => {
                       isHovered={hoveredItem === 'classes-1'}
                       hasHoveredItem={hoveredItem !== null}
                       hoveredItemIsSpecial={hoveredItem === 'classes-all'}
-                    >카테고리 (임시)</DropdownLink>
+                    >카테고리</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
                     isHovered={hoveredItem === 'classes-2'}
