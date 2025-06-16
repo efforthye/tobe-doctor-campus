@@ -57,9 +57,9 @@ const ClassIndex: React.FC = () => {
 
   // 배너 데이터 (확장 가능)
   const bannerData = [
-    { id: 1, image: 'https://placehold.co/1200x300/4A90E2/FFFFFF?text=Banner+1', alt: '배너 1' },
-    { id: 2, image: 'https://placehold.co/1200x300/50E3C2/FFFFFF?text=Banner+2', alt: '배너 2' },
-    { id: 3, image: 'https://placehold.co/1200x300/F5A623/FFFFFF?text=Banner+3', alt: '배너 3' },
+    { id: 1, image: 'https://placehold.co/1200x300/CCCCCC/666666?text=Banner+1', alt: '배너 1' },
+    { id: 2, image: 'https://placehold.co/1200x300/DDDDDD/666666?text=Banner+2', alt: '배너 2' },
+    { id: 3, image: 'https://placehold.co/1200x300/BBBBBB/666666?text=Banner+3', alt: '배너 3' },
     // 필요시 배너 추가 가능
   ];
 
