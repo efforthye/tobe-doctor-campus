@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import styled from 'styled-components';
 import Layout from '../../components/layout/Layout';
 import { useParams } from 'react-router-dom';
@@ -14,8 +14,16 @@ const ClassLecture: React.FC = () => {
   const tabListRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const tabRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  
+  // 탭 섹션의 원래 위치를 저장 (변하지 않는 값)
+  const originalTabPositionRef = useRef<number>(0);
 
-  // 배너 데이터 제거 - 더 이상 필요하지 않음
+  // 초기 탭 위치 저장
+  useEffect(() => {
+    if (tabSectionRef.current && originalTabPositionRef.current === 0) {
+      originalTabPositionRef.current = tabSectionRef.current.offsetTop;
+    }
+  }, []);
 
   // 강의 정보 (임시 데이터)
   const lectureData = {
@@ -26,14 +34,14 @@ const ClassLecture: React.FC = () => {
   };
 
   // 탭 데이터
-  const tabs = [
+  const tabs = useMemo(() => [
     { id: 'introduction', label: '강의 소개' },
     { id: 'instructor', label: '강사 소개' },
     { id: 'recommended', label: '추천 강의' },
     { id: 'reviews', label: '수강 후기' },
     { id: 'faq', label: 'FAQ' },
     { id: 'qna', label: 'Q&A' }
-  ];
+  ], []);
 
   // 인디케이터 위치 업데이트
   const updateIndicatorPosition = useCallback((tabId: string) => {
@@ -67,49 +75,82 @@ const ClassLecture: React.FC = () => {
   // 스크롤 이벤트 핸들러
   useEffect(() => {
     const handleScroll = () => {
-      if (!tabSectionRef.current) return;
+      if (!tabSectionRef.current || originalTabPositionRef.current === 0) return;
 
-      const tabSectionTop = tabSectionRef.current.offsetTop;
-      const tabSectionBottom = tabSectionTop + tabSectionRef.current.offsetHeight;
       const scrollY = window.scrollY;
-      const viewportTop = scrollY + 80; // 헤더 높이 고려
+      const headerHeight = 80;
       
-      // 탭 영역이 헤더 아래로 사라질 때 sticky 활성화
-      setIsTabSticky(viewportTop > tabSectionBottom);
+      // 원래 탭 위치 사용 (변하지 않는 값)
+      const tabSectionTop = originalTabPositionRef.current;
+      
+      // 간단한 조건: 탭 섹션의 상단이 헤더 아래로 가면 sticky
+      const shouldBeSticky = scrollY + headerHeight > tabSectionTop;
+      
+      if (shouldBeSticky !== isTabSticky) {
+        setIsTabSticky(shouldBeSticky);
+      }
 
       // 현재 보이는 섹션 찾기
       const sectionOffsets = tabs.map(tab => {
         const element = sectionRefs.current[tab.id];
         if (!element) return { id: tab.id, offset: 0 };
-        
-        const rect = element.getBoundingClientRect();
-        const offset = rect.top + scrollY;
-        return { id: tab.id, offset };
+        return { id: tab.id, offset: element.offsetTop };
       });
 
-      // 현재 스크롤 위치에서 가장 가까운 섹션 찾기
-      const adjustedScrollY = scrollY + (isTabSticky ? 160 : 200);
-      const currentSection = sectionOffsets.reduce((prev, current) => {
-        const prevDistance = Math.abs(prev.offset - adjustedScrollY);
-        const currentDistance = Math.abs(current.offset - adjustedScrollY);
-        return currentDistance < prevDistance ? current : prev;
-      });
+      // 현재 스크롤 위치에서 가장 적합한 섹션 찾기
+      const offsetForActiveSection = shouldBeSticky ? 72 : headerHeight + 100; // sticky일 때는 탭 높이만
+      const targetScrollPosition = scrollY + offsetForActiveSection;
+      
+      let currentSection = sectionOffsets[0];
+      for (let i = 0; i < sectionOffsets.length; i++) {
+        if (sectionOffsets[i].offset <= targetScrollPosition) {
+          currentSection = sectionOffsets[i];
+        } else {
+          break;
+        }
+      }
 
       if (currentSection.id !== activeTab) {
         setActiveTab(currentSection.id);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // 초기 실행
+    const timer = setTimeout(() => {
+      if (originalTabPositionRef.current === 0 && tabSectionRef.current) {
+        originalTabPositionRef.current = tabSectionRef.current.offsetTop;
+      }
+      handleScroll();
+    }, 100);
+
+    // 스로틀링을 위한 requestAnimationFrame 사용
+    let ticking = false;
+    const scrollHandler = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', scrollHandler, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', scrollHandler);
+      clearTimeout(timer);
+    };
   }, [activeTab, tabs, isTabSticky]);
 
   // 탭 클릭 시 해당 섹션으로 스크롤
   const handleTabClick = useCallback((tabId: string) => {
     const element = sectionRefs.current[tabId];
     if (element) {
-      const offset = isTabSticky ? 160 : 200; // sticky일 때 탭 높이 고려
-      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset - offset;
+      const tabHeight = 72;
+      const offset = isTabSticky ? tabHeight : 0; // sticky일 때만 탭 높이만큼 오프셋
+      
+      const elementRect = element.getBoundingClientRect();
+      const elementPosition = window.pageYOffset + elementRect.top - offset;
       
       window.scrollTo({
         top: elementPosition,
@@ -147,9 +188,9 @@ const ClassLecture: React.FC = () => {
           </LectureInfoSection>
 
           {/* 탭 네비게이션 */}
-          <TabSection ref={tabSectionRef} isSticky={isTabSticky}>
+          <TabSection ref={tabSectionRef} $isSticky={isTabSticky}>
             <TabContainer>
-              <TabList ref={tabListRef}>
+              <TabList $isSticky={isTabSticky} ref={tabListRef}>
                 {tabs.map((tab) => (
                   <TabItem 
                     key={tab.id}
@@ -167,12 +208,12 @@ const ClassLecture: React.FC = () => {
                   }}
                 />
               </TabList>
-              <TabDivider />
+              <TabDivider $isSticky={isTabSticky} />
             </TabContainer>
           </TabSection>
 
           {/* Sticky 상태일 때 콘텐츠 여백 */}
-          {isTabSticky && <div style={{ height: '72px' }} />}
+          {isTabSticky && <StickyPlaceholder />}
           
           {/* 콘텐츠 영역 */}
           <ContentSection>
@@ -340,27 +381,30 @@ const ButtonText = styled.span`
 `;
 
 /* 탭 섹션 */
-const TabSection = styled.section<{ isSticky?: boolean }>`
+const TabSection = styled.section<{ $isSticky?: boolean }>`
   width: 100%;
   background: white;
-  z-index: 100;
-  transition: all 0.3s ease;
+  z-index: 1001;
+  transition: all 0.2s ease;
   
-  ${props => props.isSticky && `
+  ${props => props.$isSticky && `
     position: fixed;
-    top: 80px;
+    top: 0;
     left: 0;
     right: 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(112, 115, 124, 0.22);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
   `}
 `;
 
 const TabContainer = styled.div`
   width: 100%;
   background: white;
+  position: relative;
 `;
 
-const TabList = styled.div`
+const TabList = styled.div<{ $isSticky?: boolean }>`
   position: relative;
   display: flex;
   align-items: center;
@@ -368,15 +412,22 @@ const TabList = styled.div`
   overflow-x: auto;
   max-width: ${({ theme }) => theme.layout.containerWidth};
   margin: 0 auto;
-  padding-right: ${({ theme }) => theme.layout.containerPadding};
+  padding: 0 ${({ theme }) => theme.layout.containerPadding} 0 ${props => props.$isSticky ? ({ theme }) => theme.layout.containerPadding : '0'};
+  
+  /* 스크롤바 숨기기 */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   
   @media (max-width: 1024px) {
-    padding-right: ${({ theme }) => theme.layout.containerPaddingTablet};
+    padding: 0 ${({ theme }) => theme.layout.containerPaddingTablet} 0 ${props => props.$isSticky ? ({ theme }) => theme.layout.containerPaddingTablet : '0'};
   }
   
   @media (max-width: 768px) {
     gap: 24px;
-    padding-right: ${({ theme }) => theme.layout.containerPaddingMobile};
+    padding: 0 ${({ theme }) => theme.layout.containerPaddingMobile} 0 ${props => props.$isSticky ? ({ theme }) => theme.layout.containerPaddingMobile : '0'};
   }
 `;
 
@@ -420,10 +471,17 @@ const TabIndicator = styled.div`
   transform-origin: left;
 `;
 
-const TabDivider = styled.div`
+const TabDivider = styled.div<{ $isSticky?: boolean }>`
   width: 100%;
   height: 1px;
   background: rgba(112, 115, 124, 0.22);
+  display: ${props => props.$isSticky ? 'none' : 'block'};
+`;
+
+/* Sticky 플레이스홀더 */
+const StickyPlaceholder = styled.div`
+  height: 72px;
+  width: 100%;
 `;
 
 /* 콘텐츠 섹션 */
