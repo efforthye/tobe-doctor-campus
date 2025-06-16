@@ -52,17 +52,38 @@ const ClassLecture: React.FC = () => {
       const tabRect = activeTabElement.getBoundingClientRect();
       const listRect = tabListElement.getBoundingClientRect();
       
+      const left = tabRect.left - listRect.left;
+      const width = tabRect.width;
+      
+      // 헤더 상태일 때 패딩 영역보다 왼쪽에 있으면 숨김
+      let shouldHide = false;
+      if (isTabSticky) {
+        const containerPadding = window.innerWidth > 1024 ? 80 : window.innerWidth > 768 ? 64 : 24;
+        shouldHide = left + width <= containerPadding; // 탭 전체가 패딩 영역에 있으면 숨김
+      }
+      
+      // 헤더 상태에서는 transition 없이 즉시 나타남
+      const indicatorElement = document.querySelector('.tab-indicator') as HTMLElement;
+      if (indicatorElement && isTabSticky) {
+        indicatorElement.style.transition = 'none';
+        setTimeout(() => {
+          if (indicatorElement) {
+            indicatorElement.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+          }
+        }, 10);
+      }
+      
       setIndicatorStyle({
-        left: tabRect.left - listRect.left,
-        width: tabRect.width
+        left: shouldHide ? -1000 : left,
+        width: shouldHide ? 0 : width
       });
     }
-  }, []);
+  }, [isTabSticky]);
 
   // activeTab 변경 시 인디케이터 위치 업데이트
   useEffect(() => {
     updateIndicatorPosition(activeTab);
-  }, [activeTab, updateIndicatorPosition]);
+  }, [activeTab, updateIndicatorPosition, isTabSticky]); // isTabSticky 의존성 추가
 
   // 초기 렌더링 후 인디케이터 위치 설정
   useEffect(() => {
@@ -89,6 +110,10 @@ const ClassLecture: React.FC = () => {
       
       if (shouldBeSticky !== isTabSticky) {
         setIsTabSticky(shouldBeSticky);
+        // sticky 상태 변경 시 인디케이터 위치 업데이트
+        setTimeout(() => {
+          updateIndicatorPosition(activeTab);
+        }, 50);
       }
 
       // 현재 보이는 섹션 찾기
@@ -203,6 +228,7 @@ const ClassLecture: React.FC = () => {
                   </TabItem>
                 ))}
                 <TabIndicator 
+                  className="tab-indicator"
                   style={{
                     left: `${indicatorStyle.left}px`,
                     width: `${indicatorStyle.width}px`
@@ -384,6 +410,7 @@ const ButtonText = styled.span`
 /* 탭 섹션 */
 const TabSection = styled.section<{ $isSticky?: boolean }>`
   width: 100%;
+  height: 56px;
   background: white;
   z-index: 1001;
   transition: all 0.2s ease;
@@ -401,6 +428,7 @@ const TabSection = styled.section<{ $isSticky?: boolean }>`
 
 const TabContainer = styled.div`
   width: 100%;
+  height: 56px;
   background: white;
   position: relative;
 `;
@@ -411,9 +439,11 @@ const TabList = styled.div<{ $isSticky?: boolean }>`
   align-items: center;
   gap: 48px;
   overflow-x: auto;
+  overflow-y: hidden;
   max-width: ${({ theme }) => theme.layout.containerWidth};
   margin: 0 auto;
-  padding: 12px ${({ theme }) => theme.layout.containerPadding} 12px ${props => props.$isSticky ? ({ theme }) => theme.layout.containerPadding : '0'};
+  padding: 0 ${({ theme }) => theme.layout.containerPadding} 0 ${props => props.$isSticky ? ({ theme }) => theme.layout.containerPadding : '0'};
+  height: 56px;
   
   /* 스크롤바 숨기기 */
   scrollbar-width: none;
@@ -423,12 +453,12 @@ const TabList = styled.div<{ $isSticky?: boolean }>`
   }
   
   @media (max-width: 1024px) {
-    padding: 12px ${({ theme }) => theme.layout.containerPaddingTablet} 12px ${props => props.$isSticky ? ({ theme }) => theme.layout.containerPaddingTablet : '0'};
+    padding: 0 ${({ theme }) => theme.layout.containerPaddingTablet} 0 ${props => props.$isSticky ? ({ theme }) => theme.layout.containerPaddingTablet : '0'};
   }
   
   @media (max-width: 768px) {
     gap: 24px;
-    padding: 12px ${({ theme }) => theme.layout.containerPaddingMobile} 12px ${props => props.$isSticky ? ({ theme }) => theme.layout.containerPaddingMobile : '0'};
+    padding: 0 ${({ theme }) => theme.layout.containerPaddingMobile} 0 ${props => props.$isSticky ? ({ theme }) => theme.layout.containerPaddingMobile : '0'};
   }
 `;
 
@@ -436,11 +466,14 @@ const TabItem = styled.div<{ active?: boolean }>`
   position: relative;
   flex-shrink: 0;
   cursor: pointer;
-  padding: 16px 0; /* 56px 높이에 맞게 패딩 증가 */
+  padding: 0;
+  height: 56px;
+  display: flex;
+  align-items: center;
   transition: all 0.2s ease;
   
   @media (max-width: 768px) {
-    padding: 16px 0;
+    height: 56px;
   }
 `;
 
@@ -465,15 +498,22 @@ const TabText = styled.span<{ active?: boolean }>`
 
 const TabIndicator = styled.div`
   position: absolute;
-  bottom: 0;
+  bottom: 1px;
   height: 2px;
   background: #296768;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   transform-origin: left;
+  z-index: 1;
+  
+  /* 컨테이너 밖으로 나가면 숨김 */
+  overflow: hidden;
 `;
 
 const TabDivider = styled.div<{ $isSticky?: boolean }>`
-  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   height: 1px;
   background: rgba(112, 115, 124, 0.22);
   display: ${props => props.$isSticky ? 'none' : 'block'};
