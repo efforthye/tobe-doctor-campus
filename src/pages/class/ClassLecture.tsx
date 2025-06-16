@@ -83,8 +83,9 @@ const ClassLecture: React.FC = () => {
       // 원래 탭 위치 사용 (변하지 않는 값)
       const tabSectionTop = originalTabPositionRef.current;
       
-      // 간단한 조건: 탭 섹션의 상단이 헤더 아래로 가면 sticky
-      const shouldBeSticky = scrollY + headerHeight > tabSectionTop;
+      // 탭 영역을 완전히 지나친 후에 sticky 활성화
+      const tabSectionBottom = tabSectionTop + 56; // 탭 높이 56px
+      const shouldBeSticky = scrollY >= tabSectionBottom - headerHeight;
       
       if (shouldBeSticky !== isTabSticky) {
         setIsTabSticky(shouldBeSticky);
@@ -98,7 +99,7 @@ const ClassLecture: React.FC = () => {
       });
 
       // 현재 스크롤 위치에서 가장 적합한 섹션 찾기
-      const offsetForActiveSection = shouldBeSticky ? 72 : headerHeight + 100; // sticky일 때는 탭 높이만
+      const offsetForActiveSection = shouldBeSticky ? 56 : headerHeight + 100; // sticky일 때는 탭 높이 56px
       const targetScrollPosition = scrollY + offsetForActiveSection;
       
       let currentSection = sectionOffsets[0];
@@ -146,7 +147,7 @@ const ClassLecture: React.FC = () => {
   const handleTabClick = useCallback((tabId: string) => {
     const element = sectionRefs.current[tabId];
     if (element) {
-      const tabHeight = 72;
+      const tabHeight = 56;
       const offset = isTabSticky ? tabHeight : 0; // sticky일 때만 탭 높이만큼 오프셋
       
       const elementRect = element.getBoundingClientRect();
@@ -412,7 +413,7 @@ const TabList = styled.div<{ $isSticky?: boolean }>`
   overflow-x: auto;
   max-width: ${({ theme }) => theme.layout.containerWidth};
   margin: 0 auto;
-  padding: 0 ${({ theme }) => theme.layout.containerPadding} 0 ${props => props.$isSticky ? ({ theme }) => theme.layout.containerPadding : '0'};
+  padding: 12px ${({ theme }) => theme.layout.containerPadding} 12px ${props => props.$isSticky ? ({ theme }) => theme.layout.containerPadding : '0'};
   
   /* 스크롤바 숨기기 */
   scrollbar-width: none;
@@ -422,12 +423,12 @@ const TabList = styled.div<{ $isSticky?: boolean }>`
   }
   
   @media (max-width: 1024px) {
-    padding: 0 ${({ theme }) => theme.layout.containerPaddingTablet} 0 ${props => props.$isSticky ? ({ theme }) => theme.layout.containerPaddingTablet : '0'};
+    padding: 12px ${({ theme }) => theme.layout.containerPaddingTablet} 12px ${props => props.$isSticky ? ({ theme }) => theme.layout.containerPaddingTablet : '0'};
   }
   
   @media (max-width: 768px) {
     gap: 24px;
-    padding: 0 ${({ theme }) => theme.layout.containerPaddingMobile} 0 ${props => props.$isSticky ? ({ theme }) => theme.layout.containerPaddingMobile : '0'};
+    padding: 12px ${({ theme }) => theme.layout.containerPaddingMobile} 12px ${props => props.$isSticky ? ({ theme }) => theme.layout.containerPaddingMobile : '0'};
   }
 `;
 
@@ -435,11 +436,11 @@ const TabItem = styled.div<{ active?: boolean }>`
   position: relative;
   flex-shrink: 0;
   cursor: pointer;
-  padding: 12px 0;
+  padding: 16px 0; /* 56px 높이에 맞게 패딩 증가 */
   transition: all 0.2s ease;
   
   @media (max-width: 768px) {
-    padding: 12px 0;
+    padding: 16px 0;
   }
 `;
 
@@ -480,7 +481,7 @@ const TabDivider = styled.div<{ $isSticky?: boolean }>`
 
 /* Sticky 플레이스홀더 */
 const StickyPlaceholder = styled.div`
-  height: 72px;
+  height: 56px;
   width: 100%;
 `;
 
