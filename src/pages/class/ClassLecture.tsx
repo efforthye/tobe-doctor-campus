@@ -420,16 +420,15 @@ const TabSection = styled.section<{ $isSticky?: boolean }>`
     top: 0;
     left: 0;
     right: 0;
-    border-bottom: 1px solid rgba(112, 115, 124, 0.22);
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(112, 115, 124, 0.16);
   `}
 `;
 
 const TabContainer = styled.div`
   width: 100%;
   height: 56px;
-  background: white;
   position: relative;
 `;
 
