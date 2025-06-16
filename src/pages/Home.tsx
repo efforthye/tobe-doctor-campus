@@ -515,13 +515,13 @@ const BannerSubtitle = styled.h2`
 const MainContainer = styled.div`
   max-width: ${({ theme }) => theme.layout.containerWidth};
   margin: 0 auto;
-  padding: 64px ${({ theme }) => theme.layout.containerPadding} 160px;
+  padding: 64px ${({ theme }) => theme.layout.containerPadding} 128px;
   display: flex;
   flex-direction: column;
   gap: 64px;
   
   @media (max-width: 1024px) {
-    padding: 64px ${({ theme }) => theme.layout.containerPaddingTablet} 160px;
+    padding: 64px ${({ theme }) => theme.layout.containerPaddingTablet} 128px;
   }
   
   @media (max-width: 768px) {
@@ -556,7 +556,7 @@ const SectionTitleGroup = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 `;
 
 const SectionTitle = styled.h2`
@@ -706,7 +706,7 @@ const CategoryGrid = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 20px;
+  gap: 24px;
   
   @media (max-width: 1024px) {
     grid-template-columns: repeat(3, 1fr);
@@ -777,7 +777,7 @@ const LectureGrid = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 24px;
   
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -820,7 +820,7 @@ const LectureCardOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 50%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 50%); // 72px, 50 -> 33.33
   display: flex;
   align-items: flex-end;
   padding: 24px;
@@ -831,9 +831,12 @@ const LectureCardContent = styled.div`
 `;
 
 const LectureCardTitle = styled.h3`
+  font-family: 'Pretendard JP', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 8px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.012em;
+  margin-bottom: 4px;
   
   @media (max-width: 768px) {
     font-size: 18px;
@@ -841,7 +844,11 @@ const LectureCardTitle = styled.h3`
 `;
 
 const LectureCardSubtitle = styled.p`
+  font-family: 'Pretendard JP', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
+  font-weight: 500;
+  line-height: 1.429;
+  letter-spacing: 0.0145em;
   opacity: 0.9;
 `;
 
@@ -850,7 +857,7 @@ const CoffeeChatGrid = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 24px;
   
   @media (max-width: 1024px) {
     grid-template-columns: repeat(3, 1fr);
@@ -899,7 +906,7 @@ const CoffeeChatCardOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 50%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 50%); // 72px, 50 -> 33.33
   display: flex;
   align-items: flex-end;
   padding: 24px;
@@ -910,17 +917,24 @@ const CoffeeChatCardContent = styled.div`
 `;
 
 const CoffeeChatCardTitle = styled.h3`
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 8px;
+  font-family: 'Pretendard JP', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.012em;
+  margin-bottom: 4px;
   
   @media (max-width: 768px) {
-    font-size: 16px;
+    font-size: 18px;
   }
 `;
 
 const CoffeeChatCardSubtitle = styled.p`
+  font-family: 'Pretendard JP', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
+  font-weight: 500;
+  line-height: 1.429;
+  letter-spacing: 0.0145em;
   opacity: 0.9;
 `;
 

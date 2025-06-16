@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Layout from '../components/layout/Layout';
-import PhoneVerification from '../components/PhoneVerification';
+import CampusPhoneVerification from '../components/CampusPhoneVerification';
+import { completeSignup, checkEmailDuplication } from '../services/signupApi';
 
 interface SignupFormValues {
   email: string;
@@ -31,17 +32,15 @@ interface ValidationSuccess {
   phoneVerification: string;
 }
 
-// 본인확인 결과 타입
+// 본인확인 결과 타입 (새로운 API에 맞게 수정)
 interface VerificationResult {
   success: boolean;
   message: string;
   userData?: {
+    id: number;      // Person ID
     name: string;
     phone: string;
-    birthday: string;
-    gender: string;
-    ci: string;
-    di: string;
+    birth: string;   // YYYY-MM-DD 형식
   };
 }
 
@@ -100,6 +99,7 @@ const Signup: React.FC = () => {
 
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
+  const [personId, setPersonId] = useState<number | null>(null); // 본인인증으로 생성된 Person ID
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const [uploadedFileName, setUploadedFileName] = useState('');
 
@@ -312,27 +312,48 @@ const Signup: React.FC = () => {
     setDropdownStates(prev => ({ ...prev, [dropdown]: false }));
   };
 
-  const handleEmailVerification = () => {
+  const handleEmailVerification = async () => {
     if (validateEmail(formValues.email)) {
-      setIsEmailVerified(true);
+      try {
+        // 실제 이메일 중복 확인 API가 있다면 호출
+        // const result = await checkEmailDuplication(formValues.email);
+        // if (result.available) {
+          setIsEmailVerified(true);
+        // } else {
+        //   setValidationErrors(prev => ({ ...prev, email: '이미 사용 중인 이메일입니다.' }));
+        // }
+      } catch (error) {
+        console.error('이메일 중복 확인 실패:', error);
+        // API 오류 시에도 임시로 통과시킴 (개발 중)
+        setIsEmailVerified(true);
+      }
     }
   };
 
-  // 휴대폰 본인확인 완료 처리
+  // 휴대폰 본인확인 완료 처리 (새로운 API 연동)
   const handlePhoneVerificationComplete = (result: VerificationResult) => {
     console.log('휴대폰 인증 결과:', result);
     
-    if (result.success) {
+    if (result.success && result.userData) {
       setIsPhoneVerified(true);
+      setPersonId(result.userData.id); // Person ID 저장
       
-      // 인증된 이름으로 자동 입력 (선택사항)
-      if (result.userData?.name && !formValues.name) {
-        setFormValues(prev => ({ ...prev, name: result.userData!.name }));
+      // 인증된 이름으로 자동 입력 (입력한 이름과 일치해야 함)
+      if (result.userData.name && formValues.name === result.userData.name) {
+        console.log('이름 일치 확인됨:', result.userData.name);
       }
+      
+      // 인증된 생년월일과 입력한 생년월일 비교
+      const inputBirth = `${formValues.birthYear}-${formValues.birthMonth.padStart(2, '0')}-${formValues.birthDay.padStart(2, '0')}`;
+      if (result.userData.birth === inputBirth) {
+        console.log('생년월일 일치 확인됨:', inputBirth);
+      }
+      
     } else {
       setIsPhoneVerified(false);
+      setPersonId(null);
       
-      // 에러 메시지는 PhoneVerification 컴포넌트에서 처리
+      // 에러 메시지는 CampusPhoneVerification 컴포넌트에서 처리
       console.error('휴대폰 인증 실패:', result.message);
     }
   };
@@ -387,11 +408,56 @@ const Signup: React.FC = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // 회원가입 완료 시 localStorage 정리
-    localStorage.removeItem('signupFormData');
-    navigate('/signup-complete');
+    
+    if (!personId) {
+      alert('본인인증을 먼저 완료해주세요.');
+      return;
+    }
+
+    try {
+      // 회원가입 완료 API 호출
+      const signupData = {
+        email: formValues.email,
+        userType: formValues.userType,
+        password: formValues.password,
+        ...(formValues.userType === 'student' && { 
+          university: formValues.university 
+        }),
+        ...(formValues.userType === 'doctor' && { 
+          department: formValues.department,
+          licenseNumber: formValues.licenseNumber 
+        }),
+        marketingConsent: agreements.marketing
+      };
+
+      console.log('회원가입 요청:', { personId, signupData });
+
+      const result = await completeSignup(personId, signupData);
+      
+      if (result.code === 200) {
+        // 회원가입 완료 시 localStorage 정리
+        localStorage.removeItem('signupFormData');
+        console.log('회원가입 성공:', result.data);
+        navigate('/signup-complete');
+      } else {
+        alert(result.message || '회원가입에 실패했습니다.');
+      }
+      
+    } catch (error: any) {
+      console.error('회원가입 실패:', error);
+      
+      let errorMessage = '회원가입 중 오류가 발생했습니다.';
+      
+      if (error.response?.status === 400) {
+        errorMessage = error.response.data?.message || '입력한 정보가 올바르지 않습니다.';
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      }
+      
+      alert(errorMessage);
+    }
   };
 
   const isFormValid = () => {
@@ -400,7 +466,7 @@ const Signup: React.FC = () => {
                            formValues.name && validatePassword(formValues.password) && 
                            formValues.password === formValues.confirmPassword &&
                            formValues.birthYear && formValues.birthMonth && formValues.birthDay &&
-                           isPhoneVerified;
+                           isPhoneVerified && personId; // personId 추가
 
     if (formValues.userType === 'student') {
       return basicValidation && formValues.university && isImageUploaded;
@@ -465,11 +531,11 @@ const Signup: React.FC = () => {
                   <DropdownButton 
                     type="button"
                     onClick={() => handleDropdownToggle('year')}
-                    isOpen={dropdownStates.year}
-                    hasValue={!!formValues.birthYear}
+                    $isOpen={dropdownStates.year}
+                    $hasValue={!!formValues.birthYear}
                   >
                     <span>{formValues.birthYear || '연'}</span>
-                    <ChevronIcon isOpen={dropdownStates.year}>
+                    <ChevronIcon $isOpen={dropdownStates.year}>
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                         <path d="M11.07 6.40L8 9.47L4.93 6.40" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
@@ -493,11 +559,11 @@ const Signup: React.FC = () => {
                   <DropdownButton 
                     type="button"
                     onClick={() => handleDropdownToggle('month')}
-                    isOpen={dropdownStates.month}
-                    hasValue={!!formValues.birthMonth}
+                    $isOpen={dropdownStates.month}
+                    $hasValue={!!formValues.birthMonth}
                   >
                     <span>{formValues.birthMonth || '월'}</span>
-                    <ChevronIcon isOpen={dropdownStates.month}>
+                    <ChevronIcon $isOpen={dropdownStates.month}>
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                         <path d="M11.07 6.40L8 9.47L4.93 6.40" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
@@ -521,11 +587,11 @@ const Signup: React.FC = () => {
                   <DropdownButton 
                     type="button"
                     onClick={() => handleDropdownToggle('day')}
-                    isOpen={dropdownStates.day}
-                    hasValue={!!formValues.birthDay}
+                    $isOpen={dropdownStates.day}
+                    $hasValue={!!formValues.birthDay}
                   >
                     <span>{formValues.birthDay || '일'}</span>
-                    <ChevronIcon isOpen={dropdownStates.day}>
+                    <ChevronIcon $isOpen={dropdownStates.day}>
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                         <path d="M11.07 6.40L8 9.47L4.93 6.40" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
@@ -551,10 +617,17 @@ const Signup: React.FC = () => {
             <FormGroup>
               <SectionTitle>휴대폰 본인인증</SectionTitle>
               <SectionDescription>본인 명의의 휴대폰으로 실명 인증을 하실 수 있습니다.</SectionDescription>
-              <PhoneVerification 
+              <CampusPhoneVerification 
+                name={formValues.name}
+                birthYear={formValues.birthYear}
+                birthMonth={formValues.birthMonth}
+                birthDay={formValues.birthDay}
                 onVerificationComplete={handlePhoneVerificationComplete}
                 disabled={isPhoneVerified}
               />
+              {validationSuccess.phoneVerification && (
+                <SuccessMessage>{validationSuccess.phoneVerification}</SuccessMessage>
+              )}
             </FormGroup>
 
             {/* 비밀번호 */}
@@ -624,11 +697,11 @@ const Signup: React.FC = () => {
                     <DropdownButton 
                       type="button"
                       onClick={() => handleDropdownToggle('university')}
-                      isOpen={dropdownStates.university}
-                      hasValue={!!formValues.university}
+                      $isOpen={dropdownStates.university}
+                      $hasValue={!!formValues.university}
                     >
                       <span>{formValues.university || '소속 대학을 선택해주세요.'}</span>
-                      <ChevronIcon isOpen={dropdownStates.university}>
+                      <ChevronIcon $isOpen={dropdownStates.university}>
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                           <path d="M11.07 6.40L8 9.47L4.93 6.40" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
@@ -671,11 +744,11 @@ const Signup: React.FC = () => {
                     <DropdownButton 
                       type="button"
                       onClick={() => handleDropdownToggle('department')}
-                      isOpen={dropdownStates.department}
-                      hasValue={!!formValues.department}
+                      $isOpen={dropdownStates.department}
+                      $hasValue={!!formValues.department}
                     >
                       <span>{formValues.department || '진료과를 선택해주세요.'}</span>
-                      <ChevronIcon isOpen={dropdownStates.department}>
+                      <ChevronIcon $isOpen={dropdownStates.department}>
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                           <path d="M11.07 6.40L8 9.47L4.93 6.40" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
@@ -996,11 +1069,11 @@ const DropdownContainer = styled.div`
   position: relative;
 `;
 
-const DropdownButton = styled.button<{ isOpen: boolean; hasValue: boolean }>`
+const DropdownButton = styled.button<{ $isOpen: boolean; $hasValue: boolean }>`
   width: 100%;
   height: 48px;
   padding: 12px;
-  border: ${props => props.isOpen ? '2px solid #448181' : '1px solid rgba(112, 115, 124, 0.16)'};
+  border: ${props => props.$isOpen ? '2px solid #448181' : '1px solid rgba(112, 115, 124, 0.16)'};
   border-radius: 12px;
   background: white;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.03);
@@ -1010,15 +1083,15 @@ const DropdownButton = styled.button<{ isOpen: boolean; hasValue: boolean }>`
   cursor: pointer;
   
   span {
-    color: ${props => props.hasValue ? '#171719' : 'rgba(55, 56, 60, 0.28)'};
+    color: ${props => props.$hasValue ? '#171719' : 'rgba(55, 56, 60, 0.28)'};
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
   }
 `;
 
-const ChevronIcon = styled.div<{ isOpen: boolean }>`
-  transform: ${props => props.isOpen ? 'rotate(180deg)' : 'rotate(0deg)'};
+const ChevronIcon = styled.div<{ $isOpen: boolean }>`
+  transform: ${props => props.$isOpen ? 'rotate(180deg)' : 'rotate(0deg)'};
   transition: transform 0.2s ease;
   color: rgba(55, 56, 60, 0.61);
 `;

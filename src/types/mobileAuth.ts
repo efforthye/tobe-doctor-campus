@@ -20,6 +20,8 @@ export interface MobileAuthResponse {
   reqDate?: string;    // 본인확인 요청 시간
   issuer?: string;     // 본인확인 인증 서버
   issueDate?: string;  // 발급일 (yyyy-mm-dd hh:mm:ss.mis)
+  // 추가: 캠퍼스 API용
+  encryptMOKKeyToken?: string; // 드림시큐리티에서 전달받는 토큰
 }
 
 // 전역 Window 객체에 MOBILEOK 추가
@@ -50,12 +52,14 @@ export interface VerificationResult {
   success: boolean;
   message: string;
   userData?: {
+    id?: number;    // 캠퍼스 API용 Person ID
     name: string;
     phone: string;
-    birthday: string;
-    gender: string;
-    ci: string;
-    di: string;
+    birthday?: string; // 기존 형식
+    birth?: string;    // 캠퍼스 API 형식 (YYYY-MM-DD)
+    gender?: string;
+    ci?: string;
+    di?: string;
   };
 }
 

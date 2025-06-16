@@ -10,4 +10,7 @@ module.exports = function(app) {
     }
     next();
   });
+
+  // 프록시 설정 제거 - 직접 개발 서버로 요청
+  // 캠퍼스 API는 https://campus-dev.duckdns.org 로 직접 요청
 };
