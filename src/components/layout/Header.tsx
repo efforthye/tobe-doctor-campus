@@ -208,11 +208,11 @@ const Header: React.FC = () => {
                     onMouseLeave={handleItemMouseLeave}
                   >
                     <DropdownLink 
-                      to="/classes/all"
+                      to="/class/category"
                       isHovered={hoveredItem === 'classes-1'}
                       hasHoveredItem={hoveredItem !== null}
                       hoveredItemIsSpecial={hoveredItem === 'classes-all'}
-                    >메뉴 하나</DropdownLink>
+                    >카테고리 (임시)</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
                     isHovered={hoveredItem === 'classes-2'}
