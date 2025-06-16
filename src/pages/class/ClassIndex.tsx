@@ -57,9 +57,9 @@ const ClassIndex: React.FC = () => {
 
   // 배너 데이터 (확장 가능)
   const bannerData = [
-    { id: 1, image: 'https://placehold.co/1200x300/CCCCCC/666666?text=Banner+1', alt: '배너 1' },
-    { id: 2, image: 'https://placehold.co/1200x300/DDDDDD/666666?text=Banner+2', alt: '배너 2' },
-    { id: 3, image: 'https://placehold.co/1200x300/BBBBBB/666666?text=Banner+3', alt: '배너 3' },
+    { id: 1, image: 'https://placehold.co/1200x300/DDDDDD/999999?text=Temp+Image', alt: '배너 1' },
+    { id: 2, image: 'https://placehold.co/1200x300/DDDDDD/999999?text=Temp+Image', alt: '배너 2' },
+    { id: 3, image: 'https://placehold.co/1200x300/DDDDDD/999999?text=Temp+Image', alt: '배너 3' },
     // 필요시 배너 추가 가능
   ];
 
@@ -75,22 +75,22 @@ const ClassIndex: React.FC = () => {
   // 클래스 카드 데이터 (각 섹션별로 3페이지씩)
   const classData = {
     1: [
-      { id: 1, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188' },
-      { id: 2, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188' },
-      { id: 3, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188' },
-      { id: 4, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188' },
+      { id: 1, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+      { id: 2, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+      { id: 3, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+      { id: 4, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
     ],
     2: [
-      { id: 5, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188' },
-      { id: 6, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188' },
-      { id: 7, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188' },
-      { id: 8, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188' },
+      { id: 5, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+      { id: 6, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+      { id: 7, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+      { id: 8, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
     ],
     3: [
-      { id: 9, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188' },
-      { id: 10, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188' },
-      { id: 11, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188' },
-      { id: 12, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188' },
+      { id: 9, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+      { id: 10, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+      { id: 11, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+      { id: 12, title: '제목', caption: '캡션', extraCaption: '추가 캡션', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
     ]
   };
 
@@ -506,7 +506,7 @@ const ClassIndex: React.FC = () => {
                 </SearchIcon>
                 <SearchInput 
                   type="text" 
-                  placeholder="검색어를 입력해 주세요. (이부분 추후 문구작성 필요)"
+                  placeholder="관심 주제, 강의 찾기"
                   value={searchValue}
                   onChange={handleSearchChange}
                   onKeyUp={handleSearchSubmit}
@@ -938,7 +938,7 @@ const CategoryIconBox = styled.div`
 const CategoryIconPlaceholder = styled.div`
   width: 64px;
   height: 64px;
-  background: var(--Label-Normal, #171719);
+  background: #DDDDDD;
   border-radius: 6px;
   
   @media (max-width: 768px) {

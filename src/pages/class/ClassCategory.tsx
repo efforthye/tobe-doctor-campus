@@ -7,18 +7,18 @@ const ClassCategory: React.FC = () => {
 
   // 클래스 카드 데이터 (4개 행 × 3개씩)
   const classData = [
-    { id: 1, title: '유방영상에서 AI의 적용', caption: '송성은', extraCaption: '고려대학교 안암병원 영상의학과', image: 'https://placehold.co/282x188' },
-    { id: 2, title: 'ANN의 기본 구조와 학습 원리', caption: '김승용', extraCaption: '고려대학교 의과대학 의공학교실', image: 'https://placehold.co/282x188' },
-    { id: 3, title: '머신러닝의 기초 : Linear Regression', caption: '김승용', extraCaption: '고려대학교 의과대학 의공학교실', image: 'https://placehold.co/282x188' },
-    { id: 4, title: 'Deep Learning 기초와 응용', caption: '이지원', extraCaption: '서울대학교 의과대학 의료정보학과', image: 'https://placehold.co/282x188' },
-    { id: 5, title: 'CNN을 이용한 의료영상 분석', caption: '박준영', extraCaption: '연세대학교 세브란스병원 영상의학과', image: 'https://placehold.co/282x188' },
-    { id: 6, title: 'Natural Language Processing 입문', caption: '최민수', extraCaption: '성균관대학교 의과대학 의료정보학과', image: 'https://placehold.co/282x188' },
-    { id: 7, title: 'RNN과 LSTM의 이해', caption: '정혜영', extraCaption: '한양대학교 의과대학 의공학교실', image: 'https://placehold.co/282x188' },
-    { id: 8, title: '의료 빅데이터 분석 방법론', caption: '김태형', extraCaption: '가톨릭대학교 의과대학 의료정보학과', image: 'https://placehold.co/282x188' },
-    { id: 9, title: 'GAN을 활용한 의료영상 생성', caption: '송미라', extraCaption: '중앙대학교 의과대학 영상의학과', image: 'https://placehold.co/282x188' },
-    { id: 10, title: 'Transformer 모델의 의료 적용', caption: '이상현', extraCaption: '울산대학교 의과대학 의료정보학과', image: 'https://placehold.co/282x188' },
-    { id: 11, title: '의료 AI 윤리와 규제', caption: '홍지영', extraCaption: '이화여자대학교 의과대학 의료법윤리학과', image: 'https://placehold.co/282x188' },
-    { id: 12, title: 'AI 기반 진단 시스템 개발', caption: '강동수', extraCaption: '경희대학교 의과대학 의공학교실', image: 'https://placehold.co/282x188' },
+    { id: 1, title: '유방영상에서 AI의 적용', caption: '송성은', extraCaption: '고려대학교 안암병원 영상의학과', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+    { id: 2, title: 'ANN의 기본 구조와 학습 원리', caption: '김승용', extraCaption: '고려대학교 의과대학 의공학교실', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+    { id: 3, title: '머신러닝의 기초 : Linear Regression', caption: '김승용', extraCaption: '고려대학교 의과대학 의공학교실', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+    { id: 4, title: 'Deep Learning 기초와 응용', caption: '이지원', extraCaption: '서울대학교 의과대학 의료정보학과', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+    { id: 5, title: 'CNN을 이용한 의료영상 분석', caption: '박준영', extraCaption: '연세대학교 세브란스병원 영상의학과', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+    { id: 6, title: 'Natural Language Processing 입문', caption: '최민수', extraCaption: '성균관대학교 의과대학 의료정보학과', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+    { id: 7, title: 'RNN과 LSTM의 이해', caption: '정혜영', extraCaption: '한양대학교 의과대학 의공학교실', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+    { id: 8, title: '의료 빅데이터 분석 방법론', caption: '김태형', extraCaption: '가톨릭대학교 의과대학 의료정보학과', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+    { id: 9, title: 'GAN을 활용한 의료영상 생성', caption: '송미라', extraCaption: '중앙대학교 의과대학 영상의학과', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+    { id: 10, title: 'Transformer 모델의 의료 적용', caption: '이상현', extraCaption: '울산대학교 의과대학 의료정보학과', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+    { id: 11, title: '의료 AI 윤리와 규제', caption: '홍지영', extraCaption: '이화여자대학교 의과대학 의료법윤리학과', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
+    { id: 12, title: 'AI 기반 진단 시스템 개발', caption: '강동수', extraCaption: '경희대학교 의과대학 의공학교실', image: 'https://placehold.co/282x188/DDDDDD/999999?text=Temp+Image' },
   ];
 
   // 검색 핸들러
@@ -106,7 +106,7 @@ const ClassCategory: React.FC = () => {
                   </SearchIcon>
                   <SearchInput 
                     type="text" 
-                    placeholder="검색어를 입력해 주세요. (이부분 추후 문구작성 필요)"
+                    placeholder="관심 주제, 강의 찾기"
                     value={searchValue}
                     onChange={handleSearchChange}
                     onKeyUp={handleSearchSubmit}

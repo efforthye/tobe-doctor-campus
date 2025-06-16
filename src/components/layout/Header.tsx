@@ -203,6 +203,18 @@ const Header: React.FC = () => {
               {activeDropdown === 'classes' && (
                 <DropdownMenu>
                   <DropdownItem 
+                    isHovered={hoveredItem === 'classes-main'}
+                    onMouseEnter={() => handleItemMouseEnter('classes-main')}
+                    onMouseLeave={handleItemMouseLeave}
+                  >
+                    <DropdownLink 
+                      to="/class"
+                      isHovered={hoveredItem === 'classes-main'}
+                      hasHoveredItem={hoveredItem !== null}
+                      hoveredItemIsSpecial={hoveredItem === 'classes-all'}
+                    >클래스</DropdownLink>
+                  </DropdownItem>
+                  <DropdownItem 
                     isHovered={hoveredItem === 'classes-1'}
                     onMouseEnter={() => handleItemMouseEnter('classes-1')}
                     onMouseLeave={handleItemMouseLeave}
@@ -215,28 +227,16 @@ const Header: React.FC = () => {
                     >카테고리</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
-                    isHovered={hoveredItem === 'classes-2'}
-                    onMouseEnter={() => handleItemMouseEnter('classes-2')}
+                    isHovered={hoveredItem === 'classes-lecture'}
+                    onMouseEnter={() => handleItemMouseEnter('classes-lecture')}
                     onMouseLeave={handleItemMouseLeave}
                   >
                     <DropdownLink 
-                      to="/classes/new"
-                      isHovered={hoveredItem === 'classes-2'}
+                      to="/class/lecture"
+                      isHovered={hoveredItem === 'classes-lecture'}
                       hasHoveredItem={hoveredItem !== null}
                       hoveredItemIsSpecial={hoveredItem === 'classes-all'}
-                    >메뉴 둘</DropdownLink>
-                  </DropdownItem>
-                  <DropdownItem 
-                    isHovered={hoveredItem === 'classes-3'}
-                    onMouseEnter={() => handleItemMouseEnter('classes-3')}
-                    onMouseLeave={handleItemMouseLeave}
-                  >
-                    <DropdownLink 
-                      to="/classes/popular"
-                      isHovered={hoveredItem === 'classes-3'}
-                      hasHoveredItem={hoveredItem !== null}
-                      hoveredItemIsSpecial={hoveredItem === 'classes-all'}
-                    >메뉴 셋</DropdownLink>
+                    >강의</DropdownLink>
                   </DropdownItem>
                   <DropdownItem 
                     isHovered={hoveredItem === 'classes-4'}
@@ -281,7 +281,7 @@ const Header: React.FC = () => {
                     onMouseLeave={handleItemMouseLeave}
                   >
                     <DropdownLink 
-                      to="/classes"
+                      to="/class"
                       isHovered={hoveredItem === 'classes-all'}
                       hasHoveredItem={hoveredItem !== null}
                       hoveredItemIsSpecial={hoveredItem === 'classes-all'}

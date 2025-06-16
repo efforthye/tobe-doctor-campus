@@ -18,6 +18,7 @@ import PrivacyPolicy from './pages/terms/PrivacyPolicy';
 import MarketingConsent from './pages/terms/MarketingConsent';
 import ClassIndex from './pages/class/ClassIndex';
 import ClassCategory from './pages/class/ClassCategory';
+import ClassLecture from './pages/class/ClassLecture';
 
 function App() {
   return (
@@ -99,6 +100,16 @@ function App() {
           <Route path="/class/category" element={
             <ErrorBoundary>
               <ClassCategory />
+            </ErrorBoundary>
+          } />
+          <Route path="/class/lecture" element={
+            <ErrorBoundary>
+              <ClassLecture />
+            </ErrorBoundary>
+          } />
+          <Route path="/class/lecture/:id" element={
+            <ErrorBoundary>
+              <ClassLecture />
             </ErrorBoundary>
           } />
           <Route path="/classes" element={
