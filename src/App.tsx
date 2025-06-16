@@ -16,6 +16,7 @@ import ForgotPasswordComplete from './pages/forgot-password/complete';
 import TermsOfService from './pages/terms/TermsOfService';
 import PrivacyPolicy from './pages/terms/PrivacyPolicy';
 import MarketingConsent from './pages/terms/MarketingConsent';
+import ClassIndex from './pages/class/ClassIndex';
 
 function App() {
   return (
@@ -89,6 +90,11 @@ function App() {
           } />
           
           {/* 클래스 */}
+          <Route path="/class" element={
+            <ErrorBoundary>
+              <ClassIndex />
+            </ErrorBoundary>
+          } />
           <Route path="/classes" element={
             <ErrorBoundary>
               {/* <ClassIndex /> */}

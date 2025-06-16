@@ -190,11 +190,11 @@ const Header: React.FC = () => {
           </Logo>
           <Navigation className={mobileMenuOpen ? 'mobile-open' : ''} onMouseLeave={handleMouseLeave}>
             <NavItem 
-              active={isActive('/classes')}
+              active={isActive('/class')}
               onMouseEnter={() => handleMouseEnter('classes')}
             >
               <NavLink 
-                to="/classes" 
+                to="/class" 
                 $isActive={activeDropdown === 'classes'}
                 $hasActiveDropdown={activeDropdown !== null}
               >
