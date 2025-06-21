@@ -56,7 +56,7 @@ const StreamingIndex: React.FC = () => {
       <RightSidePanel>
         {/* 오른쪽 헤더 (탭 네비게이션) */}
         <SideHeader scrolled={isScrolled}>
-          <TabNavigation>
+          <TabNavigation activeTab={activeTab}>
             <Tab 
               active={activeTab === 'chapters'} 
               onClick={() => handleTabChange('chapters')}
@@ -132,7 +132,6 @@ const VideoHeader = styled.div<{ scrolled: boolean }>`
   align-items: center;
   background: ${props => props.scrolled ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.88)'};
   backdrop-filter: blur(32px);
-  border-bottom: 1px solid rgba(112, 115, 124, 0.16);
   z-index: 1000;
   transition: all 0.3s ease;
 `;
@@ -262,18 +261,35 @@ const SideHeader = styled.div<{ scrolled: boolean }>`
   align-items: center;
   background: ${props => props.scrolled ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.88)'};
   backdrop-filter: blur(32px);
-  border-bottom: 1px solid rgba(112, 115, 124, 0.08);
   z-index: 1000;
   transition: all 0.3s ease;
   padding: 0 16px;
 `;
 
-const TabNavigation = styled.div`
+const TabNavigation = styled.div<{ activeTab: 'chapters' | 'materials' | 'faq' | 'qna' }>`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-around;
   height: 100%;
+  position: relative;
+  border-bottom: 1px solid rgba(112, 115, 124, 0.08);
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 25%; /* 탭 하나 크기 */
+    height: 2px;
+    background: var(--Primary-Strong, #296768);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateX(${props => {
+      // activeTab 값에 따라 바 위치 계산
+      const tabIndex = ['chapters', 'materials', 'faq', 'qna'].indexOf(props.activeTab);
+      return tabIndex * 100;
+    }}%);
+  }
 `;
 
 const Tab = styled.div<{ active: boolean }>`
@@ -293,19 +309,7 @@ const Tab = styled.div<{ active: boolean }>`
   font-weight: 600;
   line-height: 28px;
   text-align: center;
-  transition: all 0.2s ease;
-  
-  ${props => props.active && `
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: var(--Primary-Strong, #296768);
-    }
-  `}
+  transition: color 0.3s ease;
   
   &:hover {
     color: var(--Primary-Strong, #296768);
