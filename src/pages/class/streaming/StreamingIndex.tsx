@@ -1,12 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import StreamingMaterials from './StreamingMaterials';
 import StreamingChapters from './StreamingChapters';
 import StreamingQnA from './StreamingQnA';
 
+// Vimeo Player 타입 정의
+declare global {
+  interface Window {
+    Vimeo: any;
+  }
+}
+
 const StreamingIndex: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'chapters' | 'materials' | 'faq' | 'qna'>('chapters');
   const [isScrolled, setIsScrolled] = useState(false);
+  const videoRef = useRef<HTMLDivElement>(null);
+  const playerRef = useRef<any>(null);
 
   // 탭 변경 핸들러
   const handleTabChange = (tab: 'chapters' | 'materials' | 'faq' | 'qna') => {
@@ -21,6 +30,49 @@ const StreamingIndex: React.FC = () => {
     
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Vimeo Player 초기화
+  useEffect(() => {
+    // Vimeo Player SDK 스크립트 로드
+    if (!window.Vimeo) {
+      const script = document.createElement('script');
+      script.src = 'https://player.vimeo.com/api/player.js';
+      script.onload = initializePlayer;
+      document.head.appendChild(script);
+    } else {
+      initializePlayer();
+    }
+
+    function initializePlayer() {
+      if (videoRef.current && window.Vimeo) {
+        playerRef.current = new window.Vimeo.Player(videoRef.current, {
+          id: 1093668853, // 테스트 영상 ID
+          width: '100%',
+          height: '100%',
+          responsive: true
+        });
+
+        // 이벤트 리스너 추가 (필요시)
+        playerRef.current.on('play', () => {
+          console.log('Video started playing');
+        });
+
+        playerRef.current.on('pause', () => {
+          console.log('Video paused');
+        });
+
+        playerRef.current.on('ended', () => {
+          console.log('Video ended');
+        });
+      }
+    }
+
+    return () => {
+      if (playerRef.current) {
+        playerRef.current.destroy();
+      }
+    };
   }, []);
 
   return (
@@ -46,9 +98,7 @@ const StreamingIndex: React.FC = () => {
 
         {/* 비디오 플레이어 */}
         <VideoSection>
-          <VideoPlayer>
-            <VideoOverlay />
-          </VideoPlayer>
+          <VideoPlayer ref={videoRef} />
         </VideoSection>
       </LeftVideoArea>
 
@@ -226,20 +276,19 @@ const VideoPlayer = styled.div`
   width: 100%;
   height: 830px;
   position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  background-image: url('https://placehold.co/1440x830');
-  background-size: cover;
-  background-position: center;
-`;
-
-const VideoOverlay = styled.div`
-  width: 100%;
-  height: 100%;
-  background: rgba(101, 65, 242, 0.08);
+  background: #000;
+  
+  /* Vimeo Player가 정확히 영역에 맞도록 */
+  > div {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  
+  iframe {
+    width: 100% !important;
+    height: 100% !important;
+    border: none;
+  }
 `;
 
 /* 오른쪽 사이드 패널 */
