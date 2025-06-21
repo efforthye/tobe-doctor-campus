@@ -20,6 +20,7 @@ import ClassIndex from './pages/class/ClassIndex';
 import ClassCategory from './pages/class/ClassCategory';
 import ClassLecture from './pages/class/ClassLecture';
 import StreamingIndex from './pages/class/streaming/StreamingIndex';
+import CommunityHome from './pages/community/CommunityHome';
 
 function App() {
   return (
@@ -169,7 +170,7 @@ function App() {
           {/* 커뮤니티 */}
           <Route path="/community" element={
             <ErrorBoundary>
-              <NotFound />
+              <CommunityHome />
             </ErrorBoundary>
           } />
           <Route path="/community/:category" element={
