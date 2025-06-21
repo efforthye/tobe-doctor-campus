@@ -81,13 +81,32 @@ const Header: React.FC = () => {
     e.preventDefault();
     const width = 1440;
     const height = 810;
-    const left = (window.screen.width - width) / 2;
-    const top = (window.screen.height - height) / 2;
+    
+    // 가로, 세로 모두 완전 중앙 배치
+    const screenWidth = window.screen.availWidth;
+    const screenHeight = window.screen.availHeight;
+    
+    const left = Math.round((screenWidth - width) / 2);
+    const top = Math.round((screenHeight - height) / 2);
+    
+    const features = [
+      `width=${width}`,
+      `height=${height}`,
+      `left=${left}`,
+      `top=${top}`,
+      'scrollbars=yes',
+      'resizable=yes',
+      'menubar=no',
+      'toolbar=no',
+      'location=no',
+      'status=no',
+      'titlebar=yes'
+    ].join(',');
     
     const newWindow = window.open(
       '/class/streaming',
-      '_blank',
-      `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=no,status=no`
+      'streaming_window',
+      features
     );
     
     if (newWindow) {
