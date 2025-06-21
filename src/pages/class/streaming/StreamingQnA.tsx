@@ -10,6 +10,7 @@ interface Question {
   date: string;
   answers: number;
   views: number;
+  images?: string[]; // 첨부된 이미지들
 }
 
 const StreamingQnA: React.FC = () => {
@@ -18,9 +19,14 @@ const StreamingQnA: React.FC = () => {
   const [questionTitle, setQuestionTitle] = useState('');
   const [questionContent, setQuestionContent] = useState('');
   const [hasMoreContent, setHasMoreContent] = useState(true);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [submittedQuestions, setSubmittedQuestions] = useState<Question[]>([]);
   const questionsListRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const questions: Question[] = useMemo(() => [
+    ...submittedQuestions, // 제출된 질문들을 먼저 표시
     {
       id: 1,
       title: '제목',
@@ -75,7 +81,7 @@ const StreamingQnA: React.FC = () => {
       answers: 0,
       views: 0
     }
-  ], []);
+  ], [submittedQuestions]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -83,12 +89,129 @@ const StreamingQnA: React.FC = () => {
 
   const handleQuestionSubmit = () => {
     if (questionTitle.trim() && questionContent.trim()) {
-      // 질문 제출 로직
-      console.log('Question submitted:', { title: questionTitle, content: questionContent });
+      // 현재 시간 생성
+      const now = new Date();
+      const dateString = `${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일 ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      
+      // 이미지 URL 생성 (실제로는 서버에 업로드 후 URL 받아야 함)
+      const imageUrls = selectedImages.map((image, index) => 
+        URL.createObjectURL(image) // 임시 로컬 URL 생성
+      );
+      
+      // 새 질문 객체 생성
+      const newQuestion: Question = {
+        id: Date.now(), // 임시 ID (실제로는 서버에서 생성)
+        title: questionTitle,
+        content: questionContent,
+        author: '나', // 현재 사용자
+        date: dateString,
+        answers: 0,
+        views: 0,
+        images: imageUrls.length > 0 ? imageUrls : undefined
+      };
+      
+      // FormData 생성
+      const formData = new FormData();
+      formData.append('title', questionTitle);
+      formData.append('content', questionContent);
+      
+      // 이미지 파일들 추가
+      selectedImages.forEach((image, index) => {
+        formData.append(`image_${index}`, image);
+      });
+      
+      // FormData 내용 콘솔에 출력
+      console.log('=== 질문 제출 데이터 ===');
+      console.log('제목:', questionTitle);
+      console.log('내용:', questionContent);
+      console.log('첨부된 이미지 수:', selectedImages.length);
+      
+      // FormData의 모든 항목 출력 (TypeScript 호환)
+      const formEntries = Array.from(formData.entries());
+      formEntries.forEach(([key, value]) => {
+        if (value instanceof File) {
+          console.log(`${key}:`, value.name, `(${value.size} bytes)`);
+        } else {
+          console.log(`${key}:`, value);
+        }
+      });
+      
+      // 제출된 질문을 목록에 추가
+      setSubmittedQuestions(prev => [newQuestion, ...prev]);
+      
+      // Alert로도 표시
+      alert(`제목: ${questionTitle}\n내용: ${questionContent}\n첨부 이미지: ${selectedImages.length}개`);
+      
+      // 폼 초기화
       setQuestionTitle('');
       setQuestionContent('');
+      setSelectedImages([]);
       setShowQuestionForm(false);
+    } else {
+      alert('제목과 내용을 모두 입력해주세요.');
     }
+  };
+
+  const handleImageUpload = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const newImages = Array.from(files);
+      setSelectedImages(prev => [...prev, ...newImages]);
+    }
+  };
+
+  const insertCodeSnippet = () => {
+    if (textareaRef.current) {
+      const textarea = textareaRef.current;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      
+      // 기존 내용이 있으면 줄바꿈 추가
+      const beforeText = questionContent.substring(0, start);
+      const afterText = questionContent.substring(end);
+      const needsNewline = beforeText.length > 0 && !beforeText.endsWith('\n');
+      
+      const codeTemplate = `${needsNewline ? '\n' : ''}\`\`\`
+// 여기에 코드를 입력하세요
+
+\`\`\`${afterText.length > 0 ? '\n' : ''}`;
+      
+      const newContent = beforeText + codeTemplate + afterText;
+      setQuestionContent(newContent);
+      
+      // 주석 부분만 정확히 선택하고 포커스
+      setTimeout(() => {
+        if (textarea) {
+          const newlineOffset = needsNewline ? 1 : 0;
+          const commentStart = start + newlineOffset + 4; // ```\n 다음 위치
+          const commentEnd = commentStart + 17; // "// 여기에 코드를 입력하세요" 정확한 길이 (18글자)
+          
+          textarea.focus();
+          textarea.setSelectionRange(commentStart, commentEnd);
+        }
+      }, 0);
+    }
+  };
+
+  // 마크다운 코드 블록을 HTML로 변환하는 함수
+  const renderContent = (content: string) => {
+    // ```로 감싸진 코드 블록을 <pre><code>로 변환
+    const codeBlockRegex = /```[\w]*\n?([\s\S]*?)```/g;
+    const htmlContent = content.replace(codeBlockRegex, (match, code) => {
+      return `<pre><code>${code.trim()}</code></pre>`;
+    });
+    
+    // 인라인 코드 `code`를 <code>로 변환
+    const inlineCodeRegex = /`([^`]+)`/g;
+    const finalContent = htmlContent.replace(inlineCodeRegex, '<code>$1</code>');
+    
+    return finalContent;
   };
 
   const toggleQuestionForm = () => {
@@ -148,7 +271,19 @@ const StreamingQnA: React.FC = () => {
               <QuestionContent>
                 <QuestionHeader>
                   <QuestionTitle>{question.title}</QuestionTitle>
-                  <QuestionBody>{question.content}</QuestionBody>
+                  <QuestionBody>
+                    <QuestionContentDisplay 
+                      dangerouslySetInnerHTML={{ __html: renderContent(question.content) }}
+                    />
+                    {/* 첨부된 이미지들 표시 */}
+                    {question.images && question.images.length > 0 && (
+                      <AttachedImages>
+                        {question.images.map((imageUrl, imgIndex) => (
+                          <AttachedImage key={imgIndex} src={imageUrl} alt={`첨부 이미지 ${imgIndex + 1}`} />
+                        ))}
+                      </AttachedImages>
+                    )}
+                  </QuestionBody>
                 </QuestionHeader>
                 
                 <QuestionMeta>
@@ -188,20 +323,50 @@ const StreamingQnA: React.FC = () => {
               
               <ContentInputContainer>
                 <ContentTextarea
+                  ref={textareaRef}
                   placeholder="내용을 입력해주세요."
                   value={questionContent}
                   onChange={(e) => setQuestionContent(e.target.value)}
                 />
+                
+                {/* 선택된 이미지 미리보기 */}
+                {selectedImages.length > 0 && (
+                  <ImagePreviewContainer>
+                    <ImagePreviewTitle>첨부된 이미지 ({selectedImages.length}개)</ImagePreviewTitle>
+                    <ImagePreviewList>
+                      {selectedImages.map((image, index) => (
+                        <ImagePreviewItem key={index}>
+                          <ImagePreviewName>{image.name}</ImagePreviewName>
+                          <RemoveImageButton 
+                            onClick={() => setSelectedImages(prev => prev.filter((_, i) => i !== index))}
+                          >
+                            ×
+                          </RemoveImageButton>
+                        </ImagePreviewItem>
+                      ))}
+                    </ImagePreviewList>
+                  </ImagePreviewContainer>
+                )}
+                
                 <FormToolbar>
                   <ToolbarLeft>
-                    <ImageButton />
-                    <CodeButton />
+                    <ImageButton onClick={handleImageUpload} />
+                    <CodeButton onClick={insertCodeSnippet} />
                   </ToolbarLeft>
                   <SubmitButton onClick={handleQuestionSubmit}>
                     등록하기
                   </SubmitButton>
                 </FormToolbar>
               </ContentInputContainer>
+              
+              {/* 숨겨진 파일 입력 */}
+              <HiddenFileInput
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleFileChange}
+              />
             </FormContainer>
             
             <FormActions>
@@ -555,15 +720,15 @@ const QuestionFormSection = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  max-height: 60vh;
+  max-height: 80vh; /* 최대 높이를 더 크게 설정 */
   padding: 16px;
   background: var(--Background-Normal-Normal, white);
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: flex-end; /* 아래쪽 정렬로 버튼 고정 */
   align-items: flex-start;
   gap: 16px;
-  overflow: hidden; /* 스크롤 제거하여 흔들림 방지 */
+  overflow: hidden; /* 전체 섹션은 overflow 숨김 */
   z-index: 20;
 `;
 
@@ -574,6 +739,16 @@ const FormContainer = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   gap: 16px;
+  max-height: calc(80vh - 120px); /* 버튼 영역을 제외한 최대 높이 */
+  overflow-y: auto; /* 내용이 많아지면 스크롤 가능 */
+  
+  /* 스크롤바 숨기기 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
 `;
 
 const TitleInputContainer = styled.div`
@@ -635,6 +810,7 @@ const ContentTextarea = styled.textarea`
   font-weight: 400;
   line-height: 26px;
   letter-spacing: 0.09px;
+  white-space: pre-wrap; /* 줄바꿈과 공백 유지 */
   
   &::placeholder {
     color: var(--Label-Assistive, rgba(55, 56, 60, 0.28));
@@ -693,6 +869,152 @@ const CodeButton = styled.button`
   /* 호버 효과 완전 제거 */
 `;
 
+const HiddenFileInput = styled.input`
+  display: none;
+`;
+
+const ImagePreviewContainer = styled.div`
+  width: 100%;
+  max-height: 200px; /* 이미지 미리보기 영역 최대 높이 제한 */
+  padding: 8px 12px;
+  background: var(--Fill-Normal, rgba(112, 115, 124, 0.08));
+  border-radius: 8px;
+  margin-bottom: 8px;
+  overflow-y: auto; /* 이미지가 많을 때 스크롤 */
+  
+  /* 스크롤바 숨기기 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+`;
+
+const ImagePreviewTitle = styled.div`
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--Label-Normal, #171719);
+  margin-bottom: 8px;
+`;
+
+const ImagePreviewList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const ImagePreviewItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  background: var(--Static-White, white);
+  border-radius: 6px;
+`;
+
+const ImagePreviewName = styled.span`
+  font-size: 12px;
+  color: var(--Label-Neutral, rgba(46, 47, 51, 0.88));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+`;
+
+const RemoveImageButton = styled.button`
+  width: 16px;
+  height: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--Label-Alternative, rgba(55, 56, 60, 0.61));
+  font-size: 14px;
+  font-weight: bold;
+`;
+
+const AttachedImages = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+`;
+
+const AttachedImage = styled.img`
+  max-width: 200px;
+  max-height: 150px;
+  border-radius: 8px;
+  border: 1px solid var(--Line-Normal-Normal, rgba(112, 115, 124, 0.22));
+  object-fit: cover;
+`;
+
+const QuestionContentDisplay = styled.div`
+  white-space: pre-wrap;
+  line-height: 1.6;
+  
+  /* 인라인 코드 스타일링 */
+  code {
+    background: #2d3748;
+    color: #e2e8f0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+  }
+  
+  /* 코드 블록 스타일링 - 검정 에디터 스타일 */
+  pre {
+    background: #1a202c;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 12px 0;
+    border: 1px solid #2d3748;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    
+    /* 에디터 느낌을 위한 상단 바 */
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 30px;
+      background: #2d3748;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      border-bottom: 1px solid #4a5568;
+    }
+    
+    /* 상단 바의 점 3개 */
+    &::after {
+      content: '● ● ●';
+      position: absolute;
+      top: 8px;
+      left: 12px;
+      color: #718096;
+      font-size: 12px;
+      line-height: 1;
+    }
+    
+    code {
+      background: none;
+      color: #e2e8f0;
+      padding: 0;
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      display: block;
+      margin-top: 30px; /* 상단 바 공간 확보 */
+    }
+  }
+`;
+
 const SubmitButton = styled.button`
   width: 56px;
   height: 32px;
@@ -722,6 +1044,8 @@ const FormActions = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  flex-shrink: 0; /* 버튼 영역은 고정 크기 유지 */
+  margin-top: auto; /* 항상 하단에 위치 */
 `;
 
 const AskButton = styled.button`
