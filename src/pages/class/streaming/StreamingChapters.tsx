@@ -67,29 +67,7 @@ const ChapterItem = styled.div`
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  
-  &:hover {
-    background: rgba(112, 115, 124, 0.08);
-    border-radius: 12px;
-    margin: 0 -16px;
-    padding: 0 16px;
-  }
-  
-  &:focus {
-    background: rgba(112, 115, 124, 0.08);
-    border-radius: 12px;
-    outline: none;
-    margin: 0 -16px;
-    padding: 0 16px;
-  }
-  
-  &:active {
-    background: rgba(112, 115, 124, 0.12);
-    border-radius: 12px;
-    margin: 0 -16px;
-    padding: 0 16px;
-  }
+  /* 호버 효과 완전 제거 */
 `;
 
 const ChapterContent = styled.div`
