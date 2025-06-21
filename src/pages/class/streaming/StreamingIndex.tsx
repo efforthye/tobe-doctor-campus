@@ -291,6 +291,7 @@ const RightSidePanel = styled.div`
   flex-direction: column;
   background: var(--Static-White, white);
   position: relative;
+  overflow: hidden; /* 스크롤 완전 차단 */
 `;
 
 const SideHeader = styled.div<{ scrolled: boolean }>`

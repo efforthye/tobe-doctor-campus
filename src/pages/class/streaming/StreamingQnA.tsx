@@ -177,35 +177,35 @@ const StreamingQnA: React.FC = () => {
         {showQuestionForm ? (
           <QuestionFormSection>
             <FormContainer>
-              <FormFields>
+              <TitleInputContainer>
                 <TitleInput
                   type="text"
                   placeholder="제목을 입력해주세요."
                   value={questionTitle}
                   onChange={(e) => setQuestionTitle(e.target.value)}
                 />
-                
-                <ContentInputSection>
-                  <ContentTextarea
-                    placeholder="내용을 입력해주세요."
-                    value={questionContent}
-                    onChange={(e) => setQuestionContent(e.target.value)}
-                  />
-                  <FormToolbar>
-                    <ToolbarLeft>
-                      <ImageButton />
-                      <CodeButton />
-                    </ToolbarLeft>
-                    <SubmitButton onClick={handleQuestionSubmit}>
-                      등록하기
-                    </SubmitButton>
-                  </FormToolbar>
-                </ContentInputSection>
-              </FormFields>
+              </TitleInputContainer>
+              
+              <ContentInputContainer>
+                <ContentTextarea
+                  placeholder="내용을 입력해주세요."
+                  value={questionContent}
+                  onChange={(e) => setQuestionContent(e.target.value)}
+                />
+                <FormToolbar>
+                  <ToolbarLeft>
+                    <ImageButton />
+                    <CodeButton />
+                  </ToolbarLeft>
+                  <SubmitButton onClick={handleQuestionSubmit}>
+                    등록하기
+                  </SubmitButton>
+                </FormToolbar>
+              </ContentInputContainer>
             </FormContainer>
             
             <FormActions>
-              <AskButton onClick={handleQuestionSubmit}>
+              <AskButton onClick={toggleQuestionForm}>
                 질문하기
               </AskButton>
             </FormActions>
@@ -222,6 +222,7 @@ const StreamingQnA: React.FC = () => {
   );
 };
 
+/* 전체 브라우저 스크롤바 공간 예약으로 흔들림 방지 */
 const QnAContainer = styled.div`
   width: 100%;
   height: 100%;
@@ -230,7 +231,8 @@ const QnAContainer = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   position: relative;
-  overflow: hidden; /* 전체 컨테이너는 overflow 방지하되 내부 스크롤은 허용 */
+  overflow: hidden;
+  scrollbar-gutter: stable; /* 스크롤바 공간 항상 예약 */
 `;
 
 const SearchSection = styled.div`
@@ -560,27 +562,13 @@ const QuestionFormSection = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 8px;
-  overflow-y: auto;
+  gap: 16px;
+  overflow: hidden; /* 스크롤 제거하여 흔들림 방지 */
   z-index: 20;
 `;
 
 const FormContainer = styled.div`
   width: 100%;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  position: relative;
-  overflow: hidden;
-  background: var(--Background-Elevated-Normal, white);
-`;
-
-const FormFields = styled.div`
-  width: 100%;
-  padding: 16px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -588,15 +576,25 @@ const FormFields = styled.div`
   gap: 16px;
 `;
 
+const TitleInputContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 8px;
+`;
+
 const TitleInput = styled.input`
   width: 100%;
+  height: 48px;
   padding: 12px;
   border-radius: 12px;
   border: 1px solid var(--Line-Normal-Neutral, rgba(112, 115, 124, 0.16));
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.03);
   outline: none;
   
-  color: var(--Label-Assistive, rgba(55, 56, 60, 0.28));
+  color: var(--Label-Normal, #171719);
   font-size: 16px;
   font-family: 'Pretendard JP', sans-serif;
   font-weight: 400;
@@ -608,12 +606,11 @@ const TitleInput = styled.input`
   }
   
   &:focus {
-    color: var(--Label-Normal, #171719);
     border-color: var(--Primary-Normal, #448181);
   }
 `;
 
-const ContentInputSection = styled.div`
+const ContentInputContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -634,7 +631,7 @@ const ContentTextarea = styled.textarea`
   outline: none;
   resize: none;
   
-  color: var(--Label-Assistive, rgba(55, 56, 60, 0.28));
+  color: var(--Label-Normal, #171719);
   font-size: 16px;
   font-family: 'Pretendard JP', sans-serif;
   font-weight: 400;
@@ -646,7 +643,6 @@ const ContentTextarea = styled.textarea`
   }
   
   &:focus {
-    color: var(--Label-Normal, #171719);
     border-color: var(--Primary-Normal, #448181);
   }
 `;
@@ -655,9 +651,10 @@ const FormToolbar = styled.div`
   width: 100%;
   padding: 16px;
   background: var(--Fill-Normal, rgba(112, 115, 124, 0.08));
-  overflow: hidden;
   border-bottom-right-radius: 12px;
   border-bottom-left-radius: 12px;
+  border: 1px solid var(--Line-Normal-Neutral, rgba(112, 115, 124, 0.16));
+  border-top: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -734,15 +731,15 @@ const CodeButton = styled.button`
 
 const SubmitButton = styled.button`
   width: 56px;
+  height: 32px;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 10px;
-  position: relative;
+  justify-content: center;
+  align-items: center;
   background: none;
   border: none;
   cursor: pointer;
+  border-radius: 6px;
+  position: relative;
   
   color: var(--Label-Alternative, rgba(55, 56, 60, 0.61));
   font-size: 16px;
@@ -751,10 +748,21 @@ const SubmitButton = styled.button`
   line-height: 24px;
   letter-spacing: 0.09px;
   text-align: center;
-  word-wrap: break-word;
   
   &:hover {
     color: var(--Label-Normal, #171719);
+    
+    &::before {
+      content: '';
+      position: absolute;
+      width: 70px;
+      height: 32px;
+      left: -7px;
+      top: -4px;
+      border-radius: 6px;
+      background: var(--Label-Normal, #171719);
+      opacity: 0.05;
+    }
   }
 `;
 
