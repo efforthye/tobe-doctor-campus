@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import StreamingMaterials from './StreamingMaterials';
 import StreamingChapters from './StreamingChapters';
 import StreamingQnA from './StreamingQnA';
+import StreamingFAQ from './StreamingFAQ';
 
 // Vimeo Player 타입 정의
 declare global {
@@ -138,17 +139,8 @@ const StreamingIndex: React.FC = () => {
         <TabContent>
           {activeTab === 'chapters' && <StreamingChapters />}
           {activeTab === 'materials' && <StreamingMaterials />}
+          {activeTab === 'faq' && <StreamingFAQ />}
           {activeTab === 'qna' && <StreamingQnA />}
-          {activeTab === 'faq' && (
-            <EmptyState>
-              <EmptyStateIcon />
-              <EmptyStateTitle>강의자료를 찾을 수 없습니다.</EmptyStateTitle>
-              <EmptyStateDescription>
-                본 강의는 별도의 강의자료가<br/>
-                제공되지 않는 강의입니다.
-              </EmptyStateDescription>
-            </EmptyState>
-          )}
         </TabContent>
       </RightSidePanel>
     </StreamingContainer>
@@ -375,45 +367,6 @@ const TabContent = styled.div`
   align-items: flex-start;
   padding: 24px 16px;
   gap: 24px;
-`;
-
-const EmptyState = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 160px 0;
-  gap: 24px;
-`;
-
-const EmptyStateIcon = styled.div`
-  width: 48px;
-  height: 48px;
-  background: #f5f5f5;
-  border-radius: 12px;
-`;
-
-const EmptyStateTitle = styled.div`
-  text-align: center;
-  color: var(--Label-Normal, #171719);
-  font-size: 20px;
-  font-family: 'Pretendard JP', sans-serif;
-  font-weight: 600;
-  line-height: 28px;
-  word-wrap: break-word;
-`;
-
-const EmptyStateDescription = styled.div`
-  text-align: center;
-  color: var(--Label-Alternative, rgba(55, 56, 60, 0.61));
-  font-size: 16px;
-  font-family: 'Pretendard JP', sans-serif;
-  font-weight: 400;
-  line-height: 26px;
-  letter-spacing: 0.09px;
-  word-wrap: break-word;
 `;
 
 export default StreamingIndex;

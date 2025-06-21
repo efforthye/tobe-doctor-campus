@@ -94,36 +94,13 @@ const ChapterItem = styled.div`
 
 const ChapterContent = styled.div`
   flex: 1;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 448px;
-    height: 72px;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    background: transparent;
-    opacity: 0;
-  }
-`;
-
-const ContentWrapper = styled.div`
   width: 100%;
   padding: 12px 16px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 8px;
+  position: relative;
 `;
 
 const IconSection = styled.div`
@@ -174,7 +151,6 @@ const ContentSection = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 12px 16px;
   gap: 8px;
 `;
 

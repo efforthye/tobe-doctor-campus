@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 
 interface Question {
@@ -16,8 +16,10 @@ const StreamingQnA: React.FC = () => {
   const [showQuestionForm, setShowQuestionForm] = useState(false);
   const [questionTitle, setQuestionTitle] = useState('');
   const [questionContent, setQuestionContent] = useState('');
+  const [hasMoreContent, setHasMoreContent] = useState(true);
+  const questionsListRef = useRef<HTMLDivElement>(null);
 
-  const questions: Question[] = [
+  const questions: Question[] = useMemo(() => [
     {
       id: 1,
       title: '제목',
@@ -72,7 +74,7 @@ const StreamingQnA: React.FC = () => {
       answers: 0,
       views: 0
     }
-  ];
+  ], []);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -92,6 +94,27 @@ const StreamingQnA: React.FC = () => {
     setShowQuestionForm(!showQuestionForm);
   };
 
+  // 스크롤 감지하여 하단 그라데이션 표시 여부 결정
+  useEffect(() => {
+    const handleScroll = () => {
+      if (questionsListRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = questionsListRef.current;
+        const isNearBottom = scrollTop + clientHeight >= scrollHeight - 10;
+        setHasMoreContent(!isNearBottom);
+      }
+    };
+
+    const questionsListElement = questionsListRef.current;
+    if (questionsListElement) {
+      questionsListElement.addEventListener('scroll', handleScroll);
+      handleScroll(); // 초기 체크
+      
+      return () => {
+        questionsListElement.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [questions]);
+
   return (
     <QnAContainer>
       <SearchSection>
@@ -109,7 +132,7 @@ const StreamingQnA: React.FC = () => {
       </SearchSection>
 
       <ContentSection>
-        <QuestionsList>
+        <QuestionsList ref={questionsListRef}>
           {questions.map((question) => (
             <QuestionItem key={question.id}>
               <QuestionContent>
@@ -137,7 +160,7 @@ const StreamingQnA: React.FC = () => {
           ))}
         </QuestionsList>
 
-        <BottomGradient />
+        {hasMoreContent && <BottomGradient />}
         
         {showQuestionForm ? (
           <QuestionFormSection>
@@ -284,11 +307,31 @@ const ContentSection = styled.div`
 const QuestionsList = styled.div`
   width: 100%;
   flex: 1;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  max-height: calc(100vh - 400px); /* 적절한 최대 높이 설정 */
+  
+  /* 스크롤바 스타일링 */
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(112, 115, 124, 0.2);
+    border-radius: 2px;
+  }
+  
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(112, 115, 124, 0.3);
+  }
 `;
 
 const QuestionItem = styled.div`

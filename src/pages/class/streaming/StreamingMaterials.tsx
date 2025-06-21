@@ -1,13 +1,32 @@
 import React from 'react';
 import styled from 'styled-components';
 
+interface Material {
+  id: number;
+  name: string;
+  type: string;
+}
+
 const StreamingMaterials: React.FC = () => {
-  const materials = [
-    { id: 1, name: '파일명', type: '구분' },
-    { id: 2, name: '파일명', type: '구분' },
-    { id: 3, name: '파일명', type: '구분' },
-    { id: 4, name: '파일명', type: '구분' },
+  const materials: Material[] = [
+    // { id: 1, name: '파일명', type: '구분' },
+    // { id: 2, name: '파일명', type: '구분' },
+    // { id: 3, name: '파일명', type: '구분' },
+    // { id: 4, name: '파일명', type: '구분' },
   ];
+
+  // 강의자료가 없는 경우 빈 상태 표시
+  if (materials.length === 0) {
+    return (
+      <EmptyState>
+        <EmptyStateTitle>강의자료를 찾을 수 없습니다.</EmptyStateTitle>
+        <EmptyStateDescription>
+          본 강의는 별도의 강의자료가<br/>
+          제공되지 않는 강의입니다.
+        </EmptyStateDescription>
+      </EmptyState>
+    );
+  }
 
   return (
     <MaterialsContainer>
@@ -88,36 +107,13 @@ const MaterialItem = styled.div`
 
 const MaterialContent = styled.div`
   flex: 1;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 448px;
-    height: 72px;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    background: transparent;
-    opacity: 0;
-  }
-`;
-
-const ContentWrapper = styled.div`
   width: 100%;
   padding: 12px 16px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 8px;
+  position: relative;
 `;
 
 const IconSection = styled.div`
@@ -174,7 +170,6 @@ const ContentSection = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 12px 16px;
   gap: 8px;
 `;
 
@@ -223,6 +218,38 @@ const MaterialType = styled.div`
   font-family: 'Pretendard JP', sans-serif;
   font-weight: 400;
   line-height: 24px;
+  letter-spacing: 0.09px;
+  word-wrap: break-word;
+`;
+
+const EmptyState = styled.div`
+  width: 100%;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 160px 0;
+  gap: 24px;
+`;
+
+const EmptyStateTitle = styled.div`
+  text-align: center;
+  color: var(--Label-Normal, #171719);
+  font-size: 20px;
+  font-family: 'Pretendard JP', sans-serif;
+  font-weight: 600;
+  line-height: 28px;
+  word-wrap: break-word;
+`;
+
+const EmptyStateDescription = styled.div`
+  text-align: center;
+  color: var(--Label-Alternative, rgba(55, 56, 60, 0.61));
+  font-size: 16px;
+  font-family: 'Pretendard JP', sans-serif;
+  font-weight: 400;
+  line-height: 26px;
   letter-spacing: 0.09px;
   word-wrap: break-word;
 `;
