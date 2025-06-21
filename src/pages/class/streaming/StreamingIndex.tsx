@@ -154,6 +154,7 @@ const StreamingContainer = styled.div`
   position: relative;
   background: var(--Static-White, white);
   display: flex;
+  overflow: hidden; /* 전체 스크롤 완전 제거 */
 `;
 
 /* 왼쪽 비디오 영역 */
@@ -361,12 +362,12 @@ const TabContent = styled.div`
   flex: 1;
   margin-top: 80px; /* 헤더 높이만큼 마진 */
   width: 100%;
+  height: calc(100vh - 80px); /* 헤더 제외한 정확한 높이 */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 24px 16px;
-  gap: 24px;
+  overflow: hidden; /* 내부 스크롤도 제거 */
 `;
 
 export default StreamingIndex;

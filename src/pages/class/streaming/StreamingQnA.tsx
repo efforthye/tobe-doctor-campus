@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
+import { ReactComponent as ChevronDownIcon } from '../../../assets/images/chevron-down.svg';
 
 interface Question {
   id: number;
@@ -118,16 +119,25 @@ const StreamingQnA: React.FC = () => {
   return (
     <QnAContainer>
       <SearchSection>
-        <SearchInput
-          type="text"
-          placeholder="검색어를 입력해주세요."
-          value={searchQuery}
-          onChange={handleSearch}
-        />
+        <SearchInputWrapper>
+          <SearchIcon>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16.0833 17.5L10.875 12.2917C10.5 12.6111 10.0625 12.8611 9.5625 13.0417C9.0625 13.2222 8.52778 13.3125 7.95833 13.3125C6.26389 13.3125 4.82639 12.7361 3.64583 11.5833C2.46528 10.4306 1.875 9.02778 1.875 7.375C1.875 5.72222 2.46528 4.31944 3.64583 3.16667C4.82639 2.01389 6.26389 1.4375 7.95833 1.4375C9.65278 1.4375 11.0903 2.01389 12.2708 3.16667C13.4514 4.31944 14.0417 5.72222 14.0417 7.375C14.0417 7.94444 13.9514 8.47917 13.7708 8.97917C13.5903 9.47917 13.3403 9.91667 13.0208 10.2917L18.2292 15.5L16.0833 17.5ZM7.95833 10.8125C9.01389 10.8125 9.89583 10.4375 10.6042 9.6875C11.3125 8.9375 11.6667 8.02778 11.6667 6.95833C11.6667 5.88889 11.3125 4.97917 10.6042 4.22917C9.89583 3.47917 9.01389 3.10417 7.95833 3.10417C6.90278 3.10417 5.02083 3.47917 4.3125 4.22917C3.60417 4.97917 3.25 5.88889 3.25 6.95833C3.25 8.02778 3.60417 8.9375 4.3125 9.6875C5.02083 10.4375 6.90278 10.8125 7.95833 10.8125Z" fill="rgba(55, 56, 60, 0.28)"/>
+            </svg>
+          </SearchIcon>
+          <SearchInput
+            type="text"
+            placeholder="검색어를 입력해주세요."
+            value={searchQuery}
+            onChange={handleSearch}
+          />
+        </SearchInputWrapper>
         
         <QuickAccessWrapper>
           <QuickAccessText>강의 질문 바로가기</QuickAccessText>
-          <ChevronIcon />
+          <ChevronRightIcon>
+            <ChevronDownIcon />
+          </ChevronRightIcon>
         </QuickAccessWrapper>
       </SearchSection>
 
@@ -160,6 +170,7 @@ const StreamingQnA: React.FC = () => {
           ))}
         </QuestionsList>
 
+        {/* 하단 그라데이션 - 스크롤 감지에 따라 표시 */}
         {hasMoreContent && <BottomGradient />}
         
         {showQuestionForm ? (
@@ -213,27 +224,48 @@ const StreamingQnA: React.FC = () => {
 const QnAContainer = styled.div`
   width: 100%;
   height: 100%;
-  padding: 0 16px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 24px;
+  position: relative;
+  overflow: hidden; /* 전체 컨테이너는 overflow 방지하되 내부 스크롤은 허용 */
 `;
 
 const SearchSection = styled.div`
   width: 100%;
-  padding-top: 8px;
+  padding: 24px 16px 0 16px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   gap: 16px;
+  flex-shrink: 0; /* 검색 영역은 고정 크기 */
+`;
+
+const SearchInputWrapper = styled.div`
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+`;
+
+const SearchIcon = styled.div`
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 `;
 
 const SearchInput = styled.input`
   width: 100%;
-  padding: 12px;
+  padding: 12px 12px 12px 44px; /* 왼쪽 패딩을 늘려서 아이콘 공간 확보 */
   background: var(--Fill-Normal, rgba(112, 115, 124, 0.08));
   overflow: hidden;
   border-radius: 12px;
@@ -276,21 +308,23 @@ const QuickAccessText = styled.div`
   word-wrap: break-word;
 `;
 
-const ChevronIcon = styled.div`
-  width: 8px;
+const ChevronRightIcon = styled.div`
+  width: 16px;
   height: 16px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(-90deg);
   
-  &::after {
-    content: '';
-    width: 5.53px;
-    height: 9.87px;
-    position: absolute;
-    left: 1.73px;
-    top: 3.07px;
-    background: var(--Label-Alternative, rgba(55, 56, 60, 0.61));
-    clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
-    transform: rotate(90deg);
+  svg {
+    width: 16px;
+    height: 16px;
+    
+    path {
+      fill: var(--Label-Alternative, rgba(55, 56, 60, 0.61));
+    }
   }
 `;
 
@@ -302,35 +336,28 @@ const ContentSection = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   position: relative;
+  overflow: hidden;
+  min-height: 0; /* flexbox가 제대로 작동하도록 */
 `;
 
 const QuestionsList = styled.div`
   width: 100%;
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow-y: auto; /* 세로 스크롤 허용 */
+  overflow-x: hidden; /* 가로 스크롤은 숨김 */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  max-height: calc(100vh - 400px); /* 적절한 최대 높이 설정 */
+  padding: 0 16px;
+  margin-bottom: 80px; /* 버튼 영역을 위한 여백 */
   
-  /* 스크롤바 스타일링 */
+  /* 스크롤바 숨기기 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  
   &::-webkit-scrollbar {
-    width: 4px;
-  }
-  
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background: rgba(112, 115, 124, 0.2);
-    border-radius: 2px;
-  }
-  
-  &::-webkit-scrollbar-thumb:hover {
-    background: rgba(112, 115, 124, 0.3);
+    display: none; /* Chrome, Safari, Opera */
   }
 `;
 
@@ -342,29 +369,7 @@ const QuestionItem = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   cursor: pointer;
-  transition: all 0.2s ease;
-  
-  &:hover {
-    background: rgba(112, 115, 124, 0.08);
-    border-radius: 12px;
-    margin: 0 -16px;
-    padding: 0 32px;
-  }
-  
-  &:focus {
-    background: rgba(112, 115, 124, 0.08);
-    border-radius: 12px;
-    outline: none;
-    margin: 0 -16px;
-    padding: 0 32px;
-  }
-  
-  &:active {
-    background: rgba(112, 115, 124, 0.12);
-    border-radius: 12px;
-    margin: 0 -16px;
-    padding: 0 32px;
-  }
+  /* 호버 효과 완전 제거 */
 `;
 
 const QuestionContent = styled.div`
@@ -505,52 +510,56 @@ const QuestionDivider = styled.div`
 `;
 
 const BottomGradient = styled.div`
-  width: 448px;
-  height: 64px;
+  width: 100%;
+  height: 60px;
   position: absolute;
-  bottom: 80px;
+  bottom: 80px; /* 버튼 영역 바로 위에 위치 */
   left: 0;
   background: linear-gradient(
-    180deg, 
-    transparent 0%, 
-    rgba(255, 255, 255, 0.98) 5%, 
-    rgba(255, 255, 255, 0.96) 9%, 
-    rgba(255, 255, 255, 0.93) 13%, 
-    rgba(255, 255, 255, 0.90) 17%, 
-    rgba(255, 255, 255, 0.86) 20%, 
-    rgba(255, 255, 255, 0.82) 24%, 
-    rgba(255, 255, 255, 0.77) 29%, 
-    rgba(255, 255, 255, 0.71) 34%, 
-    rgba(255, 255, 255, 0.65) 40%, 
-    rgba(255, 255, 255, 0.57) 46%, 
-    rgba(255, 255, 255, 0.48) 54%, 
-    rgba(255, 255, 255, 0.38) 63%, 
-    rgba(255, 255, 255, 0.27) 74%, 
-    rgba(255, 255, 255, 0.14) 86%, 
-    var(--Background-Normal-Normal, white) 100%
+    0deg,
+    var(--Background-Normal-Normal, white) 0%,
+    rgba(255, 255, 255, 0.9) 20%,
+    rgba(255, 255, 255, 0.7) 40%,
+    rgba(255, 255, 255, 0.5) 60%,
+    rgba(255, 255, 255, 0.3) 80%,
+    transparent 100%
   );
+  pointer-events: none;
+  z-index: 10;
 `;
 
 const BottomSection = styled.div`
-  width: 100%;
-  padding-bottom: 16px;
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  padding: 16px;
+  background: var(--Background-Normal-Normal, white);
+  border-top: 1px solid rgba(112, 115, 124, 0.08);
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: flex-start;
-  gap: 10px;
+  z-index: 20;
 `;
 
 const QuestionFormSection = styled.div`
-  width: 100%;
-  padding-bottom: 16px;
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 60vh;
+  padding: 16px;
+  background: var(--Background-Normal-Normal, white);
+  border-top: 1px solid rgba(112, 115, 124, 0.08);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   gap: 8px;
+  overflow-y: auto;
+  z-index: 20;
 `;
 
 const FormContainer = styled.div`
