@@ -143,7 +143,7 @@ const StreamingQnA: React.FC = () => {
 
       <ContentSection>
         <QuestionsList ref={questionsListRef}>
-          {questions.map((question) => (
+          {questions.map((question, index) => (
             <QuestionItem key={question.id}>
               <QuestionContent>
                 <QuestionHeader>
@@ -165,7 +165,8 @@ const StreamingQnA: React.FC = () => {
                   </RightMeta>
                 </QuestionMeta>
               </QuestionContent>
-              <QuestionDivider />
+              {/* 마지막 아이템이 아닐 때만 구분선 표시 */}
+              {index < questions.length - 1 && <QuestionDivider />}
             </QuestionItem>
           ))}
         </QuestionsList>
@@ -256,6 +257,9 @@ const SearchIcon = styled.div`
   top: 50%;
   transform: translateY(-50%);
   z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   
   svg {
     width: 20px;
@@ -296,6 +300,7 @@ const QuickAccessWrapper = styled.div`
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  padding-bottom: 8px;
 `;
 
 const QuickAccessText = styled.div`
@@ -536,7 +541,6 @@ const BottomSection = styled.div`
   height: 80px;
   padding: 16px;
   background: var(--Background-Normal-Normal, white);
-  border-top: 1px solid rgba(112, 115, 124, 0.08);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -552,7 +556,6 @@ const QuestionFormSection = styled.div`
   max-height: 60vh;
   padding: 16px;
   background: var(--Background-Normal-Normal, white);
-  border-top: 1px solid rgba(112, 115, 124, 0.08);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
