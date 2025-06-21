@@ -76,6 +76,25 @@ const Header: React.FC = () => {
     setHoveredItem(null);
   };
 
+  // 스트리밍 새 창 열기 함수
+  const handleStreamingClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const width = 1440;
+    const height = 810;
+    const left = (window.screen.width - width) / 2;
+    const top = (window.screen.height - height) / 2;
+    
+    const newWindow = window.open(
+      '/class/streaming',
+      '_blank',
+      `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=no,status=no`
+    );
+    
+    if (newWindow) {
+      newWindow.focus();
+    }
+  };
+
   const handleItemMouseEnter = (item: string) => {
     // 이전 타이머가 있으면 취소
     if (dropdownTimeoutRef.current) {
@@ -243,12 +262,13 @@ const Header: React.FC = () => {
                     onMouseEnter={() => handleItemMouseEnter('classes-4')}
                     onMouseLeave={handleItemMouseLeave}
                   >
-                    <DropdownLink 
-                      to="/classes/popular"
+                    <StreamingLink 
+                      href="#"
+                      onClick={handleStreamingClick}
                       isHovered={hoveredItem === 'classes-4'}
                       hasHoveredItem={hoveredItem !== null}
                       hoveredItemIsSpecial={hoveredItem === 'classes-all'}
-                    >메뉴 넷</DropdownLink>
+                    >스트리밍</StreamingLink>
                   </DropdownItem>
                   <DropdownItem 
                     isHovered={hoveredItem === 'classes-5'}
@@ -768,6 +788,41 @@ const DropdownLink = styled(Link)<{ isHovered?: boolean; hasHoveredItem?: boolea
   display: block;
   transition: color 0.1s ease;
   word-wrap: break-word;
+  
+  /* "전체 보기" 항목은 녹색 */
+  ${({ isSpecial }) => 
+    isSpecial && css`
+      color: var(--Primary-Strong, #296768);
+    `
+  }
+  
+  /* 호버 로직:
+   * 1. 일반 항목이 호버된 경우: 호버되지 않은 일반 항목들은 회색
+   * 2. 특수 항목(전체보기)이 호버된 경우: 모든 일반 항목들은 검정색 유지
+   */
+  ${({ isHovered, hasHoveredItem, isSpecial, hoveredItemIsSpecial }) => {
+    if (hasHoveredItem && !isHovered && !isSpecial && !hoveredItemIsSpecial) {
+      return css`
+        color: var(--Label-Assistive, rgba(55, 56, 60, 0.28));
+      `;
+    }
+  }}
+`;
+
+const StreamingLink = styled.a<{ isHovered?: boolean; hasHoveredItem?: boolean; isSpecial?: boolean; hoveredItemIsSpecial?: boolean }>`
+  flex: 1 1 0;
+  /* 기본 상태는 검정색 */
+  color: var(--Label-Normal, #171719);
+  text-decoration: none;
+  font-size: 15px;
+  font-family: 'Pretendard JP', sans-serif;
+  font-weight: 500;
+  line-height: 22.01px;
+  letter-spacing: 0.14px;
+  display: block;
+  transition: color 0.1s ease;
+  word-wrap: break-word;
+  cursor: pointer;
   
   /* "전체 보기" 항목은 녹색 */
   ${({ isSpecial }) => 
