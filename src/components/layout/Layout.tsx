@@ -45,13 +45,14 @@ const Main = styled.main`
   max-width: ${({ theme }) => theme.layout.containerWidth};
   margin: 0 auto;
   padding: 0;
+  padding-top: 80px; /* 헤더 높이만큼 상단 여백 추가 */
   
   @media (max-width: 1024px) {
-    padding: 0;
+    padding: 80px 0 0 0;
   }
   
   @media (max-width: 768px) {
-    padding: 0;
+    padding: 80px 0 0 0;
   }
 `;
 

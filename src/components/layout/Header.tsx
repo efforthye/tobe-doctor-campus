@@ -557,13 +557,13 @@ const HeaderContainer = styled.header<{ scrolled: boolean }>`
   background-color: ${props => props.scrolled ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.88)'};
   backdrop-filter: blur(64px);
   border-bottom: 1px solid rgba(112, 115, 124, 0.16);
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
+  right: 0;
+  z-index: 1001;
   width: 100%;
   transition: all 0.3s ease;
-  box-shadow: ${props => props.scrolled ? '0 1px 3px rgba(0, 0, 0, 0.1)' : 'none'};
 `;
 
 const HeaderContent = styled.div`

@@ -412,17 +412,15 @@ const TabSection = styled.section<{ $isSticky?: boolean }>`
   width: 100%;
   height: 56px;
   background: white;
-  z-index: 1001;
+  z-index: 1000;
   transition: all 0.2s ease;
   
   ${props => props.$isSticky && `
     position: fixed;
-    top: 0;
+    top: 80px;
     left: 0;
     right: 0;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(112, 115, 124, 0.16);
+    background: white;
   `}
 `;
 
