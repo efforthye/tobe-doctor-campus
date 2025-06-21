@@ -605,9 +605,7 @@ const TitleInput = styled.input`
     color: var(--Label-Assistive, rgba(55, 56, 60, 0.28));
   }
   
-  &:focus {
-    border-color: var(--Primary-Normal, #448181);
-  }
+  /* 포커스 시 색상 변화 제거 */
 `;
 
 const ContentInputContainer = styled.div`
@@ -642,9 +640,7 @@ const ContentTextarea = styled.textarea`
     color: var(--Label-Assistive, rgba(55, 56, 60, 0.28));
   }
   
-  &:focus {
-    border-color: var(--Primary-Normal, #448181);
-  }
+  /* 포커스 시 색상 변화 제거 */
 `;
 
 const FormToolbar = styled.div`
@@ -674,28 +670,12 @@ const ImageButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+  background-image: url('/images/picture.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   
-  &::after {
-    content: '';
-    width: 18.8px;
-    height: 18.8px;
-    position: absolute;
-    left: 2.6px;
-    top: 2.6px;
-    background: var(--Label-Alternative, rgba(55, 56, 60, 0.61));
-  }
-  
-  &:hover::before {
-    content: '';
-    position: absolute;
-    width: 32px;
-    height: 32px;
-    left: -4px;
-    top: -4px;
-    border-radius: 1000px;
-    background: var(--Label-Assistive, rgba(55, 56, 60, 0.28));
-    opacity: 0.5;
-  }
+  /* 호버 효과 완전 제거 */
 `;
 
 const CodeButton = styled.button`
@@ -705,28 +685,12 @@ const CodeButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+  background-image: url('/images/codesnipet.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   
-  &::after {
-    content: '';
-    width: 21.8px;
-    height: 17.8px;
-    position: absolute;
-    left: 1.1px;
-    top: 3.1px;
-    background: var(--Label-Alternative, rgba(55, 56, 60, 0.61));
-  }
-  
-  &:hover::before {
-    content: '';
-    position: absolute;
-    width: 32px;
-    height: 32px;
-    left: -4px;
-    top: -4px;
-    border-radius: 1000px;
-    background: var(--Label-Assistive, rgba(55, 56, 60, 0.28));
-    opacity: 0.5;
-  }
+  /* 호버 효과 완전 제거 */
 `;
 
 const SubmitButton = styled.button`
@@ -749,21 +713,7 @@ const SubmitButton = styled.button`
   letter-spacing: 0.09px;
   text-align: center;
   
-  &:hover {
-    color: var(--Label-Normal, #171719);
-    
-    &::before {
-      content: '';
-      position: absolute;
-      width: 70px;
-      height: 32px;
-      left: -7px;
-      top: -4px;
-      border-radius: 6px;
-      background: var(--Label-Normal, #171719);
-      opacity: 0.05;
-    }
-  }
+  /* 호버 효과 완전 제거 */
 `;
 
 const FormActions = styled.div`
@@ -796,14 +746,7 @@ const AskButton = styled.button`
   letter-spacing: 0.09px;
   word-wrap: break-word;
   
-  &:hover {
-    background: var(--Primary-Strong, #296768);
-  }
-  
-  &:active {
-    background: var(--Primary-Strong, #296768);
-    transform: translateY(1px);
-  }
+  /* 모든 클릭 효과 제거 */
 `;
 
 export default StreamingQnA;
