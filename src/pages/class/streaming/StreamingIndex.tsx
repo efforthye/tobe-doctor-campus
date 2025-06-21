@@ -209,10 +209,10 @@ const Logo = styled.div`
 `;
 
 const LogoIcon = styled.div`
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   background: transparent;
-  border-radius: 8px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -221,8 +221,8 @@ const LogoIcon = styled.div`
   &::before {
     content: '';
     position: absolute;
-    width: 18px;
-    height: 18px;
+    width: 24px;
+    height: 24px;
     background-image: url("data:image/svg+xml,%3Csvg width='24' height='25' viewBox='0 0 24 25' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.1948 8.5267C21.1403 12.1274 19.7384 15.7118 16.9893 18.4612C14.7105 20.74 11.859 22.094 8.8953 22.5196C11.1549 19.7417 12.387 16.2914 12.387 12.6651C12.387 12.3549 12.3773 12.0444 12.3582 11.7371C14.928 9.64084 18.0551 8.57143 21.1948 8.5267Z' fill='%23448181'/%3E%3Cpath d='M11.107 12.6651C11.107 12.7387 11.107 12.8123 11.1037 12.8859C11.046 16.6881 9.51638 20.1287 7.05511 22.6667L7.05187 22.6635C4.54262 20.0774 3 16.5536 3 12.6651C3 8.77665 4.54262 5.25282 7.05511 2.66675C9.56435 5.25282 11.107 8.77953 11.107 12.6651Z' fill='%23448181'/%3E%3C/svg%3E");
     background-size: contain;
     background-repeat: no-repeat;
